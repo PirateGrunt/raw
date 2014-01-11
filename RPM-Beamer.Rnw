@@ -1,0 +1,37 @@
+%\documentclass[xcolor=dvipsnames]{beamer}
+\documentclass{beamer}
+%%\usepackage[dvipsnames]{xcolor}
+
+\usefonttheme[onlymath]{serif}
+
+\setbeamercolor{title}{fg=black}
+\setbeamercolor{frametitle}{fg=black}
+
+\setbeamertemplate{itemize items}[circle] 
+\setbeamercolor{itemize item}{fg=black} 
+\begin{document}
+
+\title{An Introduction to R}
+\author{Brian A. Fannin}
+
+\maketitle
+
+% very important to use option [fragile] for frames containing code output!
+
+<<Options, echo=FALSE, results='hide', message=FALSE>>=
+options(width=40)
+@
+
+\begin{frame} {Agenda}
+  \begin{itemize}
+    \item Installation
+    \item A simple data set and model
+    \item Data sources
+    \item 
+    \item A map
+    \item Further
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
