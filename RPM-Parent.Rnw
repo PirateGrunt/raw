@@ -1,9 +1,9 @@
-%\documentclass[xcolor=dvipsnames]{beamer}
-\documentclass{beamer}
+\documentclass[xcolor=dvipsnames]{beamer}
+%\documentclass{beamer}
 %%\usepackage[dvipsnames]{xcolor}
 
 \usefonttheme[onlymath]{serif}
-
+\usetheme{Berlin}
 \setbeamercolor{title}{fg=black}
 \setbeamercolor{frametitle}{fg=black}
 
@@ -16,19 +16,15 @@
 
 \maketitle
 
-% very important to use option [fragile] for frames containing code output!
-
-<<Options, echo=FALSE, results='hide', message=FALSE>>=
+<<Options, results='hide', echo=FALSE, message=FALSE, error=FALSE, warning=FALSE>>=
 options(width=40)
 @
 
 \begin{frame} {Agenda}
   \begin{itemize}
-    \item Installation
-    \item A simple data set and model
+    \item Installation \& history
+    \item Variables \& data types
     \item Data sources
-    \item 
-    \item A map
     \item Further
   \end{itemize}
 \end{frame}

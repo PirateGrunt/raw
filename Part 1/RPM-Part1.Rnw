@@ -1,0 +1,11 @@
+<<SetParentPart1>>=
+set_parent('../RPM-Parent.Rnw')
+@
+
+\begin{frame}{Installation}
+  Let's get this done quick. If you don't have R and R Studio installed, today will be a long day.
+\end{frame}
+
+\begin{frame}{What the heck is R?}
+  While some folks are getting software sorted out, we'll have a brief review of the history of R. 
+\end{frame}

@@ -1,0 +1,46 @@
+<<SetParentPart2>>=
+set_parent('RPM-Parent.Rnw')
+@
+
+\begin{frame}[fragile]
+<<results='asis'>>=
+cat(getwd())
+@
+\end{frame}
+
+\begin{frame}[fragile]
+Let's program.
+<<BasicOLS>>=
+set.seed(1234)
+N = 100
+e = rnorm(N, mean = 0, sd = 1)
+B0 = 5
+B1 = 1.5
+
+X1 = rep(seq(1,10),10)
+Y = B0 + B1 * X1 + e
+
+myFit = lm(Y ~ X1)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<SummaryFirstFit, size='tiny'>>=
+summary(myFit)
+@
+\end{frame}
+
+\begin{frame}
+Assigned values to a variable. (i.e. entered numbers into a cell in a spreadsheet)
+
+EVery variable is a vector. Think of a set of cells in a spreadsheet.
+
+Vectors may be used in arithmetic operations:
+Y = B0 + B1 * X1 + e
+\end{frame}
+
+\begin{frame}[fragile]{Data frames}
+<<>>=
+df = data.frame(Y=Y, X1=X1, e=e)
+@
+\end{frame}
