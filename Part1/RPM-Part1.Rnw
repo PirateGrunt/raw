@@ -1,4 +1,4 @@
-<<SetParentPart1>>=
+<<SetParentPart1, echo=FALSE>>=
 set_parent('../RPM-Parent.Rnw')
 @
 
@@ -8,4 +8,20 @@ set_parent('../RPM-Parent.Rnw')
 
 \begin{frame}{What the heck is R?}
   While some folks are getting software sorted out, we'll have a brief review of the history of R. 
+\end{frame}
+
+\begin{frame}[fragile]
+<<>>=
+set.seed(1234)
+N = 100
+e = rnorm(N, mean = 0, sd = 1)
+B0 = 5
+B1 = 1.5
+
+X1 = rep(seq(1,10),10)
+Y = B0 + B1 * X1 + e
+
+myFit = lm(Y ~ X1)
+
+@
 \end{frame}

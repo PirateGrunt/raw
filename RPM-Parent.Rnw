@@ -1,6 +1,6 @@
+\usepackage[dvipsnames]{xcolor}
+
 \documentclass[xcolor=dvipsnames]{beamer}
-%\documentclass{beamer}
-%%\usepackage[dvipsnames]{xcolor}
 
 \usefonttheme[onlymath]{serif}
 \usetheme{Berlin}
@@ -9,6 +9,8 @@
 
 \setbeamertemplate{itemize items}[circle] 
 \setbeamercolor{itemize item}{fg=black} 
+
+
 \begin{document}
 
 \title{An Introduction to R}
@@ -28,6 +30,5 @@ options(width=40)
     \item Further
   \end{itemize}
 \end{frame}
-
 
 \end{document}
