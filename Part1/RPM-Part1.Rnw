@@ -2,6 +2,15 @@
 set_parent('../RPM-Parent.Rnw')
 @
 
+\begin{frame}{Part 1}
+  \begin{itemize}
+    \item Installation \& history
+    \item Sample script
+    \item Variables \& data types
+    \item Reading data
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Installation}
   Let's get this done quick. If you don't have R and R Studio installed, today will be a long day.
 \end{frame}
@@ -10,18 +19,94 @@ set_parent('../RPM-Parent.Rnw')
   While some folks are getting software sorted out, we'll have a brief review of the history of R. 
 \end{frame}
 
-\begin{frame}[fragile]
-<<>>=
-set.seed(1234)
+\begin{frame}[fragile]{A simple script}
+<<BasicOLS>>=
 N = 100
-e = rnorm(N, mean = 0, sd = 1)
 B0 = 5
 B1 = 1.5
 
+set.seed(1234)
+
+e = rnorm(N, mean = 0, sd = 1)
 X1 = rep(seq(1,10),10)
+
 Y = B0 + B1 * X1 + e
 
 myFit = lm(Y ~ X1)
-
 @
+\end{frame}
+
+\begin{frame}{So what have we done?}
+<<eval=FALSE, tidy=FALSE>>=
+N = 100
+
+B0 = 5
+
+B1 = 1.5
+@
+Assign a number to a variable (i.e. enter a value into a single cell in a spreadsheet).
+\end{frame}
+
+\begin{frame}
+<<eval = FALSE>>=
+set.seed(1234)
+@
+Set the seed for random number generation.
+
+<<eval=FALSE>>=
+e = rnorm(N, mean = 0, sd = 1)
+X1 = rep(seq(1,10),10)
+@
+
+Every variable is a vector. Think of a set of cells in a spreadsheet. Here, e is a vector with N values. X1 is the sequence of integers from 1 through 10 repeated 10 times. Vectors can grow and shrink automatically. No need to move cells around on a sheet. No need to rewrite formulas or change named ranges.
+\end{frame}
+
+\begin{frame}
+Vectorization is one of the most important concepts in R!
+
+Similar to Matlab/Octave, operations on a table in a database.
+\end{frame}
+
+\begin{frame}
+<<eval=FALSE>>=
+Y = B0 + B1 * X1 + e
+@
+Vectors may be used in arithmetic operations. Y is now a vector with length equal to the longest vector used in the calculation.
+
+Question: B0 and B1 are vectors of length 1. X1 and e are vectors of length 100. How are they combined?
+\end{frame}
+
+\begin{frame}[fragile]{Recycling}
+R will "recycle" vectors until there are enough rows to perform an operation, i.e. everything gets as "long" as the longest vector in the operation. For scalar operations on a vector this doesn't involve any drama. Try the following code:
+<<>>=
+vector1 = 1:10
+vector2 = 1:5
+scalar = 3
+
+print(vector1 + scalar)
+print(vector2 + scalar)
+print(vector1 + vector2)
+@
+\end{frame}
+
+\begin{frame}{Fit a linear model}
+<<eval=FALSE>>=
+myFit = lm(Y ~ X1)
+@
+We've just created a linear model where Y depends on X1. We don't need to specify the length of the response or the design matrix. Later, we'll see how R will automatically create a complicated design matrix automatically.
+\end{frame}
+
+\begin{frame}[fragile]
+<<SummaryFirstFit, size='tiny'>>=
+summary(myFit)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Data frames}
+<<DataFrame, echo=TRUE>>=
+df = data.frame(Y=Y, X1=X1, e=e)
+@
+The data frame is another seminal concept in R. Most statistical operations expect one and they are the most common way to pass data in and out of R.
+
+Although critical to understand, this is very, very easy to get.
 \end{frame}

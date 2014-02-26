@@ -1,9 +1,11 @@
-\usepackage[dvipsnames]{xcolor}
-
 \documentclass[xcolor=dvipsnames]{beamer}
 
+\usepackage[dvipsnames]{xcolor}
+
 \usefonttheme[onlymath]{serif}
-\usetheme{Berlin}
+
+\usetheme{default}
+
 \setbeamercolor{title}{fg=black}
 \setbeamercolor{frametitle}{fg=black}
 
