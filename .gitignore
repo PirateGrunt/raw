@@ -2,6 +2,10 @@
 # R
 #################
 .RHistory
+*.RData
+
+Parent/
+Part2/
 
 #################
 ## Eclipse
@@ -218,3 +222,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+*.docx
