@@ -1,0 +1,11 @@
+<<SetParentPart3, echo=FALSE>>=
+set_parent('../RPM-Parent.Rnw')
+@
+
+\begin{frame}{Part 3}
+  \begin{itemize}
+    \item ChainLadder
+    \item MRMR
+  \end{itemize}
+\end{frame}
+

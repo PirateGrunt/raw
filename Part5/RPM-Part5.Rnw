@@ -1,0 +1,24 @@
+<<SetParentPart5, echo=FALSE>>=
+set_parent('../RPM-Parent.Rnw')
+@
+
+\begin{frame}{Part 5 - Further topics}
+  \begin{itemize}
+    \item Intermediate visualization
+    \item Basic data mining
+    \item Reproducible research
+    \item Furthur
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Stuff I did't talk about}
+  \begin{itemize}
+    \item Environments
+    \item Construction of S3, S4 and R5 objects
+    \item Package development
+    \item Language constructs such as `promise`, `substitute`, `evaluate`, etc.
+    \item Debugging
+    \item Error catching
+    \item Any number of other things
+  \end{itemize}
+\end{frame}

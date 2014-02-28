@@ -1,0 +1,19 @@
+<<SetParentPart4, echo=FALSE>>=
+set_parent('../RPM-Parent.Rnw')
+@
+
+\begin{frame}{Part 4}
+  \begin{itemize}
+    \item Simulation
+    \item Fitting loss distributions
+    \item Logistic regression and GLMs
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+<<>>=
+sample
+rep
+rnorm
+rexp
+\end{frame}
