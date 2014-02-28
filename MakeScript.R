@@ -18,6 +18,7 @@ BuildChild = function(baseDir, childDir){
 
 baseDir = "V:/My Documents/GitHub/RPM2014/"
 
+BuildChild(baseDir, "PartGonzo")
 BuildChild(baseDir, "Part1")
 BuildChild(baseDir, "Part2")
 BuildChild(baseDir, "Parent")

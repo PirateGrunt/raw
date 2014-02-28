@@ -1,17 +1,13 @@
 \documentclass[xcolor=dvipsnames]{beamer}
-
-\usepackage[dvipsnames]{xcolor}
+%%\usepackage[dvipsnames]{xcolor}
 
 \usefonttheme[onlymath]{serif}
-
-\usetheme{default}
 
 \setbeamercolor{title}{fg=black}
 \setbeamercolor{frametitle}{fg=black}
 
 \setbeamertemplate{itemize items}[circle] 
 \setbeamercolor{itemize item}{fg=black} 
-
 
 \begin{document}
 
@@ -22,15 +18,22 @@
 
 <<Options, results='hide', echo=FALSE, message=FALSE, error=FALSE, warning=FALSE>>=
 options(width=40)
+opts_chunk$set(echo = TRUE)
 @
 
-\begin{frame} {Agenda}
-  \begin{itemize}
-    \item Installation \& history
-    \item Variables \& data types
-    \item Data sources
-    \item Further
-  \end{itemize}
-\end{frame}
+<<Section1, child='./Part1/RMP-Part1.Rnw', eval=TRUE, message=FALSE>>=
+@
+
+<<Section2, child=c('../Part2/RMP-Part2.Rnw'), eval=TRUE, message=FALSE>>=
+@
+
+<<Section3, child=c('../Part3/RMP-Part3.Rnw'), eval=TRUE, message=FALSE>>=
+@
+
+<<Section4, child=c('../Part4/RMP-Part4.Rnw'), eval=TRUE, message=FALSE>>=
+@
+
+<<Section5, child=c('../Part5/RMP-Part5.Rnw'), eval=TRUE, message=FALSE>>=
+@
 
 \end{document}
