@@ -19,6 +19,6 @@ set_parent('../RPM-Parent.Rnw')
     \item Language constructs such as `promise`, `substitute`, `evaluate`, etc.
     \item Debugging
     \item Error catching
-    \item Any number of other things
+    \item Any number of other things (factors, lists)
   \end{itemize}
 \end{frame}

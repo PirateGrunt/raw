@@ -1,0 +1,8 @@
+<<SetParentPart3a, echo=FALSE>>=
+set_parent('../RPM-Parent.Rnw')
+@
+
+\begin{frame}
+  Part 3a - ChainLadder
+\end{frame}
+
