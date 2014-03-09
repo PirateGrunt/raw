@@ -1,18 +1,149 @@
 <<SetParentPart4, echo=FALSE>>=
-set_parent('../RPM-Parent.Rnw')
+set_parent('../Parent/RPM-Parent.Rnw')
 @
 
 \begin{frame}{Part 4}
   \begin{itemize}
     \item Simulation
-    \item Fitting loss distributions
+    \item Fitting distributions
     \item Logistic regression and GLMs
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-sample
-rep
-rnorm
-rexp
+\begin{frame}[fragile]{Probability distributions}
+All probability distributions have four basic functions:
+  \begin{itemize}
+    \item d*dist - Density function
+    \item p*dist - Cumulative distribution
+    \item q*dist - Quantiles
+    \item r*dist - Random number generation
+  \end{itemize}
 \end{frame}
+
+\begin{frame}[fragile]{Density function}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) dnorm(x), -3, 3, ylab="Normal f(x)")
+plot(function(x) dexp(x), 0, 10, ylab="Exp f(x)")
+plot(function(x) dlnorm(x), 0, 10, ylab="LN f(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) dnorm(x), -3, 3, ylab="Normal f(x)")
+plot(function(x) dexp(x), 0, 10, ylab="Exp f(x)")
+plot(function(x) dlnorm(x), 0, 10, ylab="LN f(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Distribution function}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) pnorm(x), -3, 3, ylab="Normal F(x)")
+plot(function(x) pexp(x), 0, 10, ylab="Exp F(x)")
+plot(function(x) plnorm(x), 0, 10, ylab="LN F(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) pnorm(x), -3, 3, ylab="Normal f(x)")
+plot(function(x) pexp(x), 0, 10, ylab="Exp f(x)")
+plot(function(x) plnorm(x), 0, 10, ylab="LN F(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Random number generation}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+hist(rnorm(200))
+hist(rexp(200))
+hist(rlnorm(200))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+hist(rnorm(200))
+hist(rexp(200))
+hist(rlnorm(200))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{More random number generation}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+set.seed(1234)
+hist(rnorm(200, mean=0, sd=1), xlim=c(-10, 10))
+hist(rnorm(200, mean=0, sd=4), xlim=c(-10, 10))
+hist(rnorm(200, mean=5, sd=2), xlim=c(-10, 10))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+set.seed(1234)
+hist(rnorm(200, mean=0, sd=1), xlim=c(-10, 10))
+hist(rnorm(200, mean=0, sd=4), xlim=c(-10, 10))
+hist(rnorm(200, mean=5, sd=2), xlim=c(-10, 10))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{sample}
+<<>>=
+set.seed(1234)
+sample(1:100, 10)
+State = c("NY", "TX", "CA")
+State[sample(3, 10, replace=TRUE)]
+@
+\end{frame}
+
+\begin{frame}{Fitting distributions}
+  \begin{itemize}
+    \item optim
+    \item q-q plots
+    \item chi2 test
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+\end{frame}
+
+\begin{frame}[fragile]{Logistic Regression - an example}
+<<eval=FALSE>>=
+dfNFL = read.csv("../Data/NFL.csv")
+dfNFL = subset(dfNFL, Home==TRUE)
+plot(jitter(dfNFL$TODiff), jitter(dfNFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Logistic Regression - an example}
+<<echo=FALSE>>=
+dfNFL = read.csv("../Data/NFL.csv")
+dfNFL = subset(dfNFL, Home==TRUE)
+plot(jitter(dfNFL$TODiff), jitter(dfNFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+@
+\end{frame}
+
+\begin{frame}
+<<>>=
+fit = glm(Win ~ TODiff, family=binomial(link="logit"), data=dfNFL)
+library(boot)
+curve(inv.logit(coef(fit)[1] + coef(fit)[2]*x), add=TRUE)
+abline(h=0.5)
+@
+\end{frame}
+

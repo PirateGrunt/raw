@@ -7,9 +7,13 @@
 \setbeamertemplate{itemize items}[circle] 
 \setbeamertemplate{navigation symbols}{}
 
-\begin{document}
+% \usepackage{graphicx}
+% \usepackage{caption}
+\usepackage{subfig}
 
 %%\usepackage[dvipsnames]{xcolor}
+
+\begin{document}
 
 \title{An Introduction to R}
 \author{Brian A. Fannin}
@@ -20,7 +24,7 @@
 knit_hooks$set(fig.bg = function(before, options, envir) {
   if (before) par(bg = options$fig.bg)
 })
-options(width=40)
+options(width=80)
 opts_chunk$set(echo = TRUE)
 opts_chunk$set(size = 'tiny')
 opts_chunk$set(fig.height=5.0)

@@ -62,6 +62,12 @@
 \setbeamertemplate{itemize items}[circle] 
 \setbeamertemplate{navigation symbols}{}
 
+% \usepackage{graphicx}
+% \usepackage{caption}
+\usepackage{subfig}
+
+%%\usepackage[dvipsnames]{xcolor}
+
 
 
 \begin{document}
@@ -86,22 +92,71 @@
     \item Free %It costs nothing to use.
     \item Open source %The source code is available to the public to view and modify (within restrictions).
     \item Extendable %Anyone may write extensions to the software. At present there are 4,000 user contributed packages and counting.
+    \item Advanced statistical techniques are available out of the box. 
+    \item Machine learning algorithms- cluster analysis, neural networks, etc.%Any time someone invents a new way to analyze data, it is quickly available in R.
+    \item Visualize network graphs, construct word clouds, render maps. %Visualization is tremendous. Bar charts and scatter plots are the tip of the iceberg. R can do it all and keeps getting better.
     \item Really, really cool 
-      \item Advanced statistical techniques are available out of the box. 
-      \item Machine learning algorithms- cluster analysis, neural networks, etc.%Any time someone invents a new way to analyze data, it is quickly available in R.
-      \item Visualize network graphs, construct word clouds, render maps. %Visualization is tremendous. Bar charts and scatter plots are the tip of the iceberg. R can do it all and keeps getting better.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{A brief history of R}
-In the alphabet, R comes before S. In software, S comes before R
+\includegraphics[width=0.27\textwidth]{figure/R}
+\newline
+In the alphabet, R comes before S. In software, S comes before R.
+\newline
+\newline
+S was developed at Bell Labs by Paul Chambers and some others back in the late '70s. Sweeping changes by 1988.
+R was created by Ross Ihaka and Robert Gentleman as an open source alternative to S. First release in 1993.
+\end{frame}
 
-S was developed by Brian Ripley, Paul Chambers, etc.
-R was created as an open source alternative to S
+\begin{frame}{Nearly 40 years of development}
+  \begin{figure}%
+      \centering
+      \subfloat{{\includegraphics[width=0.27\textwidth]{figure/NewSlanguage} }}%
+      \qquad
+      \subfloat{{\includegraphics[width=0.27\textwidth]{figure/StatisticalModelsinS} }}%
+      \qquad
+      \subfloat{{\includegraphics[width=0.27\textwidth]{figure/Soda} }}
+      \label{fig:example}%
+  \end{figure}
+\end{frame}
 
-First actuarial package actuar
+\begin{frame}{R package growth}
+  \includegraphics[height=0.75\textheight]{figure/rPackages}
+\end{frame}
 
-Textbook focused on R
+\begin{frame}
+Several packages developed for actuarial use:
+  \begin{itemize}
+    \item actuar
+    \item ChainLadder
+    \item MRMR
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Books about R for actuaries!}
+\begin{figure}%
+    \centering
+    \subfloat{{\includegraphics[width=0.27\textwidth]{figure/ComputationalActuarialScience} }}%
+    \qquad
+    \subfloat{{\includegraphics[width=0.27\textwidth]{figure/PredictiveModeling} }}%
+    \qquad
+    \subfloat{{\includegraphics[width=0.27\textwidth]{figure/RegressionModeling} }}
+    \label{fig:example}%
+\end{figure}
+
+%\begin{figure}[h!]
+  
+%\end{figure}
+
+%\begin{figure}[h!]
+  
+%\end{figure}
+
+% \begin{figure}[h!]
+%   
+% \end{figure}
+
 \end{frame}
 
 \begin{frame}{What's RStudio?}
@@ -162,7 +217,7 @@ Does R and RStudio work for everyone?
 \hlkwd{getwd}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## [1] "V:/My Documents/GitHub/RPM2014/Part1"
+## [1] "C:/Users/bfannin/R/Projects/RPM2014/Part1"
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

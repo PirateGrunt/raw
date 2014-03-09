@@ -17,7 +17,7 @@ BuildChild = function(baseDir, childDir){
   BuildDoc(childDir, rnwName, texName)
 }
 
-baseDir = "V:/My Documents/GitHub/RPM2014/"
+baseDir = "C:/Users/bfannin/R/Projects/RPM2014/"
 
 BuildChild(baseDir, "Part1")
 BuildChild(baseDir, "Part2a")
