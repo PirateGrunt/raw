@@ -212,8 +212,6 @@ df$PolicyNumber = 1:(nrow(df))
 
 df$LossRatio = df$EarnedPremium / df$Losses
 df$LossRatio = 1 / df$LossRatio
-
-
 @
 \end{frame}
 
@@ -222,6 +220,21 @@ df$LossRatio = 1 / df$LossRatio
 df$LossRatio = NULL
 df = df[, 1:4]
 @
+\end{frame}
+
+\begin{frame}[fragile]{rbind, cbind}
+<<>>=
+rbind(A, B)
+cbind(A, C)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Merging}
+<<size='tiny'>>=
+dfRateChange = data.frame(State =c("TX", "CA", "NY"), RateChange = c(.05, -.1, .2))
+df = merge(df, dfRateChange)
+@
+Merging is VLOOKUP on steroids. Basically equivalent to a JOIN in SQL.
 \end{frame}
 
 \begin{frame}[fragile]{Altering column names}
@@ -282,14 +295,6 @@ barplot(dfByState$EarnedPremium, names.arg=dfByState$State, col="blue")
 <<size='tiny', fig.height=5>>=
 dotchart(dfByState$EarnedPremium, dfByState$State, pch=19)
 @
-\end{frame}
-
-\begin{frame}[fragile]{Merging}
-<<size='tiny'>>=
-dfRateChange = data.frame(State =c("TX", "CA", "NY"), RateChange = c(.05, -.1, .2))
-df = merge(df, dfRateChange)
-@
-Merging is VLOOKUP on steroids. Basically equivalent to a JOIN in SQL.
 \end{frame}
 
 \begin{frame}[fragile]{Before I forget}

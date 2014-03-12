@@ -120,6 +120,150 @@ State[sample(3, 10, replace=TRUE)]
 \end{frame}
 
 \begin{frame}
+<<>>=
+set.seed(1234)
+claims = rlnorm(100, meanlog=log(30000), sdlog=1)
+hist(claims, breaks=seq(1, 500000, length.out=40))
+@
+\end{frame}
+
+\begin{frame}
+<<>>=
+lnLike = function{}
+optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
+optimFit$par
+@
+\end{frame}
+
+\begin{frame}[fragile]{Another view of linear regression}
+<<AltOLS1, echo=TRUE>>=
+set.seed(1234)
+N = 100
+e = rnorm(N, mean = 0, sd = 1)
+ 
+lnLike = function(x, mu, sigma)
+{
+  n = length(x)
+  lnLike = -n / 2 * log(2*pi)
+  lnLike = lnLike - n/2 * log(sigma ^2)
+  lnLike = lnLike - 1/(2*sigma^2)*sum((x - mu)^2)
+  lnLike
+}
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<AltOLS2, echo=TRUE, fig.width=8, fig.height=5>>=
+testMu = seq(-0.5, 0.5, length.out=100)
+likelihood = sapply(testMu, lnLike, x = e, sigma = 1)
+testMu[likelihood == max(likelihood)]
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+<<, echo=TRUE, fig.width=8, fig.height=5>>=
+plot(likelihood ~ testMu, pch = 19)
+abline(v = 0)
+abline(v = testMu[likelihood == max(likelihood)])
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<AltOLS3, echo=TRUE, fig.width=8, fig.height=5>>=
+testSigma = seq(.5, 1.5, length.out=100)
+likelihood = sapply(testSigma, lnLike, x = e, mu = 0)
+testSigma[likelihood == max(likelihood)]
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<PlotSigma, echo=TRUE, fig.width=8, fig.height=5>>=
+plot(likelihood ~ testSigma, pch = 19)
+abline(v = 1)
+abline(v = testSigma[likelihood == max(likelihood)])
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<TwoDim, echo=TRUE, tidy=TRUE>>=
+params = expand.grid(mu = testMu, sigma = testSigma)
+params$Likelihood = mapply(lnLike, params$mu, params$sigma, MoreArgs = list(x = e))
+z = matrix(params$Likelihood, length(testMu), length(testSigma))
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<TwoDimPlotCode, results='hide', eval=FALSE, echo=TRUE>>=
+filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<TwoDimPlotOutput, echo=FALSE, fig.width=8, fig.heigth=5, tidy=TRUE>>=
+filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Optimize for both parameters}
+<<Optim, echo=TRUE>>=
+lnLike2 = function(x, par)
+{
+  mu = par[1]
+  sigma = par[2]
+  
+  lnLike(x, mu, sigma)
+}
+ 
+optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
+optimFit$par
+@
+\end{frame}
+
+\begin{frame}[fragile]{Add a constant term to the normal variable e}
+<<Optim2, echo=TRUE, results='hide'>>=
+B0 = 5
+Y = B0 + e
+@
+\end{frame}
+ 
+\begin{frame}[fragile]{This is equivalent to lm}
+<<Optim3, echo=TRUE>>=
+optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = Y)
+optimFit$par[[1]]
+ 
+lmFit = lm(Y ~ 1)
+lmFit$coefficients[[1]]
+@
+\end{frame}
+
+\begin{frame}[fragile]{Now add a slope}
+<<Optim4, echo=TRUE, results='hide'>>=
+X = as.double(1:length(e))
+B1 = 1.5
+Y = B0 + B1 * X + e
+ 
+lnLike3 = function(par, Y, X)
+{
+  B0 = par[1]
+  B1 = par[2]
+  sigma = par[3]
+  
+  x = Y - B0 - B1 * X
+  mu = 0
+  
+  lnLike(x, mu, sigma) 
+}
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<Optim5, echo=TRUE>>=
+optimFit = optim(par = c(4, 1, 1), fn = lnLike3, control = list(fnscale = -1), Y = Y, X = X)
+optimFit$par[1:2]
+
+lmFit = lm(Y ~ 1 + X)
+lmFit$coefficients
+@
 \end{frame}
 
 \begin{frame}[fragile]{Logistic Regression - an example}

@@ -2,6 +2,16 @@
 set_parent('../Parent/RPM-Parent.Rnw')
 @
 
+\begin{frame}
+  "Relax and embrace the chaos that is R."
+  \newline
+  \newline
+  - Patrick Burns
+  \newline
+  \newline
+  \url{www.burns-stat.com/pages/Present/infernoishR_annotated.pdf}
+\end{frame}
+
 \begin{frame}{Part 1 - Introducing R}
   \begin{itemize}
     \item Installation \& history
@@ -10,6 +20,10 @@ set_parent('../Parent/RPM-Parent.Rnw')
     \item Reading data
     \item A basic script
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+Does everyone have R and RStudio installed?
 \end{frame}
 
 \begin{frame}{What the heck is R?}
@@ -27,14 +41,25 @@ set_parent('../Parent/RPM-Parent.Rnw')
   \end{itemize}
 \end{frame}
 
-\begin{frame}{A brief history of R}
-\includegraphics[width=0.27\textwidth]{../Part1/figure/R}
-\newline
-In the alphabet, R comes before S. In software, S comes before R.
-\newline
-\newline
-S was developed at Bell Labs by Paul Chambers and some others back in the late '70s. Sweeping changes by 1988.
-R was created by Ross Ihaka and Robert Gentleman as an open source alternative to S. First release in 1993.
+\begin{frame}
+  "[...] R is not software, it is a community."
+  
+  - Patrick Burns
+\end{frame}
+
+\begin{frame}{First, there was S}
+  \includegraphics[width=0.27\textwidth]{../Part1/figure/R}
+  \newline
+  In the alphabet, R comes before S. In software, S comes before R.
+  \newline
+  \newline
+  S was developed at Bell Labs by Paul Chambers and some others back in the late '70s. Sweeping changes by 1988. Further changes in 1992.
+\end{frame}
+
+\begin{frame}{And then there was R}
+  \includegraphics[width=0.5\textwidth]{../Part1/figure/RossAndRobert}
+  \newline
+  R was created by Ross Ihaka and Robert Gentleman as an open source alternative to S. First release in 1993.
 \end{frame}
 
 \begin{frame}{Nearly 40 years of development}
