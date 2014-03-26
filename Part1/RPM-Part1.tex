@@ -74,6 +74,16 @@
 
 
 
+\begin{frame}
+  "Relax and embrace the chaos that is R."
+  \newline
+  \newline
+  - Patrick Burns
+  \newline
+  \newline
+  \url{www.burns-stat.com/pages/Present/infernoishR_annotated.pdf}
+\end{frame}
+
 \begin{frame}{Part 1 - Introducing R}
   \begin{itemize}
     \item Installation \& history
@@ -82,6 +92,10 @@
     \item Reading data
     \item A basic script
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+Does everyone have R and RStudio installed?
 \end{frame}
 
 \begin{frame}{What the heck is R?}
@@ -99,30 +113,41 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{A brief history of R}
-\includegraphics[width=0.27\textwidth]{figure/R}
-\newline
-In the alphabet, R comes before S. In software, S comes before R.
-\newline
-\newline
-S was developed at Bell Labs by Paul Chambers and some others back in the late '70s. Sweeping changes by 1988.
-R was created by Ross Ihaka and Robert Gentleman as an open source alternative to S. First release in 1993.
+\begin{frame}
+  "[...] R is not software, it is a community."
+  
+  - Patrick Burns
+\end{frame}
+
+\begin{frame}{First, there was S}
+  \includegraphics[width=0.27\textwidth]{../Part1/figure/R}
+  \newline
+  In the alphabet, R comes before S. In software, S comes before R.
+  \newline
+  \newline
+  S was developed at Bell Labs by Paul Chambers and some others back in the late '70s. Sweeping changes by 1988. Further changes in 1992.
+\end{frame}
+
+\begin{frame}{And then there was R}
+  \includegraphics[width=0.5\textwidth]{../Part1/figure/RossAndRobert}
+  \newline
+  R was created by Ross Ihaka and Robert Gentleman as an open source alternative to S. First release in 1993.
 \end{frame}
 
 \begin{frame}{Nearly 40 years of development}
   \begin{figure}%
       \centering
-      \subfloat{{\includegraphics[width=0.27\textwidth]{figure/NewSlanguage} }}%
+      \subfloat{{\includegraphics[width=0.27\textwidth]{../Part1/figure/NewSlanguage} }}%
       \qquad
-      \subfloat{{\includegraphics[width=0.27\textwidth]{figure/StatisticalModelsinS} }}%
+      \subfloat{{\includegraphics[width=0.27\textwidth]{../Part1/figure/StatisticalModelsinS} }}%
       \qquad
-      \subfloat{{\includegraphics[width=0.27\textwidth]{figure/Soda} }}
+      \subfloat{{\includegraphics[width=0.27\textwidth]{../Part1/figure/Soda} }}
       \label{fig:example}%
   \end{figure}
 \end{frame}
 
 \begin{frame}{R package growth}
-  \includegraphics[height=0.75\textheight]{figure/rPackages}
+  \includegraphics[height=0.75\textheight]{../Part1/figure/rPackages}
 \end{frame}
 
 \begin{frame}
@@ -130,33 +155,22 @@ Several packages developed for actuarial use:
   \begin{itemize}
     \item actuar
     \item ChainLadder
+    \item lossDev
+    \item favir
     \item MRMR
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Books about R for actuaries!}
-\begin{figure}%
-    \centering
-    \subfloat{{\includegraphics[width=0.27\textwidth]{figure/ComputationalActuarialScience} }}%
-    \qquad
-    \subfloat{{\includegraphics[width=0.27\textwidth]{figure/PredictiveModeling} }}%
-    \qquad
-    \subfloat{{\includegraphics[width=0.27\textwidth]{figure/RegressionModeling} }}
-    \label{fig:example}%
-\end{figure}
-
-%\begin{figure}[h!]
-  
-%\end{figure}
-
-%\begin{figure}[h!]
-  
-%\end{figure}
-
-% \begin{figure}[h!]
-%   
-% \end{figure}
-
+  \begin{figure}%
+      \centering
+      \subfloat{{\includegraphics[width=0.27\textwidth]{../Part1/figure/ComputationalActuarialScience} }}%
+      \qquad
+      \subfloat{{\includegraphics[width=0.27\textwidth]{../Part1/figure/PredictiveModeling} }}%
+      \qquad
+      \subfloat{{\includegraphics[width=0.27\textwidth]{../Part1/figure/RegressionModeling} }}
+      \label{fig:example}%
+  \end{figure}
 \end{frame}
 
 \begin{frame}{What's RStudio?}

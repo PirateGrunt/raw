@@ -129,7 +129,7 @@ hist(claims, breaks=seq(1, 500000, length.out=40))
 
 \begin{frame}
 <<>>=
-lnLike = function{}
+#lnLike = function{}
 optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
 optimFit$par
 @

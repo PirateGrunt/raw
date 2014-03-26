@@ -46,10 +46,13 @@ opts_chunk$set(fig.bg='white')
 <<Section3b, child=c('../Part3b/RPM-Part3b.Rnw'), eval=TRUE, message=FALSE>>=
 @
 
-<<Section4, child=c('../Part4/RPM-Part4.Rnw'), eval=TRUE, message=FALSE>>=
-@
+% <<Section4, child=c('../Part4/RPM-Part4.Rnw'), eval=TRUE, message=FALSE>>=
+% @
 
 <<Section5, child=c('../Part5/RPM-Part5.Rnw'), eval=TRUE, message=FALSE>>=
 @
 
+<<>>=
+sessionInfo()
+@
 \end{document}
