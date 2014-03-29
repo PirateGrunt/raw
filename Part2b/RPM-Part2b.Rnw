@@ -1,9 +1,9 @@
 <<SetParentPart2B, echo=FALSE>>=
-set_parent('../RPM-Parent.Rnw')
+set_parent('../Parent/RPM-Parent.Rnw')
 @
 
 \begin{frame}[fragile]{Writing your own functions}
-<<size='tiny'>>=
+<<>>=
 myFunction = function(x, y){
   x + y
 }
@@ -11,7 +11,7 @@ myFunction = function(x, y){
 \end{frame}
 
 \begin{frame}[fragile]{A real function}
-<<size='tiny'>>=
+<<>>=
 QuadRoot = function(a, b, c){
   disc = b^2 - 4 * a * c
   result = -2 * b - sqrt(disc)
@@ -26,7 +26,7 @@ Functions are basically the same as functions entered into a cell in a spreadshe
 \end{frame}
 
 \begin{frame}[fragile]{Flow control - if}
-<<size='tiny', eval=FALSE>>=
+<<eval=FALSE>>=
 if (something) {
   
 } else {

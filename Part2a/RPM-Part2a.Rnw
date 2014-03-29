@@ -24,10 +24,15 @@ Y = B0 + B1 * X1 + e
 
 df = data.frame(Y, X1, e)
 myFit = lm(Y ~ X1, data=df)
+@
+\end{frame}
 
-# Values predicted from the model
+\begin{frame}[fragile]{Predicting results}
+Most models predict results using the 'predict' function. By default, a prediction is made against the sample data. It's possible to predict against new observations.
+<<eval=TRUE>>=
 yHat = predict(myFit)
 @
+We'll use this more in the next few slides.
 \end{frame}
 
 \begin{frame}{Plots}
@@ -52,11 +57,11 @@ plot(X1, Y, pch=19)
 
 \begin{frame}[fragile]{Add lines}
 The functions 'lines' and 'points' will add (wait for it) lines and points to a pre-existing plot.
-<<size='tiny', fig.height=5, echo=FALSE>>=
-plot(X1, Y, pch=19)
+<<size='tiny', eval=FALSE>>=
 lines(X1, yHat)
 @
-<<size='tiny', eval=FALSE>>=
+<<size='tiny', fig.height=4.5, echo=FALSE>>=
+plot(X1, Y, pch=19)
 lines(X1, yHat)
 @
 \end{frame}
@@ -66,13 +71,13 @@ Can everyone generate a scatter plot?
 \end{frame}
 
 \begin{frame}[fragile]{Histogram}
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 hist(e)
 @
 \end{frame}
 
 \begin{frame}[fragile]
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 set.seed(1234)
 e2 = rnorm(1000, mean=0, sd=1)
 hist(e2)
@@ -80,32 +85,32 @@ hist(e2)
 \end{frame}
 
 \begin{frame}[fragile]{Density plot}
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 plot(density(e2))
 @
 \end{frame}
 
 \begin{frame}[fragile]{Boxplot}
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 boxplot(e2, pch=19)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Plotting a formula}
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 plot(Y ~ X1, pch=19)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Emphasizing outliers}
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 colors = ifelse(abs(e) > 1.0, "red", "black")
 plot(Y ~ X1, pch=19, col=colors)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Other ways to emphasize outliers}
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 plot(Y ~ X1, pch=19)
 lines(X1, yHat, lwd=2)
 lines(X1, yHat+1, lty="dotted", lwd=0.5)
@@ -117,8 +122,7 @@ lines(X1, yHat-1, lty="dotted", lwd=0.5)
 All of these plots capture univariate random variables rather well. We'll show how to plot grouped data after we create a dataframe. After lunch, we'll talk a bit more about multivariate visualization.
 \end{frame}
 
-\begin{frame}
-Data frames
+\begin{frame}{Data frames}
 \begin{itemize}
   \item Creating
   \item Referencing
@@ -173,13 +177,14 @@ tail(df)
 \end{frame}
 
 \begin{frame}[fragile]{Enough with the basic properties already}
-<<size='tiny', fig.height=5>>=
+<<size='tiny', fig.height=4.5>>=
 plot(df, pch=19)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Referencing}
-<<size='tiny', eval=FALSE>>=
+Very similar to referencing a vector, but now with row and column dimensions.
+<<eval=FALSE>>=
 df[2,3]
 df[2]
 df[2,]
@@ -188,7 +193,7 @@ df[2, -1]
 \end{frame}
 
 \begin{frame}[fragile]{More referencing}
-<<size='tiny', eval=FALSE>>=
+<<eval=FALSE>>=
 # The $ operator may be used to select a single column
 df$EarnedPremium
 # Columns of a data frame may be treated as vectors
@@ -200,16 +205,14 @@ df[, c("EarnedPremium", "State")]
 \end{frame}
 
 \begin{frame}[fragile]{Ordering}
-<<size='tiny'>>=
+<<>>=
 order(df$EarnedPremium)
 df = df[order(df$EarnedPremium), ]
 @
 \end{frame}
 
 \begin{frame}[fragile]{Altering and adding columns}
-<<size='tiny'>>=
-df$PolicyNumber = 1:(nrow(df))
-
+<<>>=
 df$LossRatio = df$EarnedPremium / df$Losses
 df$LossRatio = 1 / df$LossRatio
 @
@@ -218,14 +221,17 @@ df$LossRatio = 1 / df$LossRatio
 \begin{frame}[fragile]{Eliminating columns}
 <<>>=
 df$LossRatio = NULL
-df = df[, 1:4]
+df = df[, 1:2]
 @
 \end{frame}
 
 \begin{frame}[fragile]{rbind, cbind}
-<<>>=
-rbind(A, B)
-cbind(A, C)
+<<results='hide'>>=
+dfA = df[1:10,]
+dfB = df[11:20, ]
+rbind(dfA, dfB)
+dfC = dfA[, 1:2]
+cbind(dfA, dfC)
 @
 \end{frame}
 
@@ -238,10 +244,10 @@ Merging is VLOOKUP on steroids. Basically equivalent to a JOIN in SQL.
 \end{frame}
 
 \begin{frame}[fragile]{Altering column names}
-<<size='tiny'>>=
+<<>>=
 df$LossRation = with(df, Losses / EarnedPremium)
 names(df)
-colnames(df)[5] = "LossRatio"
+colnames(df)[4] = "Loss Ratio"
 colnames(df)
 @
 \end{frame}
@@ -275,7 +281,7 @@ I use each of these three methods routinely. They're all good.
 \end{frame}
 
 \begin{frame}[fragile]{Summarizing}
-<<size='tiny'>>=
+<<>>=
 sum(df$EarnedPremium)
 sum(df$EarnedPremium[df$State == "TX"])
 
@@ -295,10 +301,6 @@ barplot(dfByState$EarnedPremium, names.arg=dfByState$State, col="blue")
 <<size='tiny', fig.height=5>>=
 dotchart(dfByState$EarnedPremium, dfByState$State, pch=19)
 @
-\end{frame}
-
-\begin{frame}[fragile]{Before I forget}
-formatting tick marks
 \end{frame}
 
 \begin{frame}{Advanced data frame tools}

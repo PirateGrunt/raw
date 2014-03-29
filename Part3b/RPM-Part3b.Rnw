@@ -28,13 +28,13 @@ data(RAA)
 \end{frame}
 
 \begin{frame}[fragile]
-<<>>=
+<<size='tiny'>>=
 head(RAA)
 @
 \end{frame}
 
 \begin{frame}[fragile]
-<<>>=
+<<fig.height=4.5>>=
 plot(RAA)
 @
 \end{frame}

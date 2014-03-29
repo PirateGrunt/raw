@@ -76,21 +76,21 @@
 
 \begin{frame}
   "Relax and embrace the chaos that is R."
-  \newline
-  \newline
+  \vspace{\baselineskip}
+  \vspace{\baselineskip}
   - Patrick Burns
-  \newline
-  \newline
+  \vspace{\baselineskip}
+  \vspace{\baselineskip}
   \url{www.burns-stat.com/pages/Present/infernoishR_annotated.pdf}
 \end{frame}
 
 \begin{frame}{Part 1 - Introducing R}
   \begin{itemize}
     \item Installation \& history
-    \item Why doesn't it work?
-    \item Installing packages
+    \item Basics
     \item Reading data
     \item A basic script
+    \item Installing packages
   \end{itemize}
 \end{frame}
 
@@ -121,16 +121,15 @@ Does everyone have R and RStudio installed?
 
 \begin{frame}{First, there was S}
   \includegraphics[width=0.27\textwidth]{../Part1/figure/R}
-  \newline
+  \\
   In the alphabet, R comes before S. In software, S comes before R.
-  \newline
-  \newline
+  \\
   S was developed at Bell Labs by Paul Chambers and some others back in the late '70s. Sweeping changes by 1988. Further changes in 1992.
 \end{frame}
 
 \begin{frame}{And then there was R}
   \includegraphics[width=0.5\textwidth]{../Part1/figure/RossAndRobert}
-  \newline
+  \\
   R was created by Ross Ihaka and Robert Gentleman as an open source alternative to S. First release in 1993.
 \end{frame}
 
@@ -284,7 +283,7 @@ Does R and RStudio work for everyone?
 \end{frame}
 
 \begin{frame}[fragile]{Reading from the web - 1}
-\begin{knitrout}\tiny
+\begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{URL} \hlkwb{=} \hlstr{"http://www.casact.org/research/reserve_data/ppauto_pos.csv"}
@@ -296,7 +295,7 @@ Does R and RStudio work for everyone?
 \end{frame}
 
 \begin{frame}[fragile]{Reading from the web - 2}
-\begin{knitrout}\tiny
+\begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{require}\hlstd{(XML)}
@@ -323,17 +322,30 @@ Does R and RStudio work for everyone?
 
 \begin{frame}[fragile]{Data frames}
 Every time we read in data, we're creating a data frame. The data frame is a seminal concept in R. Most statistical operations expect one and they are the most common way to pass data in and out of R.
-
+\\
 Although critical to understand, this is very, very easy to get. What's a data frame? It's a table. That's it.
+\\
+Much more on data frames in the next session.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{df} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"SomeFile.csv"}\hlstd{)}
+\hlstd{df} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"../Data/StateData.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlkwd{View}\hlstd{(df)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
+\end{frame}
+
+\begin{frame}
+Can everyone load the State data into a data frame?
 \end{frame}
 
 \begin{frame}[fragile]{A simple script}
@@ -360,6 +372,7 @@ Although critical to understand, this is very, very easy to get. What's a data f
 \end{frame}
 
 \begin{frame}[fragile]{So what have we done?}
+Assign a number to a variable (i.e. enter a value into a single cell in a spreadsheet).
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -372,10 +385,10 @@ Although critical to understand, this is very, very easy to get. What's a data f
 \end{kframe}
 \end{knitrout}
 
-Assign a number to a variable (i.e. enter a value into a single cell in a spreadsheet).
 \end{frame}
 
 \begin{frame}[fragile]
+Set the seed for random number generation.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -384,27 +397,107 @@ Assign a number to a variable (i.e. enter a value into a single cell in a spread
 \end{kframe}
 \end{knitrout}
 
-Set the seed for random number generation.
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{Introducing vectors}
+Every variable is a vector. Think of a set of cells in a spreadsheet. Here, e is a vector with N values. X1 is the sequence of integers from 1 through 10 repeated 10 times. Vectors can grow and shrink automatically. No need to move cells around on a sheet. No need to copy formulas or change named ranges.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{e} \hlkwb{=} \hlkwd{rnorm}\hlstd{(N,} \hlkwc{mean} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{1}\hlstd{)}
 \hlstd{X1} \hlkwb{=} \hlkwd{rep}\hlstd{(}\hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{10}\hlstd{),} \hlnum{10}\hlstd{)}
+\hlstd{Y} \hlkwb{=} \hlstd{B0} \hlopt{+} \hlstd{B1} \hlopt{*} \hlstd{X1} \hlopt{+} \hlstd{e}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
+\end{frame}
 
-Every variable is a vector. Think of a set of cells in a spreadsheet. Here, e is a vector with N values. X1 is the sequence of integers from 1 through 10 repeated 10 times. Vectors can grow and shrink automatically. No need to move cells around on a sheet. No need to copy formulas or change named ranges.
+\begin{frame}[fragile]{Vector construction}
+  Vectors are constructed in one of several ways
+  \begin{itemize}
+    \item Construction from a sequence
+    \item Concatenation
+    \item Return from a function or operation
+    \item Growth by assignment
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Vector sequence}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{i} \hlkwb{=} \hlnum{1}\hlopt{:}\hlnum{5}
+\hlstd{year} \hlkwb{=} \hlnum{2000}\hlopt{:}\hlnum{2010}
+\hlstd{pies} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{by} \hlstd{= pi,} \hlkwc{length.out} \hlstd{=} \hlnum{100}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]{Concatenation}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{i} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{3}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{5}\hlstd{)}
+\hlstd{j} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{6}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{8}\hlstd{,} \hlnum{9}\hlstd{,} \hlnum{10}\hlstd{)}
+\hlstd{k} \hlkwb{=} \hlkwd{c}\hlstd{(i, j)}
+\hlstd{l} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{,} \hlnum{6}\hlopt{:}\hlnum{10}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]{Return and growth}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{i} \hlkwb{=} \hlkwd{rep}\hlstd{(pi,} \hlnum{100}\hlstd{)}
+\hlstd{i} \hlkwb{=} \hlkwd{sample}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{,} \hlnum{4}\hlstd{)}
+\hlstd{i[}\hlnum{30}\hlstd{]} \hlkwb{=} \hlnum{3}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]{Vector access - by index}
+  Vectors may be accessed by their numeric indices. Remember, ':' is shorthand to generate a sequence.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{e[}\hlnum{1}\hlstd{]}
+\hlstd{e[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{]}
+\hlstd{e[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{3}\hlstd{)]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[fragile]{Vector access - logical access}
+  Vectors may be accessed logically.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{i} \hlkwb{=} \hlnum{1}\hlopt{:}\hlnum{4}
+\hlstd{i[}\hlkwd{c}\hlstd{(}\hlnum{TRUE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{FALSE}\hlstd{,} \hlnum{TRUE}\hlstd{)]}
+\hlstd{i[i} \hlopt{>} \hlnum{2}\hlstd{]}
+\hlkwd{which}\hlstd{(i} \hlopt{>} \hlnum{2}\hlstd{)}
+\hlstd{i[}\hlkwd{which}\hlstd{(i} \hlopt{>} \hlnum{2}\hlstd{)]}
+\hlstd{b} \hlkwb{=} \hlstd{i} \hlopt{>} \hlnum{2}
+\hlstd{i[b]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
 \end{frame}
 
 \begin{frame}[fragile]
-Vectorization is one of the most important concepts in R!
-
-Similar to Matlab/Octave, operations on a table in a database.
+  Vectors may be used in arithmetic operations. Y is now a vector with length equal to the longest vector used in the calculation.
+  
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -413,13 +506,11 @@ Similar to Matlab/Octave, operations on a table in a database.
 \end{kframe}
 \end{knitrout}
 
-Vectors may be used in arithmetic operations. Y is now a vector with length equal to the longest vector used in the calculation.
-
-Question: B0 and B1 are vectors of length 1. X1 and e are vectors of length 100. How are they combined?
+  Question: B0 and B1 are vectors of length 1. X1 and e are vectors of length 100. How are they combined?
 \end{frame}
 
 \begin{frame}[fragile]{Recycling}
-R will "recycle" vectors until there are enough rows to perform an operation, i.e. everything gets as "long" as the longest vector in the operation. For scalar operations on a vector this doesn't involve any drama. Try the following code:
+  R will "recycle" vectors until there are enough rows to perform an operation, i.e. everything gets as "long" as the longest vector in the operation. For scalar operations on a vector this doesn't involve any drama. Try the following code:
 \begin{knitrout}\tiny
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -490,6 +581,10 @@ We've just created a linear model where Y depends on X1. We don't need to specif
 \end{kframe}
 \end{knitrout}
 
+\end{frame}
+
+\begin{frame}
+Congratulations! You've just created your first model in R!
 \end{frame}
 
 \begin{frame}{Installing packages}

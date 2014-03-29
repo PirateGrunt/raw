@@ -127,13 +127,13 @@ hist(claims, breaks=seq(1, 500000, length.out=40))
 @
 \end{frame}
 
-\begin{frame}
-<<>>=
-#lnLike = function{}
-optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
-optimFit$par
-@
-\end{frame}
+% \begin{frame}{WTF is this slide?}
+% <<>>=
+% # lnLike = function{}
+% # optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
+% # optimFit$par
+% @
+% \end{frame}
 
 \begin{frame}[fragile]{Another view of linear regression}
 <<AltOLS1, echo=TRUE>>=

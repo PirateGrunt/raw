@@ -1,15 +1,15 @@
 <<SetParentPart3a, echo=FALSE>>=
-set_parent('../RPM-Parent.Rnw')
+set_parent('../Parent/RPM-Parent.Rnw')
 @
 
 \begin{frame}
   Part 3a - MRMR
 \end{frame}
 
-\begin{frame} {Introducing MRMR}
+\begin{frame} {MRMR}
   MRMR is another R package for use in analyzing reserves.
   
-  MRMR was heavily influenced by the following:
+  MRMR was heavily influenced by:
   \begin{itemize}
     \item Andrew Gelman and Jennifer Hill, "Data Analysis Using Regression and Multilevel/Hierarchical Models"
     \item ggplot2 and Hadley Wickham
@@ -50,38 +50,12 @@ library(MRMR)
         \item Stochastic - Loss, claim, etc. These are time series variables and candidates for prediction. MRMR will adjust these so that incremental, cumulative and prior cumulative columns are formed.
         \item Static - Typically exposure variables. These will not be adjusted. These are very good candidates for predictors.
       \end{itemize}
-    \item One or more grouping elements. This is currently not implemented, but is reserved for future use.
+    \item One or more grouping elements. This is almost fully implemented.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{A brief word about lubridate}
-lubridate is a package with many routines to aid in working with dates. 
-\end{frame}
-
-\begin{frame}[fragile]{lubridate examples}
-<<lubridateExample, echo=TRUE, tidy=TRUE>>=
-aDate = mdy("06-30-2012")
-day(aDate) = 6
-aDate + years(1)
-myPeriod = months(6)
-myPeriod / months(1)
-@
-\end{frame}
-
-\begin{frame}[fragile]{Very quick lubridate exercise}
-How would you use lubridate to generate a sequence of the 15th of every month for the year of 2010?
-\end{frame}
-
-\begin{frame}[fragile]{Result}
-<<lubridateExercise, echo=TRUE, tidy=TRUE>>=
-aDate =mdy("1-15-2010")
-someDates = aDate + months(0:11)
-someDates
-@
-\end{frame}
-
 \begin{frame}[fragile]{Very basic reserving data}
-<<VeryBasicExample1, echo=TRUE, tidy=TRUE, results='hide'>>=
+<<VeryBasicExample1, echo=TRUE, tidy=TRUE, results='hide', size='tiny'>>=
 AccidentYear = c(2002, 2002, 2002 
                , 2003, 2003
                , 2004)
@@ -99,12 +73,11 @@ EP = c( 61183,  61183,  61183
      ,  99322)
 
 df = data.frame(AccidentYear = AccidentYear, Month = Month, Paid = Paid, EP = EP)
-head(df)
 @
 \end{frame}
 
 \begin{frame}[fragile] {Moving the data into a Triangle object}
-<<VeryBasicExample2, echo=TRUE, tidy=TRUE>>=
+<<VeryBasicExample2, echo=TRUE, tidy=TRUE, size='tiny'>>=
 myTriangle = newTriangle(TriangleData = df
                          , OriginPeriods = AccidentYear
                          , DevelopmentLags = Month
@@ -120,7 +93,7 @@ One may identify the components of a list object by using the name function. For
 <<VeryBasicExample3, echo=TRUE>>=
 slotNames(myTriangle)
 @
-To access a slot, use the commercial a operator
+To access a slot, use the $@$ operator
 \end{frame}
 
 \begin{frame}[fragile]{What sort of data frame have I created?}
@@ -130,90 +103,63 @@ names(myTriangle@TriangleData)
 \end{frame}
 
 \begin{frame}[fragile]{A very basic plot}
-<<VeryBasicExample4, fig.width=8, fig.height=5, echo=TRUE, tidy=TRUE>>= 
+<<VeryBasicExample4, fig.width=8, fig.height=5, echo=TRUE, tidy=FALSE, size='tiny'>>= 
 plotTriangle(myTriangle, Predictor = "DevInteger", Response = "CumulativePaid")
 @
 \end{frame}
 
 \begin{frame}[fragile]{Something more complex}
-<<Friedland1, fig.width=8, fig.height=5, echo=TRUE, tidy=TRUE>>=
+<<Friedland1, fig.width=8, fig.height=5, echo=TRUE, tidy=FALSE, size='tiny'>>=
 data(Friedland)
 plotTriangle(Friedland, Predictor = "DevInteger", Response = "CumulativePaid")
 @
 \end{frame}
 
 \begin{frame}[fragile]{Change the response term}
-<<Friedland2, fig.width=8, fig.height=5, echo=TRUE, tidy=TRUE>>=
+<<Friedland2, fig.width=8, fig.height=5, echo=TRUE, size='tiny'>>=
 plotTriangle(Friedland, Predictor = "DevInteger", Response = "IncrementalPaid")
 @
 \end{frame}
 
 \begin{frame}[fragile]{Change the time axis}
-<<Friedland3, fig.width=8, fig.height=5, echo=TRUE>>=
+<<Friedland3, fig.width=8, fig.height=5, echo=TRUE, size='tiny'>>=
 plotTriangle(Friedland, Predictor = "EvaluationDate", Response = "IncrementalPaid")
 @
 \end{frame}
 
 \begin{frame}[fragile]{Change the grouping dimension}
-<<FriedlandCL1, fig.width=8, fig.height=5, echo=TRUE>>=
+<<FriedlandCL1, fig.width=8, fig.height=5, echo=TRUE, size='tiny'>>=
 plotTriangle(Friedland, Predictor = "PriorPaid", Response ="IncrementalPaid", Group = "DevInteger", Lines = FALSE)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Add fit lines}
-<<Friedland5, fig.width=8, fig.height=5, echo=TRUE>>=
+<<Friedland5, fig.width=8, fig.height=5, echo=TRUE, size='tiny'>>=
 plotTriangle(Friedland, Predictor = "PriorPaid", Response ="IncrementalPaid", Group = "DevInteger", Lines = FALSE, FitLines = TRUE)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Change the predictor variable}
-<<Friedland4, fig.width=8, fig.height=5, echo=TRUE>>=
+<<Friedland4, fig.width=8, fig.height=5, echo=TRUE, size='tiny'>>=
 plotTriangle(Friedland, Response ="IncrementalPaid", Predictor = "EP", Group = "DevInteger", Lines = FALSE, FitLines=TRUE)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Fit a model}
-<<FitPaidAM, echo=TRUE>>=
+<<FitPaidAM, echo=TRUE, size='tiny'>>=
 PaidAM = newTriangleModel(Triangle = Friedland, Response = "IncrementalPaid", Predictor = "EP", FitCategory = "DevInteger", Tail = 6)
 @
 \end{frame}
 
 \begin{frame}[fragile]{Visualization is closely related to a model}
-<<echo=TRUE, eval=FALSE, results='hide'>>=
+<<echo=TRUE, eval=FALSE, results='hide', size='tiny'>>=
 plotTriangle(Friedland, Response ="IncrementalPaid", Predictor = "EP", Group = "DevInteger", Lines = FALSE, FitLines=TRUE)
 PaidAM = newTriangleModel(Friedland, Response ="IncrementalPaid", Predictor = "EP", FitCategory = "DevInteger", Tail = 6)
 @
 \end{frame}
 
-\begin{frame}[fragile]{Linear regression in R}
-<<UnivariateData, echo=TRUE, results='hide'>>=
-set.seed(1234)
-N = 100
-e = rnorm(N, mean = 0, sd = 1)
-B0 = 5
-B1 = 1.5
-
-X1 = rep(seq(1,10),10)
-Y = B0 + B1 * X1 + e
-
-df = data.frame(Y=Y, X1=X1, e=e)
-@
-\end{frame}
-
-\begin{frame}[fragile]{Fitting a linear model}
-<<UnivariateFit, echo=TRUE>>=
-myFit = lm(Y ~ X1, data=df)
-@
-\end{frame}
-
-\begin{frame}[fragile]{Diagnostic output}
-<<UnivariateDiagnostics, echo=TRUE, size='tiny', tidy.opts=list(width=100)>>=
-summary(myFit)
-@
-\end{frame}
-
 \begin{frame}[fragile]{Two different reserving models}
-<<GetTwoModels, echo=TRUE>>=
+<<GetTwoModels, echo=TRUE, size='tiny'>>=
 PaidCL = newTriangleModel(Friedland, Response ="IncrementalPaid", Predictor = "PriorPaid", FitCategory = "DevInteger", Tail = 6)
 PaidAM = newTriangleModel(Triangle = Friedland, Response = "IncrementalPaid", Predictor = "EP", FitCategory = "DevInteger", Tail = 6)
 @
@@ -244,7 +190,7 @@ PlotModelFactors(PaidAM)
     \item Linear model with specified parameters
       \begin{itemize}
         \item Significance of individual model factors
-        \item \color{blue} Significance of model
+        \item Significance of model
       \end{itemize}
     \item Functional form of errors
     \item Independence of errors
@@ -267,45 +213,17 @@ PlotModelFactors(PaidAM)
 
 \begin{frame}[fragile]{Diagnostics}
 <<UnivariateDiagnostics2, echo=TRUE>>=
+myFit = PaidAM@Fit
 summary(myFit)$r.squared
 summary(myFit)$fstatistic
 @
 Be careful of both of these statistics. Always visualize your data!
 \end{frame}
 
-\begin{frame}[fragile]{The F stat distribution looks good}
-<<PaidCLGoF, echo=TRUE, fig.height=5, fig.width=8>>=
-PlotModelGoF(PaidAM)
-@
-\end{frame}
-
-\begin{frame}[fragile]{But always observe the residual plots!}
+\begin{frame}[fragile]{Always observe the residual plots!}
 <<ResidualPlotsAM, fig.width=8, fig.height=5, echo=TRUE>>=
 PlotResiduals(PaidAM)
 @
-\end{frame}
-
-\begin{frame}[fragile]{Your turn}
-<<>>=
-head(df)
-@
-Fit a linear model with and without X1 and X2. Which model fits better? How would you determine whether to include the spurious parameter?
-\end{frame}
-
-\begin{frame}[fragile]{Linear regression assumptions}
-  \begin{enumerate}
-    \item Linear model with specified parameters
-      \begin{itemize}
-        \item Significance of individual model factors
-        \item Significance of model
-      \end{itemize}
-    \item \color{blue} Functional form of errors
-    \item \color{black} Independence of errors
-      \begin{itemize}
-        \item (Serial) correlation of errors
-        \item Homoskedasticity
-      \end{itemize}
-  \end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]{Test for normalcy}
@@ -320,76 +238,44 @@ qqline(e)
 
 \begin{frame}[fragile]
 <<ShapiroWilkPlot2, echo=FALSE, fig.width=8, fig.height=5>>=
-qqnorm(e)
+qqnorm(e, pch=19)
 qqline(e)
 @
 \end{frame}
 
-\begin{frame}[fragile]{Linear regression assumptions}
-  \begin{enumerate}
-    \item Linear model with specified parameters
-      \begin{itemize}
-        \item Significance of individual model factors
-        \item Significance of model
-      \end{itemize}
-    \item Functional form of errors
-    \item Independence of errors
-      \begin{itemize}
-        \item \color{blue} (Serial) correlation of errors
-        \item \color{black} Homoskedasticity
-      \end{itemize}
-  \end{enumerate}
-\end{frame}
+% \begin{frame}[fragile]{Error correlation}
+% <<SerialCorrelationPlot, echo=TRUE, fig.width=8, fig.height=5>>=
+% lstFitResults = plotSerialCorrelation(PaidAM)
+% @
+% \end{frame}
+% 
+% \begin{frame}[fragile]{Error summary}
+% <<SerialCorrelationSummary, echo=TRUE, size='tiny'>>=
+% summary(lstFitResults$fit)$coefficients
+% @
+% \end{frame}
+% 
+% \begin{frame}[fragile]{Introduce correlation}
+% <<>>=
+% df = Friedland@TriangleData
+% cy = (year(df$EvaluationDate) == 2008)
+% df$IncrementalPaid[cy] = df$IncrementalPaid[cy] * (2/3)
+% 
+% myTriangle = newTriangle(df, OriginPeriods = OriginPeriod, DevelopmentLags = DevelopmentLag
+%                          , StaticMeasures = "EP"
+%                          , StochasticMeasures = "IncrementalPaid"
+%                          , Cumulative = FALSE)
+% 
+% myModel = newTriangleModel(myTriangle, "IncrementalPaid", "EP", "DevInteger")
+% @
+% \end{frame}
 
-\begin{frame}[fragile]{Error correlation}
-<<SerialCorrelationPlot, echo=TRUE, fig.width=8, fig.height=5>>=
-lstFitResults = plotSerialCorrelation(PaidAM)
-@
-\end{frame}
-
-\begin{frame}[fragile]{Error summary}
-<<SerialCorrelationSummary, echo=TRUE, size='tiny'>>=
-summary(lstFitResults$fit)$coefficients
-@
-\end{frame}
-
-\begin{frame}[fragile]{Introduce correlation}
-<<>>=
-df = Friedland@TriangleData
-cy = (year(df$EvaluationDate) == 2008)
-df$IncrementalPaid[cy] = df$IncrementalPaid[cy] * (2/3)
-
-myTriangle = newTriangle(df, OriginPeriods = OriginPeriod, DevelopmentLags = DevelopmentLag
-                         , StaticMeasures = "EP"
-                         , StochasticMeasures = "IncrementalPaid"
-                         , Cumulative = FALSE)
-
-myModel = newTriangleModel(myTriangle, "IncrementalPaid", "EP", "DevInteger")
-@
-\end{frame}
-
-\begin{frame}[fragile]{Error summary}
-<<SerialCorrelationSummary2, echo=TRUE, size='tiny'>>=
-lstResult = FitSerialCorrelation(myModel)
-summary(lstResult$fit)$coefficients
-@
-\end{frame}
-
-\begin{frame}[fragile]{Linear regression assumptions}
-  \begin{enumerate}
-    \item Linear model with specified parameters
-      \begin{itemize}
-        \item Significance of individual model factors
-        \item Significance of model
-      \end{itemize}
-    \item Functional form of errors
-    \item Independence of errors
-      \begin{itemize}
-        \item (Serial) correlation of errors
-        \item \color{blue} Homoskedasticity
-      \end{itemize}
-  \end{enumerate}
-\end{frame}
+% \begin{frame}[fragile]{Error summary}
+% <<SerialCorrelationSummary2, echo=TRUE, size='tiny'>>=
+% lstResult = FitSerialCorrelation(myModel)
+% summary(lstResult$fit)$coefficients
+% @
+% \end{frame}
 
 \begin{frame}[fragile]{Breusch-Pagan}
 Heteroskedasticity is most often detected by observing the residuals. Adjusting the weights of the regression is an implicit assumption about the variance of the response variable. Changing the alpha parameter allows one to adjust for presumed heteroskedasticity. Read papers by Dan Murphy (or just ask him, he's probably standing somewhere close by) to learn more.
@@ -397,7 +283,7 @@ Heteroskedasticity is most often detected by observing the residuals. Adjusting 
 \end{frame}
 
 \begin{frame}[fragile]
-<<BreuschPagan1, echo=TRUE>>=
+<<BreuschPagan1, echo=TRUE, size='tiny'>>=
 set.seed(1234)
 N = 100
 e = rnorm(N, mean = 0, sd = 1)
@@ -420,53 +306,41 @@ plot(X1, residuals(bpFit), pch=19)
 @
 \end{frame}
 
-\begin{frame}[fragile]
-<<AlphaPlot, echo=TRUE>>=
-alpha = seq(-10, 10,by=.05)
-slope = sapply(alpha, function(x){
-  w = X1 ^ x
-  fit = lm(Y ~ 0 + X1, weight = w)
-  coef(fit)
-})
-max(Y / X1)
-min(Y / X1)
-max(slope)
-min(slope)
-@
-<<echo=TRUE, eval=FALSE>>=
-plot(alpha, slope, pch = 19)
-@
-\end{frame}
+% \begin{frame}[fragile]
+% <<AlphaPlot, echo=TRUE>>=
+% alpha = seq(-10, 10,by=.05)
+% slope = sapply(alpha, function(x){
+%   w = X1 ^ x
+%   fit = lm(Y ~ 0 + X1, weight = w)
+%   coef(fit)
+% })
+% max(Y / X1)
+% min(Y / X1)
+% max(slope)
+% min(slope)
+% @
+% <<echo=TRUE, eval=FALSE>>=
+% plot(alpha, slope, pch = 19)
+% @
+% \end{frame}
 
 \begin{frame}[fragile]{Heteroskedasticity is controlled through the alpha parameter}
-<<MRMRAlpha, echo=TRUE, eval=FALSE>>=
+<<MRMRAlpha, echo=TRUE, eval=FALSE, size='tiny'>>=
 PaidAM0 = newTriangleModel(Friedland, Response = "IncrementalPaid", Predictor = "EP", FitCategory="DevInteger", Tail=6, Alpha=1)
 PaidAM0 = newTriangleModel(Friedland, Response = "IncrementalPaid", Predictor = "EP", FitCategory="DevInteger", Tail=6, Alpha=2)
 @
 \end{frame}
 
-\begin{frame}[fragile]{Observe the residual plots}
-<<ResidualPlotsAM2, fig.width=8, fig.height=5, echo=TRUE>>=
-PlotResiduals(PaidAM)
-@
-\end{frame}
-
-\begin{frame}[fragile]{Observe the residual plots}
-<<ResidualPlotsCL, fig.width=8, fig.height=5, echo=TRUE>>=
-PlotResiduals(PaidCL)
-@
-\end{frame}
-
 \begin{frame}[fragile]{Projection to as-of date}
 Once a model has been checked and selected, projection of losses is trivial. MRMR will either project to a specific date or a specific development lag.
-<<>>=
+<<size='tiny'>>=
 PaidAM_Projection = TriangleProjection(PaidAM, ProjectToDev = FALSE, AsOfDate = mdy("12/31/2010"))
 df = PaidAM_Projection@ProjectionData
 @
 \end{frame}
 
 \begin{frame}[fragile]{Projection to development age}
-<<>>=
+<<size='tiny'>>=
 PaidAM_Projection = TriangleProjection(PaidAM, ProjectToDev = TRUE, MaxDev = 10)
 df = PaidAM_Projection@ProjectionData
 @
