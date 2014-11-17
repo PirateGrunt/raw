@@ -1,0 +1,293 @@
+<<SetParentPart4, echo=FALSE>>=
+set_parent('../Parent/RPM-Parent.Rnw')
+@
+
+\begin{frame}{Part 4}
+  \begin{itemize}
+    \item Simulation
+    \item Fitting distributions
+    \item Logistic regression and GLMs
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Probability distributions}
+All probability distributions have four basic functions:
+  \begin{itemize}
+    \item d*dist - Density function
+    \item p*dist - Cumulative distribution
+    \item q*dist - Quantiles
+    \item r*dist - Random number generation
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Density function}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) dnorm(x), -3, 3, ylab="Normal f(x)")
+plot(function(x) dexp(x), 0, 10, ylab="Exp f(x)")
+plot(function(x) dlnorm(x), 0, 10, ylab="LN f(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) dnorm(x), -3, 3, ylab="Normal f(x)")
+plot(function(x) dexp(x), 0, 10, ylab="Exp f(x)")
+plot(function(x) dlnorm(x), 0, 10, ylab="LN f(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Distribution function}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) pnorm(x), -3, 3, ylab="Normal F(x)")
+plot(function(x) pexp(x), 0, 10, ylab="Exp F(x)")
+plot(function(x) plnorm(x), 0, 10, ylab="LN F(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+plot(function(x) pnorm(x), -3, 3, ylab="Normal f(x)")
+plot(function(x) pexp(x), 0, 10, ylab="Exp f(x)")
+plot(function(x) plnorm(x), 0, 10, ylab="LN F(x)")
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Random number generation}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+hist(rnorm(200))
+hist(rexp(200))
+hist(rlnorm(200))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+hist(rnorm(200))
+hist(rexp(200))
+hist(rlnorm(200))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{More random number generation}
+<<eval=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+set.seed(1234)
+hist(rnorm(200, mean=0, sd=1), xlim=c(-10, 10))
+hist(rnorm(200, mean=0, sd=4), xlim=c(-10, 10))
+hist(rnorm(200, mean=5, sd=2), xlim=c(-10, 10))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+oldpar = par(mfrow = c(3,1))
+set.seed(1234)
+hist(rnorm(200, mean=0, sd=1), xlim=c(-10, 10))
+hist(rnorm(200, mean=0, sd=4), xlim=c(-10, 10))
+hist(rnorm(200, mean=5, sd=2), xlim=c(-10, 10))
+par(oldpar)
+@
+\end{frame}
+
+\begin{frame}[fragile]{sample}
+<<>>=
+set.seed(1234)
+sample(1:100, 10)
+State = c("NY", "TX", "CA")
+State[sample(3, 10, replace=TRUE)]
+@
+\end{frame}
+
+\begin{frame}{Fitting distributions}
+  \begin{itemize}
+    \item optim
+    \item q-q plots
+    \item chi2 test
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+<<>>=
+set.seed(1234)
+claims = rlnorm(100, meanlog=log(30000), sdlog=1)
+hist(claims, breaks=seq(1, 500000, length.out=40))
+@
+\end{frame}
+
+% \begin{frame}{WTF is this slide?}
+% <<>>=
+% # lnLike = function{}
+% # optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
+% # optimFit$par
+% @
+% \end{frame}
+
+\begin{frame}[fragile]{Another view of linear regression}
+<<AltOLS1, echo=TRUE>>=
+set.seed(1234)
+N = 100
+e = rnorm(N, mean = 0, sd = 1)
+ 
+lnLike = function(x, mu, sigma)
+{
+  n = length(x)
+  lnLike = -n / 2 * log(2*pi)
+  lnLike = lnLike - n/2 * log(sigma ^2)
+  lnLike = lnLike - 1/(2*sigma^2)*sum((x - mu)^2)
+  lnLike
+}
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<AltOLS2, echo=TRUE, fig.width=8, fig.height=5>>=
+testMu = seq(-0.5, 0.5, length.out=100)
+likelihood = sapply(testMu, lnLike, x = e, sigma = 1)
+testMu[likelihood == max(likelihood)]
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+<<, echo=TRUE, fig.width=8, fig.height=5>>=
+plot(likelihood ~ testMu, pch = 19)
+abline(v = 0)
+abline(v = testMu[likelihood == max(likelihood)])
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<AltOLS3, echo=TRUE, fig.width=8, fig.height=5>>=
+testSigma = seq(.5, 1.5, length.out=100)
+likelihood = sapply(testSigma, lnLike, x = e, mu = 0)
+testSigma[likelihood == max(likelihood)]
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<PlotSigma, echo=TRUE, fig.width=8, fig.height=5>>=
+plot(likelihood ~ testSigma, pch = 19)
+abline(v = 1)
+abline(v = testSigma[likelihood == max(likelihood)])
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<TwoDim, echo=TRUE, tidy=TRUE>>=
+params = expand.grid(mu = testMu, sigma = testSigma)
+params$Likelihood = mapply(lnLike, params$mu, params$sigma, MoreArgs = list(x = e))
+z = matrix(params$Likelihood, length(testMu), length(testSigma))
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<TwoDimPlotCode, results='hide', eval=FALSE, echo=TRUE>>=
+filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<TwoDimPlotOutput, echo=FALSE, fig.width=8, fig.heigth=5, tidy=TRUE>>=
+filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Optimize for both parameters}
+<<Optim, echo=TRUE>>=
+lnLike2 = function(x, par)
+{
+  mu = par[1]
+  sigma = par[2]
+  
+  lnLike(x, mu, sigma)
+}
+ 
+optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
+optimFit$par
+@
+\end{frame}
+
+\begin{frame}[fragile]{Add a constant term to the normal variable e}
+<<Optim2, echo=TRUE, results='hide'>>=
+B0 = 5
+Y = B0 + e
+@
+\end{frame}
+ 
+\begin{frame}[fragile]{This is equivalent to lm}
+<<Optim3, echo=TRUE>>=
+optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = Y)
+optimFit$par[[1]]
+ 
+lmFit = lm(Y ~ 1)
+lmFit$coefficients[[1]]
+@
+\end{frame}
+
+\begin{frame}[fragile]{Now add a slope}
+<<Optim4, echo=TRUE, results='hide'>>=
+X = as.double(1:length(e))
+B1 = 1.5
+Y = B0 + B1 * X + e
+ 
+lnLike3 = function(par, Y, X)
+{
+  B0 = par[1]
+  B1 = par[2]
+  sigma = par[3]
+  
+  x = Y - B0 - B1 * X
+  mu = 0
+  
+  lnLike(x, mu, sigma) 
+}
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<Optim5, echo=TRUE>>=
+optimFit = optim(par = c(4, 1, 1), fn = lnLike3, control = list(fnscale = -1), Y = Y, X = X)
+optimFit$par[1:2]
+
+lmFit = lm(Y ~ 1 + X)
+lmFit$coefficients
+@
+\end{frame}
+
+\begin{frame}[fragile]{Logistic Regression - an example}
+<<eval=FALSE>>=
+dfNFL = read.csv("../Data/NFL.csv")
+dfNFL = subset(dfNFL, Home==TRUE)
+plot(jitter(dfNFL$TODiff), jitter(dfNFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Logistic Regression - an example}
+<<echo=FALSE>>=
+dfNFL = read.csv("../Data/NFL.csv")
+dfNFL = subset(dfNFL, Home==TRUE)
+plot(jitter(dfNFL$TODiff), jitter(dfNFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+@
+\end{frame}
+
+\begin{frame}
+<<>>=
+fit = glm(Win ~ TODiff, family=binomial(link="logit"), data=dfNFL)
+library(boot)
+curve(inv.logit(coef(fit)[1] + coef(fit)[2]*x), add=TRUE)
+abline(h=0.5)
+@
+\end{frame}
+

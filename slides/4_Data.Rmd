@@ -1,0 +1,65 @@
+---
+title: "Data"
+output: ioslides_presentation
+---
+
+## Reading data
+
+```{r eval=FALSE}
+myData = read.csv("SomeFile.csv")
+```
+
+## Reading from Excel
+
+Actually there are several ways:
+* XLConnect
+* 
+
+```{r eval=FALSE}
+library(XLConnect)
+wbk = loadWorkbook("myWorkbook.xlsx")
+df = readWorksheet(wbk, someSheet)
+```
+
+## Reading from the web - 1 
+
+```{r eval=FALSE}
+URL = "http://www.casact.org/research/reserve_data/ppauto_pos.csv"
+df = read.csv(URL, stringsAsFactors = FALSE)
+```
+
+## Reading from the web - 2 
+
+```{r eval=FALSE}
+library(XML)
+URL = "http://www.pro-football-reference.com/teams/nyj/2012_games.htm"
+games = readHTMLTable(URL, stringsAsFactors = FALSE)
+```
+
+## Reading from a database 
+
+```{r eval=FALSE}
+library(RODBC)
+myChannel = odbcConnect(dsn = "MyDSN_Name")
+df = sqlQuery(myChannel, "SELECT stuff FROM myTable")
+```
+
+## Data frames 
+Every time we read in data, we're creating a data frame. The data frame is a seminal concept in R. Most statistical operations expect one and they are the most common way to pass data in and out of R.
+
+Although critical to understand, this is very, very easy to get. What's a data frame? It's a table. That's it.
+
+Much more on data frames in the next session.
+
+## Read some data
+```{r eval=FALSE}
+df = read.csv("../Data/StateData.csv")
+```
+
+```{r eval=FALSE}
+View(df)
+```
+
+---
+
+Can everyone load the State data into a data frame?

@@ -1,0 +1,68 @@
+---
+title: "Basic programming concepts"
+output: ioslides_presentation
+---
+
+## Writing your own functions
+```{r}
+myFunction <- function(x, y){
+  x + y
+```
+
+## A real function
+```{r}
+CircleArea <- function(radius){
+  area <- (2 * pi * radius) ^ 2
+  area
+}
+```
+
+---
+
+Functions are basically the same as functions entered into a cell in a spreadsheet. Functions may call other functions and so on.
+
+Exercise: Write a function to compute the roots of a quadratic equation.
+
+## Answer
+
+```{r}
+QuadRoot <- function(a, b, c){
+  disc <- b^2 - 4 * a * c
+  result <- -2 * b - sqrt(disc)
+  result <- result / (2 * a)
+  result
+```
+
+## Flow control - if
+
+```{r }
+if (something) {
+  
+} else {
+  
+}
+```
+
+## Flow control - for
+```{r }
+for (i in 1:5) {
+  
+}
+```
+
+## Flow control - while
+```{r}
+while (something) {
+  
+}
+```
+
+## Logical operators
+
+|    | Homogeneous   | Heterogeneous |
+|----|---------------|---------------|
+| 1d | Equality | List          |
+| 2d | inequality      | Data frame    |
+| nd | And    |               |
+       Or
+       

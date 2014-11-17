@@ -1,0 +1,58 @@
+\documentclass[xcolor=dvipsnames]{beamer}
+%\usetheme{lankton-keynote}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+
+\usefonttheme[onlymath]{serif}
+
+\setbeamertemplate{itemize items}[circle] 
+\setbeamertemplate{navigation symbols}{}
+
+% \usepackage{graphicx}
+% \usepackage{caption}
+\usepackage{subfig}
+
+%%\usepackage[dvipsnames]{xcolor}
+
+\begin{document}
+
+\title{An Introduction to R}
+\author{Brian A. Fannin}
+
+\maketitle
+
+<<Options, results='hide', echo=FALSE, message=FALSE, error=FALSE, warning=FALSE>>=
+knit_hooks$set(fig.bg = function(before, options, envir) {
+  if (before) par(bg = options$fig.bg)
+})
+options(width=80)
+opts_chunk$set(echo = TRUE)
+opts_chunk$set(size = 'tiny')
+opts_chunk$set(fig.height=5.0)
+opts_chunk$set(fig.bg='white')
+@
+
+<<Section1, child='../Part1/RPM-Part1.Rnw', eval=TRUE, message=FALSE>>=
+@
+
+<<Section2a, child='../Part2a/RPM-Part2a.Rnw', eval=TRUE, message=FALSE>>=
+@
+
+<<Section2b, child='../Part2b/RPM-Part2b.Rnw', eval=TRUE, message=FALSE>>=
+@
+
+<<Section3a, child=c('../Part3a/RPM-Part3a.Rnw'), eval=TRUE, message=FALSE>>=
+@
+
+<<Section3b, child=c('../Part3b/RPM-Part3b.Rnw'), eval=TRUE, message=FALSE>>=
+@
+
+<<Section4, child=c('../Part4/RPM-Part4.Rnw'), eval=TRUE, message=FALSE>>=
+@
+
+<<Section5, child=c('../Part5/RPM-Part5.Rnw'), eval=TRUE, message=FALSE>>=
+@
+
+<<>>=
+sessionInfo()
+@
+\end{document}
