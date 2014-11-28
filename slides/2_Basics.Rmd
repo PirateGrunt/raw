@@ -78,6 +78,18 @@ Functions may be composed by having the output of one serve as the input to anot
 sqrt(exp(sin(pi)))
 ```
 
+## A few mathematical functions
+
+```{r eval=FALSE}
+?S3groupGeneric
+```
+
+* abs, sign
+* floor, ceiling, trunc, round, signif
+* sqrt, exp, log, expm1, log1p,
+* cos, sin, tan (and many others)
+* lgamma, gamma, digamma, trigamma
+
 ## Getting help
 
 ```{r eval=FALSE, echo=TRUE, size='tiny'}

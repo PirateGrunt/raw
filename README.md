@@ -13,18 +13,23 @@ Instruction materials, data and source code for CAS R workshops. This is meant t
     * The working directory
     * Your first script
 * Not so basics
-    * Vectors
     * Visualization
+    * Vectors
     * Packages
 * Data
-    * Getting data
+    * Data types
+    * From vectors to matrices and lists
     * Data frames
+    * Getting data
 * Basic programming concepts
     * Writing your own functions
     * Control structures
 * Linear models
 
 ## PM
+* AM recap
+    * Fit another linear model
+    * Load some data
 * Loss reserving with R
     * ChainLadder
     * MRMR

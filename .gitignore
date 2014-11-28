@@ -24,3 +24,5 @@
 *.RData
 *.RData
 *.tex
+
+*.html

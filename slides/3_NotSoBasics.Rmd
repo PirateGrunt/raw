@@ -149,7 +149,7 @@ Vectors are constructed in one of several ways:
 
 ## Vector sequence
 
-```{r results='hide'}
+```{r }
 i <- 1:5
 year = 2000:2004
 pies = seq(from = 0, by = pi, length.out = 5)
@@ -190,10 +190,12 @@ block_k
 
 ## Return and growth
 
-```{r results='hide'}
+```{r }
 i = rep(pi, 100)
 i = sample(1:10, 4)
+i
 i[30] = 3
+i
 ```
 
 ## Vector access - by index
@@ -220,6 +222,34 @@ b = i > 2
 i[b]
 ```
 
+## Summarization - Part I
+
+```{r eval=FALSE}
+x = 1:50
+sum(x)
+mean(x)
+max(x)
+length(x)
+```
+
+## Set theory - Part I
+
+```{r }
+x <- 1:10
+y <- 1:5
+y %in% x
+
+```
+
+## More vector functions
+
+```{r }
+x <- c(5, 3, 2, 4, 1)
+order(x)
+x[order(x)]
+```
+
+
 ## 
 
 Vectors may be used in arithmetic operations. Y is now a vector with length equal to the longest vector used in the calculation.
@@ -244,6 +274,33 @@ print(vector1 + scalar)
 print(vector2 + scalar)
 print(vector1 + vector2)
 ```
+
+## 
+
+If you understand vectors- how to create them, how to manipulate them, how to access the elements, you're well on your way to grasping how to handle other objects in R. Fundamentally, _everything_ in R is a vector sooner or later.
+
+## Exercise - Vectors
+
+Create a vector of length 10, with years starting from 1980.
+
+Create a vector with values from 1972 to 2012 in increments of four (1972, 1976, 1980, etc.)
+
+Construct the following vectors:
+```{r eval=FALSE}
+FirstName <- c("Richard", "James", "Ronald", "Ronald"
+              , "George", "William", "William", "George"
+              , "George", "Barack")
+LastName <- c("Nixon", "Carter", "Reagan", "Reagan"
+              , "Bush", "Clinton", "Clinton", "Bush"
+              , "Bush", "Obama")
+ElectionYear <- seq(1972, 2012, 4)
+```
+
+List the vectors in order by first name.
+
+List the vectors in order by last name.
+
+Create vector of years when someone named "George" was elected.
 
 ## What's a package?
 

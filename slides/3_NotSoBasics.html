@@ -198,7 +198,12 @@ l &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</sp
 <h1>Return and growth</h1>
 <pre class="sourceCode r"><code class="sourceCode r">i =<span class="st"> </span><span class="kw">rep</span>(pi, <span class="dv">100</span>)
 i =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">10</span>, <span class="dv">4</span>)
-i[<span class="dv">30</span>] =<span class="st"> </span><span class="dv">3</span></code></pre>
+i</code></pre>
+<pre><code>## [1]  2 10  5  8</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">i[<span class="dv">30</span>] =<span class="st"> </span><span class="dv">3</span>
+i</code></pre>
+<pre><code>##  [1]  2 10  5  8 NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA
+## [24] NA NA NA NA NA NA  3</code></pre>
 </div>
 <div id="vector-access---by-index" class="slide section level2">
 <h1>Vector access - by index</h1>
@@ -217,6 +222,29 @@ i[i &gt;<span class="st"> </span><span class="dv">2</span>]
 i[<span class="kw">which</span>(i &gt;<span class="st"> </span><span class="dv">2</span>)]
 b =<span class="st"> </span>i &gt;<span class="st"> </span><span class="dv">2</span>
 i[b]</code></pre>
+</div>
+<div id="summarization---part-i" class="slide section level2">
+<h1>Summarization - Part I</h1>
+<pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="dv">1</span>:<span class="dv">50</span>
+<span class="kw">sum</span>(x)
+<span class="kw">mean</span>(x)
+<span class="kw">max</span>(x)
+<span class="kw">length</span>(x)</code></pre>
+</div>
+<div id="set-theory---part-i" class="slide section level2">
+<h1>Set theory - Part I</h1>
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">10</span>
+y &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">5</span>
+y %in%<span class="st"> </span>x</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE TRUE TRUE</code></pre>
+</div>
+<div id="more-vector-functions" class="slide section level2">
+<h1>More vector functions</h1>
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>)
+<span class="kw">order</span>(x)</code></pre>
+<pre><code>## [1] 5 3 2 4 1</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">x[<span class="kw">order</span>(x)]</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
 </div>
 <div id="section-3" class="slide section level2">
 <h1></h1>
@@ -237,6 +265,26 @@ scalar =<span class="st"> </span><span class="dv">3</span>
 <pre><code>## [1] 4 5 6 7 8</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(vector1 +<span class="st"> </span>vector2)</code></pre>
 <pre><code>##  [1]  2  4  6  8 10  7  9 11 13 15</code></pre>
+</div>
+<div id="section-4" class="slide section level2">
+<h1></h1>
+<p>If you understand vectors- how to create them, how to manipulate them, how to access the elements, you’re well on your way to grasping how to handle other objects in R. Fundamentally, <em>everything</em> in R is a vector sooner or later.</p>
+</div>
+<div id="exercise---vectors" class="slide section level2">
+<h1>Exercise - Vectors</h1>
+<p>Create a vector of length 10, with years starting from 1980.</p>
+<p>Create a vector with values from 1972 to 2012 in increments of four (1972, 1976, 1980, etc.)</p>
+<p>Construct the following vectors:</p>
+<pre class="sourceCode r"><code class="sourceCode r">FirstName &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Richard&quot;</span>, <span class="st">&quot;James&quot;</span>, <span class="st">&quot;Ronald&quot;</span>, <span class="st">&quot;Ronald&quot;</span>
+              , <span class="st">&quot;George&quot;</span>, <span class="st">&quot;William&quot;</span>, <span class="st">&quot;William&quot;</span>, <span class="st">&quot;George&quot;</span>
+              , <span class="st">&quot;George&quot;</span>, <span class="st">&quot;Barack&quot;</span>)
+LastName &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Nixon&quot;</span>, <span class="st">&quot;Carter&quot;</span>, <span class="st">&quot;Reagan&quot;</span>, <span class="st">&quot;Reagan&quot;</span>
+              , <span class="st">&quot;Bush&quot;</span>, <span class="st">&quot;Clinton&quot;</span>, <span class="st">&quot;Clinton&quot;</span>, <span class="st">&quot;Bush&quot;</span>
+              , <span class="st">&quot;Bush&quot;</span>, <span class="st">&quot;Obama&quot;</span>)
+ElectionYear &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1972</span>, <span class="dv">2012</span>, <span class="dv">4</span>)</code></pre>
+<p>List the vectors in order by first name.</p>
+<p>List the vectors in order by last name.</p>
+<p>Create vector of years when someone named “George” was elected.</p>
 </div>
 <div id="whats-a-package" class="slide section level2">
 <h1>What’s a package?</h1>
