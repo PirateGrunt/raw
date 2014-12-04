@@ -37,7 +37,8 @@ Instruction materials, data and source code for CAS R workshops. This is meant t
 * Advanced modelling
     * Simulation
     * GLMs
+    * Basic machine learning
 * Advanced visualization
     * Multivariate visualization
     * Maps
-* Basic machine learning
+* Close

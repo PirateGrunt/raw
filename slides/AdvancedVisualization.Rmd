@@ -1,0 +1,178 @@
+<<SetParentPart5, echo=FALSE>>=
+set_parent('../Parent/RPM-Parent.Rnw')
+@
+
+\begin{frame}{Part 5 - Further topics}
+  \begin{itemize}
+    \item Intermediate visualization
+    \item Basic data mining
+    \item Reproducible research
+    \item Furthur
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{ggplot2}
+ggplot2 developed by Hadley Wickham, based on the "grammar of graphics"
+  \begin{itemize}
+    \item Particularly well suited for multi-dimensional, multivariate analysis 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{ggplot2}
+<<eval=FALSE>>=
+df = read.csv("../Data/RegionData.csv")
+library(ggplot2)
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Region, color=Region)) + geom_line()
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+df = read.csv("../Data/RegionData.csv")
+library(ggplot2)
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Region, color=Region)) + geom_line() + geom_point()
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]{Adding layers}
+<<eval=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Region, color=Region)) + geom_line() + geom_point()
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Region, color=Region)) + geom_line() + geom_point()
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]{Facets}
+<<eval=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Region, fill=Region)) + geom_bar(stat="identity") + facet_wrap(~ Region)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Region, fill=Region)) + geom_bar(stat="identity") + facet_wrap(~ Region)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]{Facets}
+<<eval=FALSE>>=
+df = read.csv("../Data/StateData.csv")
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Fullname, color=Fullname)) + geom_point() + facet_wrap(~ Region)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+df = read.csv("../Data/StateData.csv")
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, group=Fullname, color=Fullname)) + geom_point() + facet_wrap(~ Region)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]{Facets}
+<<eval=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, color=Region, label=Postal)) + geom_text()
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, color=Region, label=Postal)) + geom_text()
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<eval=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, color=Region, label=Postal)) + geom_text() + facet_wrap(~ Region)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, color=Region, label=Postal)) + geom_text() + facet_wrap(~ Region)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<eval=FALSE>>=
+p = ggplot(df[df$Region == "South", ], aes(x = PolicyYear, y = NumClaims, label=Postal)) + geom_text() + facet_wrap(~ Postal)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+p = ggplot(df, aes(x = PolicyYear, y = NumClaims, color=Region, label=Postal)) + geom_text() + facet_wrap(~ Region)
+p
+@
+\end{frame}
+
+\begin{frame}[fragile]{Maps!}
+<<eval=FALSE>>=
+library(maps)
+map('state')
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<echo=FALSE>>=
+library(maps)
+map('state')
+@
+\end{frame}
+
+\begin{frame}[fragile]{Hurricanes}
+<<eval=FALSE>>=
+map('state')
+df = read.csv('../Data/Hurricanes.csv')
+ 
+dfKatrina = df[df$Name == 'KATRINA', ]
+dfKatrina = dfKatrina[dfKatrina$Year == max(dfKatrina$Year), ]
+ 
+points(dfKatrina$Longitude, dfKatrina$Latitude, pch=19, col = 'red')
+ 
+dfHugo = df[df$Name == 'HUGO', ]
+dfHugo = dfHugo[dfHugo$Year == max(dfHugo$Year), ]
+points(dfHugo$Longitude, dfHugo$Latitude, pch = 19, col = 'blue')
+ 
+dfDonna = df[df$Name == 'DONNA', ]
+dfDonna = dfDonna[dfDonna$Year == max(dfDonna$Year), ]
+points(dfDonna$Longitude, dfDonna$Latitude, pch = 19, col = 'green')
+@
+\end{frame}
+
+\begin{frame}[fragile]{Hurricanes}
+<<echo=FALSE>>=
+map('state')
+df = read.csv('../Data/Hurricanes.csv')
+ 
+dfKatrina = df[df$Name == 'KATRINA', ]
+dfKatrina = dfKatrina[dfKatrina$Year == max(dfKatrina$Year), ]
+ 
+points(dfKatrina$Longitude, dfKatrina$Latitude, pch=19, col = 'red')
+ 
+dfHugo = df[df$Name == 'HUGO', ]
+dfHugo = dfHugo[dfHugo$Year == max(dfHugo$Year), ]
+points(dfHugo$Longitude, dfHugo$Latitude, pch = 19, col = 'blue')
+ 
+dfDonna = df[df$Name == 'DONNA', ]
+dfDonna = dfDonna[dfDonna$Year == max(dfDonna$Year), ]
+points(dfDonna$Longitude, dfDonna$Latitude, pch = 19, col = 'green')
+@
+\end{frame}
+

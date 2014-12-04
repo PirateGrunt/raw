@@ -1,0 +1,346 @@
+---
+title: "Loss Distributions"
+output:
+  slidy_presentation:
+    duration: 75
+---
+
+## Part 4
+  
+* Probability distributions
+* Random samples
+* actuar
+* MASS - 'Modern Applied Statistics in S'
+* Direct optimization
+
+## Probability distributions
+All probability distributions have four basic functions:
+  
+* d dist - Density function
+* p dist - Cumulative distribution
+* q dist - Quantiles
+* r dist - Random number generation
+
+## Density function
+
+```{r }
+plot(function(x) dnorm(x), -3, 3, ylab="Normal f(x)")
+```
+
+## A couple more
+```{r }
+oldpar = par(mfrow = c(2,1))
+plot(function(x) dexp(x), 0, 10, ylab="Exp f(x)")
+plot(function(x) dlnorm(x), 0, 10, ylab="LN f(x)")
+par(oldpar)
+```
+
+## Distribution function
+```{r }
+oldpar = par(mfrow = c(3,1))
+plot(function(x) pnorm(x), -3, 3, ylab="Normal F(x)")
+plot(function(x) pexp(x), 0, 10, ylab="Exp F(x)")
+plot(function(x) plnorm(x), 0, 10, ylab="LN F(x)")
+par(oldpar)
+```
+
+## Random number generation
+```{r eval=FALSE}
+oldpar = par(mfrow = c(3,1))
+hist(rnorm(200))
+hist(rexp(200))
+hist(rlnorm(200))
+par(oldpar)
+```
+
+##
+```{r echo=FALSE}
+oldpar = par(mfrow = c(3,1))
+hist(rnorm(200))
+hist(rexp(200))
+hist(rlnorm(200))
+par(oldpar)
+```
+
+## More random number generation
+```{r }
+oldpar = par(mfrow = c(3,1))
+set.seed(1234)
+hist(rnorm(200, mean=0, sd=1), xlim=c(-10, 10), breaks=10)
+hist(rnorm(200, mean=0, sd=4), xlim=c(-10, 10), breaks=10)
+hist(rnorm(200, mean=5, sd=2), xlim=c(-10, 10), breaks=10)
+par(oldpar)
+```
+
+## sample
+
+Generate a random sample of any discrete set of values. Can use 
+
+To randomize the order of a vector, leave the default value for replace=FALSE.
+
+```{r }
+set.seed(1234)
+sample(1:100, 10)
+
+sample(1:3, prob=c(1,1,100), replace=TRUE)
+
+State = c("NY", "TX", "CA", "IL", "FL", "MA", "NC")
+
+orderedState <- State[order(State)]
+orderedState
+disorderedState <- sample(orderedState)
+disorderedState
+```
+
+## Sample other stuff
+
+```{r }
+State = c("NY", "TX", "CA", "IL", "FL", "MA", "NC")
+set.seed(1234)
+states2 <- sample(State, 10, replace=TRUE)
+
+set.seed(1234)
+states1 <- State[sample(length(State), 10, replace=TRUE)]
+
+all.equal(states1, states2)
+```
+
+## Fitting distributions
+  
+* Maximum likelihood
+* Minimum (squared) distance
+* optim
+* q-q plots
+* chi2 test
+
+## actuar
+
+* Contains the dental claims data from "Loss Models"
+* 
+
+##
+```{r }
+library(actuar)
+data(dental)
+```
+
+* `emm` calculates empirical moments
+* `lev` limited expected value
+* `coverage` modifies a loss distribution for coverage elements
+
+## `fitdistr`
+
+```{r }
+library(MASS)
+y <- fitdistr(dental, "gamma")
+class(y)
+```
+
+## More loss data
+
+```{r }
+set.seed(8910)
+years <- 2001:2010
+frequency <- 1000
+
+N <- rpois(length(years), frequency)
+
+sevShape <- 2
+sevScale <- 1000
+severity <- rgamma(sum(N), sevShape, scale = sevScale)
+
+fitGamma <- fitdistr(severity, "gamma")
+fitLognormal <- fitdistr(severity, "lognormal")
+```
+
+## Compare fit to histogram
+
+```{r }
+sampleLogMean <- fitLognormal$estimate[1]
+sampleLogSd <- fitLognormal$estimate[2]
+
+sampleShape <- fitGamma$estimate[1]
+sampleRate <- fitGamma$estimate[2]
+
+x <- seq(0, max(severity), length.out=500)
+yLN <- dlnorm(x, sampleLogMean, sampleLogSd)
+yGamma <- dgamma(x, sampleShape, sampleRate)
+
+hist(severity, freq=FALSE, ylim=range(yLN, yGamma))
+
+lines(x, yLN, col="blue")
+
+lines(x, yGamma, col="red")
+```
+
+## q-qplot
+
+```{r }
+probabilities = (1:(sum(N)))/(sum(N)+1)
+
+gammaQ <- qgamma(probabilities, sampleShape, sampleRate)
+plot(sort(gammaQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
+abline(0,1)
+
+lnQ <- qlnorm(probabilities, sampleLogMean, sampleLogSd)
+plot(sort(lnQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
+abline(0,1)
+```
+
+## Kolmogorov-Smirnov
+
+```{r }
+testGamma <- ks.test(severity, "pgamma", sampleShape, sampleRate)
+testLN <- ks.test(severity, "plnorm", sampleLogMean, sampleLogSd)
+testGamma2 <- ks.test(severity, "pgamma", sampleShape, 1)
+```
+
+##
+
+[http://cran.r-project.org/doc/contrib/Ricci-distributions-en.pdf](http://cran.r-project.org/doc/contrib/Ricci-distributions-en.pdf)
+
+## Questions
+
+* Draw a lognormal distribution with a mean of $10,000 and a CV of 30%.
+* For that distribution, what is the probability of seeing a claim greater than $100,000?
+* Generate 100 and 1,000 observations from that distribution.
+* Draw a histogram for each sample.
+* What are the mean, standard deviation and CV of each sample?
+* Convince yourself that the sample data were not produced by a Weibull distribution.
+
+## Answers
+
+```{r }
+severity <- 10000
+CV <- .3
+sigma <- sqrt(log(1 + CV^2))
+mu <- log(severity) - sigma^2/2
+plot(function(x) dlnorm(x), mu, sigma, ylab="LN f(x)")
+```
+
+##
+
+```{r }
+set.seed(1234)
+claims = rlnorm(100, meanlog=log(30000), sdlog=1)
+hist(claims, breaks=seq(1, 500000, length.out=40))
+```
+
+## Another view of linear regression
+```{r AltOLS1, echo=TRUE}
+set.seed(1234)
+N = 100
+e = rnorm(N, mean = 0, sd = 1)
+ 
+lnLike = function(x, mu, sigma)
+{
+  n = length(x)
+  lnLike = -n / 2 * log(2*pi)
+  lnLike = lnLike - n/2 * log(sigma ^2)
+  lnLike = lnLike - 1/(2*sigma^2)*sum((x - mu)^2)
+  lnLike
+}
+```
+
+##
+```{r AltOLS2, echo=TRUE, fig.width=8, fig.height=5}
+testMu = seq(-0.5, 0.5, length.out=100)
+likelihood = sapply(testMu, lnLike, x = e, sigma = 1)
+testMu[likelihood == max(likelihood)]
+``` 
+
+##
+```{r , echo=TRUE, fig.width=8, fig.height=5}
+plot(likelihood ~ testMu, pch = 19)
+abline(v = 0)
+abline(v = testMu[likelihood == max(likelihood)])
+```
+
+##
+```{r AltOLS3, echo=TRUE, fig.width=8, fig.height=5}
+testSigma = seq(.5, 1.5, length.out=100)
+likelihood = sapply(testSigma, lnLike, x = e, mu = 0)
+testSigma[likelihood == max(likelihood)]
+```
+
+##
+```{r PlotSigma, echo=TRUE, fig.width=8, fig.height=5}
+plot(likelihood ~ testSigma, pch = 19)
+abline(v = 1)
+abline(v = testSigma[likelihood == max(likelihood)])
+```
+
+##
+```{r TwoDim, echo=TRUE, tidy=TRUE}
+params = expand.grid(mu = testMu, sigma = testSigma)
+params$Likelihood = mapply(lnLike, params$mu, params$sigma, MoreArgs = list(x = e))
+z = matrix(params$Likelihood, length(testMu), length(testSigma))
+```
+
+##
+```{r TwoDimPlotCode, results='hide', eval=FALSE, echo=TRUE}
+filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
+```
+
+##
+```{r TwoDimPlotOutput, echo=FALSE, fig.width=8, fig.heigth=5, tidy=TRUE}
+filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
+```
+
+## Optimize for both parameters
+```{r Optim, echo=TRUE}
+lnLike2 = function(x, par)
+{
+  mu = par[1]
+  sigma = par[2]
+  
+  lnLike(x, mu, sigma)
+}
+ 
+optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
+optimFit$par
+```
+
+## Add a constant term to the normal variable e
+```{r Optim2, echo=TRUE, results='hide'}
+B0 = 5
+Y = B0 + e
+```
+
+## This is equivalent to lm
+```{r Optim3, echo=TRUE}
+optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = Y)
+optimFit$par[[1]]
+ 
+lmFit = lm(Y ~ 1)
+lmFit$coefficients[[1]]
+```
+
+## Now add a slope
+```{r Optim4, echo=TRUE, results='hide'}
+X = as.double(1:length(e))
+B1 = 1.5
+Y = B0 + B1 * X + e
+ 
+lnLike3 = function(par, Y, X)
+{
+  B0 = par[1]
+  B1 = par[2]
+  sigma = par[3]
+  
+  x = Y - B0 - B1 * X
+  mu = 0
+  
+  lnLike(x, mu, sigma) 
+}
+```
+
+##
+
+```{r Optim5, echo=TRUE}
+optimFit = optim(par = c(4, 1, 1), fn = lnLike3, control = list(fnscale = -1), Y = Y, X = X)
+optimFit$par[1:2]
+
+lmFit = lm(Y ~ 1 + X)
+lmFit$coefficients
+```
