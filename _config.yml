@@ -1,0 +1,26 @@
+# Dependencies
+markdown:         kramdown
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+relative_permalinks: true
+
+# Setup
+title:            Intro to R for Actuaries
+tagline:          'Intro to R for Actuaries'
+description:      'A page with basic information about workshops sponsored by the CAS'
+url:              http://PirateGrunt.Github.io/IntroToRforActuaries
+baseurl:          http://PirateGrunt.Github.io/IntroToRforActuaries
+
+author:
+  name:           'Brian A. Fannin'
+  url:            https://PirateGrunt.com
+
+paginate:         5
+
+# Custom vars
+version:          1.0.0
+
+github:
+  repo:           https://github.com/PirateGrunt/IntroToRforActuaries
