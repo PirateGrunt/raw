@@ -1,7 +1,8 @@
 ---
-title: "index"
 layout: page
 ---
+
+## R for Actuaries
 
 This page will host instructions, data and source code for the CAS introductory R workshop. To register, please visit the CAS website.
 
