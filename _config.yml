@@ -10,8 +10,8 @@ relative_permalinks: true
 title:            Intro to R for Actuaries
 tagline:          'Intro to R for Actuaries'
 description:      'A page with basic information about workshops sponsored by the CAS'
-url:              http://PirateGrunt.Github.io/IntroToRforActuaries
-baseurl:          http://PirateGrunt.Github.io/IntroToRforActuaries
+url:              http://PirateGrunt.Github.io/IntroToRforActuaries/
+baseurl:          http://PirateGrunt.Github.io/IntroToRforActuaries/
 
 author:
   name:           'Brian A. Fannin'
