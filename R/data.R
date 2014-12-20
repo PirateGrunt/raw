@@ -64,3 +64,38 @@
 #'    , \code{Win}, \code{ThisTeam}, \code{ScoreDifference}  
 #' 
 "NFL"
+
+#' @name COTOR2
+#' 
+#' @title Committee on the Theory of Risk
+#' 
+#' @usage
+#' 
+#' data(COTOR2)
+#' 
+#' @description
+#' 
+#' The \href{http://www.casact.org/research/cotor/}{Casualty Actuarial Society's Committee on Theory of Risk (COTOR)} 
+#' issued several challenges as part of their work. These involved artificial constructed loss data. Actuaries
+#' were invited to construct models to estimate appropriate premiums for risk transfer.
+#' 
+#' Note that there is no COTOR1
+#' 
+#' @format COTOR2 is a data frame with 249 observations of one variable: 
+#' 
+#' \code{Amount}
+#' 
+#' COTOR3 is a data frame with 483 observations of one variable: 
+#' 
+#' \code{Amount}
+#' 
+#' COTOR4 is a data frame with 2500 rows and 3 columns
+#' 
+#' \code{ClaimNumber}, \code{Year}, \code{Amount}
+#' 
+#' COTOR5 is a data frame with 4849 rows and 5 columns
+#' 
+#' \code{Risk}, \code{Year}, \code{MSA}, \code{Paid Claim Amount}
+#' 
+#' @aliases COTOR COTOR1 COTOR2 COTOR3 COTOR4 COTOR5
+"COTOR2"
