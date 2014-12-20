@@ -18,7 +18,6 @@
 
 *.doc*
 
-*.pdf
 *.tex
 *.RData
 *.RData
@@ -26,3 +25,11 @@
 *.tex
 
 *.html
+
+workshop/*.pdf
+workshop/*.zip
+workshop/pdf/*
+workshop/html/*
+workshop/word/*
+workshop/beamer/*
+data-raw/Werner_Modlin_Ratemaking.pdf
