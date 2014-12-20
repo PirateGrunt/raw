@@ -1,0 +1,44 @@
+---
+title: "Untitled"
+author: "Brian A. Fannin"
+date: "11/28/2014"
+output: slidy_presentation
+---
+
+## Advanced Modeling
+
+* More simulation
+* GLMs
+* Basic machine learning
+
+## Multi-year forecast, compound model
+
+## Bayesian parameter generation
+
+## Gamma distribution
+
+## Logistic Regression - an example
+```{r eval=FALSE}
+library(IntroToRforActuaries)
+data(NFL)
+NFL = subset(NFL, Home==TRUE)
+plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+```
+
+## Logistic Regression - an example
+```{r echo=FALSE}
+library(IntroToRforActuaries)
+data(NFL)
+NFL = subset(NFL, Home==TRUE)
+plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+```
+
+##
+
+```{r }
+fit = glm(Win ~ TODiff, family=binomial(link="logit"), data=NFL)
+library(boot)
+plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+curve(inv.logit(coef(fit)[1] + coef(fit)[2]*x), add=TRUE)
+abline(h=0.5)
+```

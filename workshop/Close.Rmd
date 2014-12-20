@@ -1,0 +1,26 @@
+---
+date: "11/28/2014"
+output:
+  slidy_presentation:
+    duration: 15
+---
+
+## Stuff I did't talk about
+
+* Environments
+* Construction of S3, S4 and R5 objects
+* Package development
+* Language constructs such as `promise`, `substitute`, `evaluate`, etc.
+* Debugging
+* Reproducible research
+
+## Further resources
+
+* Books
+* Boards
+* Blogs
+
+## Social hacking!
+
+* Code with your friends.
+* Share code

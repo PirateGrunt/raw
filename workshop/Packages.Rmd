@@ -1,0 +1,100 @@
+---
+title: "Packages"
+output:
+  slidy_presentation:
+    duration: 15
+    fig_height: 3
+    fig_width: 6
+  beamer_presentation:
+    fonttheme: professionalfonts
+---
+
+## What's a package?
+
+* Allows any user to extend R's capabilities
+* Must conform to a well-defined standard
+* Easy to install and update
+* Open source means users may test and improve the code
+* Can access C or FORTRAN run-time libraries to improve performance
+
+## Installing packages
+
+Several ways: 
+
+* From a CRAN mirror
+* Locally
+* Copy someone else's library directory
+* From GitHub
+
+## What am I installing?
+
+You're installing some compressed source code, some compressed data and anything else the package creator thinks you ought to have.
+
+<img src="../figure/MRMRpackage.png" alt="Drawing" style="width: 800px;"/>
+
+## The R library
+
+All of this gets stored in a library.
+
+<img src="../figure/libPath.png" alt="Drawing" style="width: 1000px;"/>
+
+## `.libPaths()`
+
+The library path may be anywhere! If you have a local document repository
+this is a great place to store packages without irritating your IT dept.
+
+```{r }
+.libPaths()
+myPackages <- list.files(.libPaths()[1])
+head(myPackages)
+```
+
+## Installing something new
+
+```{r eval=FALSE}
+install.packages("ggplot2")
+```
+
+<img src="../figure/CRANmirror.png" alt="Drawing" style="width: 800px;"/>
+
+## Loading an installed package
+
+```{r eval=FALSE}
+library(MRMR)
+```
+
+
+`require` will load the package and return TRUE/FALSE if the package could be loaded
+
+```{r eval=FALSE}
+require(MRMR)
+```
+
+## What packages are installed?
+
+`search` will show what packages are currently loaded in memory and also some other items. 
+
+```{r }
+search()
+```
+
+These other items include data frames loaded with `attach()` as well as any environments which exist. Both those items may be confusing for the novice. One may also use `.packages()`. Output is returned invisibly, so easiest to capture that in a variable.
+
+```{r }
+whatsLoaded <- .packages()
+whatsLoaded
+```
+
+## Unloading and/or removing installed package
+
+```{r eval=FALSE}
+detach("package:MRMR", unload = TRUE)
+```
+
+```{r eval=FALSE}
+remove.packages("IdontWantThisAnymore")
+```
+
+--- 
+
+Can everyone install a package?

@@ -1,0 +1,120 @@
+---
+title: "Visualization"
+output:
+  slidy_presentation:
+    duration: 60
+    fig_height: 3
+    fig_width: 6
+  beamer_presentation:
+    fonttheme: professionalfonts
+---
+
+## Part 3
+
+* Visualization
+* Vectors
+* Packages
+
+## Visualization
+
+It's impossible to overstate the importance of visualization in data analysis.
+
+* Helps us explore data
+* Suggest a model
+* Assess the validity of a model and its parameters
+* Vital for a non-technical audience
+
+## Visualization in R
+
+4 plotting engines (at least)
+
+* base plotting system
+* lattice
+* ggplot2
+* rCharts
+
+We'll look at the base plotting system now and ggplot2 after lunch.
+
+## Common geometric objects
+
+* scatter
+* line
+* hist
+* density
+* boxplot
+* barplot
+* dotplot
+
+plot is the most basic graphics command. There are several dozen options that you can set. Spend a lot of time reading the documentation and experimenting.
+
+##
+
+Open your first script.
+
+## A basic scatter plot
+```{r }
+source("../inst/scripts/BasicScript.R")
+plot(X1, Y, pch=19)
+```
+
+## Add lines
+The functions 'lines' and 'points' will add (wait for it) lines and points to a pre-existing plot.
+```{r  eval=FALSE}
+lines(X1, yHat)
+```
+```{r fig.height=4.5, echo=FALSE}
+plot(X1, Y, pch=19)
+lines(X1, yHat)
+```
+
+## 
+Can everyone generate a scatter plot?
+
+## Histogram
+```{r fig.height=4.5}
+hist(e)
+```
+
+## 
+```{r fig.height=4.5}
+set.seed(1234)
+e2 = rnorm(1000, mean=0, sd=1)
+hist(e2)
+```
+
+## Density plot
+```{r fig.height=4.5}
+plot(density(e2))
+```
+
+## Boxplot
+```{r fig.height=4.5}
+boxplot(e2, pch=19)
+```
+
+## Plotting a formula
+```{r fig.height=4.5}
+plot(Y ~ X1, pch=19)
+```
+
+## Emphasizing outliers
+```{r fig.height=4.5}
+colors = ifelse(abs(e) > 1.0, "red", "black")
+plot(Y ~ X1, pch=19, col=colors)
+```
+
+
+## Other ways to emphasize outliers
+```{r fig.height=4.5}
+plot(Y ~ X1, pch=19)
+lines(X1, yHat, lwd=2)
+lines(X1, yHat+1, lty="dotted", lwd=0.5)
+lines(X1, yHat-1, lty="dotted", lwd=0.5)
+```
+
+## Resources
+
+* [Nathan Yau - FlowingData.com](http://flowingdata.com/)
+* [Stephen Few - PerceptualEdge.com](http://www.perceptualedge.com/)
+* [Edward Tufte - edwardtufte.com](http://www.edwardtufte.com/tufte/)
+* [junkcharts.typepad.com](http://junkcharts.typepad.com/)
