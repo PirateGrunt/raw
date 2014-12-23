@@ -118,14 +118,10 @@ TODO: add a Dave Clark and a bootstrap
 
 ## OriginPeriod
 
-```{r echo=FALSE, results='hide', message=FALSE, eval=FALSE}
+```{r results='hide'}
 library(MRMR)
-load("../MRMR/data/NAIC.rda")
-load("../MRMR/data/smMulti.rda")
-load("../MRMR/data/scmMulti.rda")
-load("../MRMR/data/triMulti.rda")
-```
-```{r eval=FALSE}
+library(lubridate)
+data(NAIC)
 op = OriginPeriod(StartDate = as.Date("2001-01-01")
                   , NumPeriods = 10
                   , Period=as.period(1, "years")
@@ -135,7 +131,7 @@ op$Moniker = paste0("AY ", year(op$StartDate))
 
 ## OriginPeriod (cont'd)
 
-```{r echo=TRUE, eval=FALSE}
+```{r echo=TRUE}
 head(as.data.frame(op)[, 1:3])
 ```
 ```{r echo=FALSE, results='asis', size='huge', message=FALSE, tidy=FALSE, highlight=FALSE, eval=FALSE}
@@ -149,7 +145,7 @@ pander(head(dfDisplay))
 
 ## Non-standard OriginPeriods
 
-```{r echo=TRUE, results='hide', eval=FALSE}
+```{r echo=TRUE, results='hide'}
 startDates = seq(as.Date("2001/01/01")
                  , as.Date("2005/12/31"), by="6 months")
 endDates = startDates + as.period(6, "months") - days(1)
@@ -157,13 +153,13 @@ op = OriginPeriod(startDates, endDates)
 ```
 
 ## Member access
-```{r echo=TRUE, results='hide', eval=FALSE}
+```{r echo=TRUE, results='hide'}
 op = OriginPeriod(seq(2001:2010))
 op$Moniker = paste0("AY ", year(op$StartDate))
 x = op[1]
 y = op[2:3]
 z = c(x, y)
-y = op[c("AY 2004", "AY 2008")]
+#y = op[c("AY 2004", "AY 2008")]
 y = op$StartDate
 y = op$Type
 y = op$Moniker[3]
@@ -191,57 +187,72 @@ All examples use NAIC data compiled by Glen Meyers and Peng Shi of ISO. Availabl
 
 ## StaticMeasure construction
 
-```{r eval=FALSE, results='hide'}
-smWC = 
-  StaticMeasure(OriginPeriod = op
-                , Level=list(Company=companies
-                             , Line="WC")
+```{r results='hide'}
+op = OriginPeriod(StartDate = as.Date("1988-01-01")
+                  , NumPeriods = 10
+                  , Period=as.period(1, "year")
+                  , Type="Accident Year")
+companies <- unique(dfWC$Company)
+smWC = StaticMeasure(OriginPeriod = op
+                     , Level = list(Company=companies, Line="WC")
                 , Measure=c("DirectEP", "NetEP")
-                , Data=dfSubWC[dfSubWC$Lag == 1, ])
+                , Data=dfWC[dfWC$Lag == 1, ])
 ```
 
 ## StaticMeasure plot
 
-```{r fig.height=6, eval=FALSE}
+```{r fig.height=6}
 plot(smWC)
 ```
 
 ## StaticMeasure facet plot
 
-```{r fig.height=6, eval=FALSE}
-plot(smWC
-     , FacetFormula=as.formula(Line+Company~Measure))
+```{r fig.height=6}
+plot(smWC, FacetFormula=as.formula(Line+Company~Measure))
 ```
 
 ## StaticMeasure multidimensional plot
 
-```{r fig.height=6, eval=FALSE}
-plot(smMulti
-     , FacetFormula=as.formula(Company~Line))
+```{r fig.height=6}
+smPPA = StaticMeasure(OriginPeriod = op
+                     , Level = list(Company=companies, Line="PPA")
+                , Measure=c("DirectEP", "NetEP")
+                , Data=dfPPA[dfPPA$Lag == 1, ])
+smMulti = c(smPPA, smWC)
+plot(smMulti, FacetFormula=as.formula(Company~Line))
+```
+
+## StochasticMeasure - Construction
+
+```{r }
+scmWC = StochasticMeasure(OriginPeriod = op
+                        , Level=list(Company=companies, Line="WC")
+                        , Measure = c("CumulativeIncurred", "CumulativePaid")
+                        , DevPeriod = as.period(1, "year")
+                        , Lags=1:10
+                        , Data=dfWC
+                        , OriginPeriodSort = "AccidentYear"
+                        , EvaluationDates=seq.Date(as.Date("1988-12-31"), as.Date("2006-12-31"), by="1 year"))
 ```
 
 ## StochasticMeasure - 1
 
-```{r fig.height=6, eval=FALSE}
-plot(UpperTriangle(scmWC)
-     , Measure="CumulativeIncurred")
+```{r fig.height=6}
+plot(UpperTriangle(scmWC), Measure="CumulativeIncurred")
 ```
 
 ## StochasticMeasure - 2
 
-```{r fig.height=6, eval=FALSE}
-plot(UpperTriangle(scmWC)
-     , Measure="CumulativeIncurred"
-     , TimeAxis="EvaluationDate")
+```{r fig.height=6}
+plot(UpperTriangle(scmWC), Measure="CumulativeIncurred", TimeAxis="EvaluationDate")
 ```
 
 ## Triangle
 
 Very simple object. Composed of a StaticMeasure and a StochasticMeasure
 
-```{r eval=FALSE, fig.height=6, eval=FALSE}
+```{r fig.height=6}
 triWC = Triangle(smWC, scmWC, "Workers Comp Triangle")
-
 
 plot(UpperTriangle(triWC)
      , Response="IncrementalPaid"
@@ -250,19 +261,19 @@ plot(UpperTriangle(triWC)
 
 ## Triangle plot output
 
-```{r echo=FALSE, fig.height=6, eval=FALSE}
+```{r echo=FALSE, fig.height=6}
 plot(UpperTriangle(triWC), Predictor="PriorCumulativePaid", Response="IncrementalPaid")
 ```
 
 ## Triangle plot switch variables
 
-```{r eval=FALSE}
+```{r }
 plot(UpperTriangle(triWC)
      , Response="IncrementalPaid"
      , Predictor="PriorCumulativePaid")
 ```
 
-```{r eval=FALSE, fig.height=6}
+```{r fig.height=6}
 plot(UpperTriangle(triWC)
      , Response="IncrementalPaid"
      , Predictor="NetEP")
@@ -270,7 +281,7 @@ plot(UpperTriangle(triWC)
 
 ## Triangle plot - 2
 
-```{r echo=FALSE, fig.height=6, eval=FALSE}
+```{r echo=FALSE, fig.height=6}
 plot(UpperTriangle(triWC), Predictor="NetEP", Response="IncrementalPaid")
 ```
 
@@ -284,7 +295,7 @@ plot(UpperTriangle(triWC), Predictor="NetEP", Response="IncrementalPaid")
 
 ## TriangleModel
 
-```{r eval=FALSE}
+```{r }
 PaidCLPooled = 
   TriangleModel(UpperTriangle(triWC)
                 , Response = "IncrementalPaid"
@@ -293,7 +304,7 @@ PaidCLPooled =
 ```
 
 ## Residual plots
-```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE, eval=FALSE}
+```{r echo=FALSE, results='hide', message=FALSE, warning=FALSE}
 PaidCLPooled = TriangleModel(UpperTriangle(triWC)
                              , Response = "IncrementalPaid"
                              , Predictor = "PriorCumulativePaid"
@@ -310,34 +321,33 @@ PaidCLBlended = TriangleModel(UpperTriangle(triWC)
                               , Group = "Company"
                               , ModelType = "blended")
 ```
-```{r warning=FALSE, fig.height=6, eval=FALSE}
+```{r warning=FALSE, fig.height=6}
 PlotResiduals(PaidCLPooled)
 ```
 
 ## Residual plots 2
 
-```{r warning=FALSE, fig.height=6, eval=FALSE}
+```{r warning=FALSE, fig.height=6}
 PlotResiduals(PaidCLIndividual)
 ```
 
 ## Residual plots 3
 
-```{r warning=FALSE, fig.height=6, eval=FALSE}
+```{r warning=FALSE, fig.height=6}
 PlotResiduals(PaidCLBlended)
 ```
 
 ## Model comparison
 
-```{r eval=FALSE}
+```{r }
 RMSE(PaidCLPooled)
 RMSE(PaidCLIndividual)
 RMSE(PaidCLBlended)
 ```
 
-
 ## Projected results
 
-```{r eval=FALSE}
+```{r }
 projPaidCLPooled = 
   TriangleProjection(PaidCLPooled
                      , AsOfDate=as.Date("2006-12-31")
@@ -346,7 +356,7 @@ projPaidCLPooled =
 
 ## Projected results
 
-```{r echo=FALSE, results='asis', eval=FALSE}
+```{r echo=FALSE, results='asis'}
 projPaidCLIndividual = TriangleProjection(PaidCLIndividual
                                       , AsOfDate=as.Date("2006-12-31")
                                       , MaxLag=10)

@@ -33,3 +33,4 @@ workshop/html/*
 workshop/word/*
 workshop/beamer/*
 data-raw/Werner_Modlin_Ratemaking.pdf
+*.csv

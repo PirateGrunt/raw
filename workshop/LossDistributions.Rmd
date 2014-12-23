@@ -5,105 +5,11 @@ output:
     duration: 75
 ---
 
-## Part 4
+## Loss Distributions
   
-* Probability distributions
-* Random samples
 * actuar
 * MASS - 'Modern Applied Statistics in S'
 * Direct optimization
-
-## Probability distributions
-All probability distributions have four basic functions:
-  
-* d dist - Density function
-* p dist - Cumulative distribution
-* q dist - Quantiles
-* r dist - Random number generation
-
-## Density function
-
-```{r }
-plot(function(x) dnorm(x), -3, 3, ylab="Normal f(x)")
-```
-
-## A couple more
-```{r }
-oldpar = par(mfrow = c(2,1))
-plot(function(x) dexp(x), 0, 10, ylab="Exp f(x)")
-plot(function(x) dlnorm(x), 0, 10, ylab="LN f(x)")
-par(oldpar)
-```
-
-## Distribution function
-```{r }
-oldpar = par(mfrow = c(3,1))
-plot(function(x) pnorm(x), -3, 3, ylab="Normal F(x)")
-plot(function(x) pexp(x), 0, 10, ylab="Exp F(x)")
-plot(function(x) plnorm(x), 0, 10, ylab="LN F(x)")
-par(oldpar)
-```
-
-## Random number generation
-```{r eval=FALSE}
-oldpar = par(mfrow = c(3,1))
-hist(rnorm(200))
-hist(rexp(200))
-hist(rlnorm(200))
-par(oldpar)
-```
-
-##
-```{r echo=FALSE}
-oldpar = par(mfrow = c(3,1))
-hist(rnorm(200))
-hist(rexp(200))
-hist(rlnorm(200))
-par(oldpar)
-```
-
-## More random number generation
-```{r }
-oldpar = par(mfrow = c(3,1))
-set.seed(1234)
-hist(rnorm(200, mean=0, sd=1), xlim=c(-10, 10), breaks=10)
-hist(rnorm(200, mean=0, sd=4), xlim=c(-10, 10), breaks=10)
-hist(rnorm(200, mean=5, sd=2), xlim=c(-10, 10), breaks=10)
-par(oldpar)
-```
-
-## sample
-
-Generate a random sample of any discrete set of values. Can use 
-
-To randomize the order of a vector, leave the default value for replace=FALSE.
-
-```{r }
-set.seed(1234)
-sample(1:100, 10)
-
-sample(1:3, prob=c(1,1,100), replace=TRUE)
-
-State = c("NY", "TX", "CA", "IL", "FL", "MA", "NC")
-
-orderedState <- State[order(State)]
-orderedState
-disorderedState <- sample(orderedState)
-disorderedState
-```
-
-## Sample other stuff
-
-```{r }
-State = c("NY", "TX", "CA", "IL", "FL", "MA", "NC")
-set.seed(1234)
-states2 <- sample(State, 10, replace=TRUE)
-
-set.seed(1234)
-states1 <- State[sample(length(State), 10, replace=TRUE)]
-
-all.equal(states1, states2)
-```
 
 ## Fitting distributions
   

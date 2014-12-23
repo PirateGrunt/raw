@@ -314,6 +314,19 @@ y[[2]] <- c(45, 63)
 y$Name
 ```
 
+## `lapply`
+
+`lapply` is one of many functions which may be applied to lists. Can be difficult at first, but very powerful. Applies the same function to each element of a list
+
+```{r }
+myList <- list(firstVector = c(1:10)
+               , secondVector = c(89, 56, 84, 298, 56)
+               , thirdVector = c(7,3,5,6,2,4,2))
+lapply(myList, mean)
+lapply(myList, median)
+lapply(myList, sum)
+```
+
 ## Summary functions
 
 Because lists are arbitrary, we can't expect functions like `sum` or `mean` to work. 
