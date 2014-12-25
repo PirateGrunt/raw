@@ -81,7 +81,7 @@ p
 ```
 
 ## Facets
-```{r eval=FALSE}
+```{r }
 p <- basePlot + geom_line() + facet_wrap(~ Region)
 p
 ```
@@ -90,13 +90,13 @@ p
 
 That plot was a bit boring.
 
-```{r echo=FALSE}
+```{r }
 data(StateExperience)
 p = ggplot(StateExperience, aes(x = PolicyYear, y = NumClaims, color=Fullname)) + geom_point() + facet_wrap(~ Region)
 p
 ```
 
-##
+## 
 ```{r eval=FALSE}
 p <- ggplot(subset(StateExperience, Region == "South"), aes(x = PolicyYear, y = NumClaims, label=Postal))
 p <- p + geom_point() + facet_wrap(~ Postal)
@@ -111,18 +111,25 @@ map('state')
 
 ## Hurricanes
 ```{r }
-map('state')
 data(Hurricane)
  
 dfKatrina = subset(Hurricane, Name == 'KATRINA')
 dfKatrina = dfKatrina[dfKatrina$Year == max(dfKatrina$Year), ]
-points(dfKatrina$Longitude, dfKatrina$Latitude, pch=19, col = 'red')
+
  
 dfHugo = subset(Hurricane, Name == 'HUGO')
 dfHugo = dfHugo[dfHugo$Year == max(dfHugo$Year), ]
-points(dfHugo$Longitude, dfHugo$Latitude, pch = 19, col = 'blue')
  
 dfDonna = Hurricane[Hurricane$Name == 'DONNA', ]
 dfDonna = dfDonna[dfDonna$Year == max(dfDonna$Year), ]
+```
+
+## Hurricanes
+```{r }
+map('state')
+points(dfKatrina$Longitude, dfKatrina$Latitude, pch=19, col = 'red')
+points(dfHugo$Longitude, dfHugo$Latitude, pch = 19, col = 'blue')
 points(dfDonna$Longitude, dfDonna$Latitude, pch = 19, col = 'green')
 ```
+
+## Choropleths

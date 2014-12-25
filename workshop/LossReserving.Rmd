@@ -131,15 +131,13 @@ op$Moniker = paste0("AY ", year(op$StartDate))
 
 ## OriginPeriod (cont'd)
 
-```{r echo=TRUE}
+```{r echo=TRUE, results='hide'}
 head(as.data.frame(op)[, 1:3])
 ```
-```{r echo=FALSE, results='asis', size='huge', message=FALSE, tidy=FALSE, highlight=FALSE, eval=FALSE}
+```{r echo=FALSE, results='asis', size='huge', message=FALSE, tidy=FALSE, highlight=FALSE}
 library(pander)
 panderOptions("table.style", "rmarkdown")
-df = as.data.frame(op)
-dfDisplay = head(df)[, 1:3]
-#dfDisplay$Period = as.character(dfDisplay$Period)
+dfDisplay = as.data.frame(op)[, 1:3]
 pander(head(dfDisplay))
 ```
 

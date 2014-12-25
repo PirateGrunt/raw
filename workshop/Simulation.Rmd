@@ -71,22 +71,24 @@ par(oldpar)
 
 Generate a random sample of any discrete set of values. 
 
+```{r }
+set.seed(1234)
+sample(1:100, 10)
+```
+
+Use the `prob` argument to weight the probabilities.
+
+```{r }
+sample(1:3, prob=c(1,1,100), replace=TRUE)
+```
+
+## 
+
 To randomize the order of a vector, leave the default value for replace=FALSE.
 
 ```{r }
 set.seed(1234)
-sample(1:100, 10)
-
-sample(1:3, prob=c(1,1,100), replace=TRUE)
-
-State = c("NY", "TX", "CA", "IL", "FL", "MA", "NC")
-set.seed(1234)
-states2 <- sample(State, 10, replace=TRUE)
-
-set.seed(1234)
-states1 <- State[sample(length(State), 10, replace=TRUE)]
-
-all.equal(states1, states2)
+letters[sample(length(letters))]
 ```
 
 ## Compound loss distribution

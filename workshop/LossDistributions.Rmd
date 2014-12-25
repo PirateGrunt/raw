@@ -21,18 +21,16 @@ output:
 
 ## actuar
 
-* Contains the dental claims data from "Loss Models"
-* 
-
-##
-```{r }
+```{r message=FALSE}
 library(actuar)
 data(dental)
 ```
 
+* Contains the dental claims data from "Loss Models"
 * `emm` calculates empirical moments
 * `lev` limited expected value
 * `coverage` modifies a loss distribution for coverage elements
+* `fitdistr` will fit a distribution to a loss distribution function
 
 ## `fitdistr`
 
@@ -79,7 +77,7 @@ lines(x, yLN, col="blue")
 lines(x, yGamma, col="red")
 ```
 
-## q-qplot
+## q-q plot
 
 ```{r }
 probabilities = (1:(sum(N)))/(sum(N)+1)
@@ -87,7 +85,11 @@ probabilities = (1:(sum(N)))/(sum(N)+1)
 gammaQ <- qgamma(probabilities, sampleShape, sampleRate)
 plot(sort(gammaQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
 abline(0,1)
+```
 
+## q-q plot
+
+```{r }
 lnQ <- qlnorm(probabilities, sampleLogMean, sampleLogSd)
 plot(sort(lnQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
 abline(0,1)
@@ -101,7 +103,7 @@ testLN <- ks.test(severity, "plnorm", sampleLogMean, sampleLogSd)
 testGamma2 <- ks.test(severity, "pgamma", sampleShape, 1)
 ```
 
-##
+## Useful resources
 
 [http://cran.r-project.org/doc/contrib/Ricci-distributions-en.pdf](http://cran.r-project.org/doc/contrib/Ricci-distributions-en.pdf)
 
@@ -132,121 +134,39 @@ claims = rlnorm(100, meanlog=log(30000), sdlog=1)
 hist(claims, breaks=seq(1, 500000, length.out=40))
 ```
 
-## Another view of linear regression
-```{r AltOLS1, echo=TRUE}
-set.seed(1234)
-N = 100
-e = rnorm(N, mean = 0, sd = 1)
- 
-lnLike = function(x, mu, sigma)
-{
-  n = length(x)
-  lnLike = -n / 2 * log(2*pi)
-  lnLike = lnLike - n/2 * log(sigma ^2)
-  lnLike = lnLike - 1/(2*sigma^2)*sum((x - mu)^2)
-  lnLike
+## MASS
+
+## Direct optimization
+
+Use the `optim` function. `optim` takes a function as an argument.
+
+```{r}
+quadraticFun <- function(a, b, c){
+  function(x) a*x^2 + b*x + c
 }
+
+myQuad <- quadraticFun(a=4, b=-3, c=3)
+plot(myQuad, -10, 10)
 ```
 
-##
-```{r AltOLS2, echo=TRUE, fig.width=8, fig.height=5}
-testMu = seq(-0.5, 0.5, length.out=100)
-likelihood = sapply(testMu, lnLike, x = e, sigma = 1)
-testMu[likelihood == max(likelihood)]
-``` 
+## Direct optimization
 
-##
-```{r , echo=TRUE, fig.width=8, fig.height=5}
-plot(likelihood ~ testMu, pch = 19)
-abline(v = 0)
-abline(v = testMu[likelihood == max(likelihood)])
+```{r }
+myResult <- optim(8, myQuad)
 ```
 
-##
-```{r AltOLS3, echo=TRUE, fig.width=8, fig.height=5}
-testSigma = seq(.5, 1.5, length.out=100)
-likelihood = sapply(testSigma, lnLike, x = e, mu = 0)
-testSigma[likelihood == max(likelihood)]
+## Direct optimization
+Default is to minimize. Set the parameter `fnscale` to something negative to convert to a maximization problem.
+
+```{r }
+myOtherQuad <- quadraticFun(-6, 20, -5)
+plot(myOtherQuad, -10, 10)
+myResult <- optim(8, myOtherQuad)
+myResult <- optim(8, myOtherQuad, control = list(fnscale=-1))
 ```
 
-##
-```{r PlotSigma, echo=TRUE, fig.width=8, fig.height=5}
-plot(likelihood ~ testSigma, pch = 19)
-abline(v = 1)
-abline(v = testSigma[likelihood == max(likelihood)])
-```
+## Direct optimization
 
-##
-```{r TwoDim, echo=TRUE, tidy=TRUE}
-params = expand.grid(mu = testMu, sigma = testSigma)
-params$Likelihood = mapply(lnLike, params$mu, params$sigma, MoreArgs = list(x = e))
-z = matrix(params$Likelihood, length(testMu), length(testSigma))
-```
+Direct optimization allows us to create another objective function to maximize, or work with loss distributions for which there isn't yet support in a package like `actuar`. May be used for general purpose optimization problems, e.g. maximize rate of return for various capital allocation methods.
 
-##
-```{r TwoDimPlotCode, results='hide', eval=FALSE, echo=TRUE}
-filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
-```
-
-##
-```{r TwoDimPlotOutput, echo=FALSE, fig.width=8, fig.heigth=5, tidy=TRUE}
-filled.contour(x=testMu, y=testSigma, z=z, color.palette = heat.colors, xlab = "mu", ylab = "sigma")
-```
-
-## Optimize for both parameters
-```{r Optim, echo=TRUE}
-lnLike2 = function(x, par)
-{
-  mu = par[1]
-  sigma = par[2]
-  
-  lnLike(x, mu, sigma)
-}
- 
-optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = e)
-optimFit$par
-```
-
-## Add a constant term to the normal variable e
-```{r Optim2, echo=TRUE, results='hide'}
-B0 = 5
-Y = B0 + e
-```
-
-## This is equivalent to lm
-```{r Optim3, echo=TRUE}
-optimFit = optim(par = c(-1,4), fn = lnLike2, control = list(fnscale = -1), x = Y)
-optimFit$par[[1]]
- 
-lmFit = lm(Y ~ 1)
-lmFit$coefficients[[1]]
-```
-
-## Now add a slope
-```{r Optim4, echo=TRUE, results='hide'}
-X = as.double(1:length(e))
-B1 = 1.5
-Y = B0 + B1 * X + e
- 
-lnLike3 = function(par, Y, X)
-{
-  B0 = par[1]
-  B1 = par[2]
-  sigma = par[3]
-  
-  x = Y - B0 - B1 * X
-  mu = 0
-  
-  lnLike(x, mu, sigma) 
-}
-```
-
-##
-
-```{r Optim5, echo=TRUE}
-optimFit = optim(par = c(4, 1, 1), fn = lnLike3, control = list(fnscale = -1), Y = Y, X = X)
-optimFit$par[1:2]
-
-lmFit = lm(Y ~ 1 + X)
-lmFit$coefficients
-```
+Note that optimization is a general, solved problem. Things like the simplex method already have package solutions in R. You don't need to reinvent the wheel!

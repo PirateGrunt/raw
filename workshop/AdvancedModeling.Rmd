@@ -7,38 +7,47 @@ output: slidy_presentation
 
 ## Advanced Modeling
 
-* More simulation
 * GLMs
 * Basic machine learning
 
-## Multi-year forecast, compound model
+## Logistic regression
 
-## Bayesian parameter generation
-
-## Gamma distribution
+* Maps the real numbers to the space between 0 and 1.
+* Binomial parameter `p` is a function.
+* Will a claim close?
+* Will a claimant use an attorney?
+* Will a policyholder renew at a particular premium?
 
 ## Logistic Regression - an example
-```{r eval=FALSE}
+```{r }
 library(IntroToRforActuaries)
 data(NFL)
 NFL = subset(NFL, Home==TRUE)
+```
+
+## Logistic Regression
+```{r }
 plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
 ```
 
-## Logistic Regression - an example
-```{r echo=FALSE}
-library(IntroToRforActuaries)
-data(NFL)
-NFL = subset(NFL, Home==TRUE)
-plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
-```
+## Logistic Regression
 
-##
+Null deviance may be used to compare competing models. RMSE, SSE may be used to assess how well a model works. Also, compare results for test and training data sets.
 
 ```{r }
 fit = glm(Win ~ TODiff, family=binomial(link="logit"), data=NFL)
+summary(fit)
+```
+
+## Logistic Regression
+```{r }
 library(boot)
 plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
 curve(inv.logit(coef(fit)[1] + coef(fit)[2]*x), add=TRUE)
 abline(h=0.5)
 ```
+
+## Machine learning
+
+* Clustering
+* 
