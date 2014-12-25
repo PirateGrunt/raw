@@ -7,7 +7,7 @@ strCOTOR4 <- "./data-raw/ChallengeRound4data.xls"
 strCOTOR5 <- "./data-raw/ChallengeRound5data.xls"
 
 COTOR2 <- read.xlsx(strCOTOR2, sheetIndex = 1, startRow = 2, endRow = 251)
-names(COTOR2) <- "Amount"
+COTOR2 <- COTOR2[, 1]
 save(COTOR2, file = "./data/COTOR2.rdata", compress = "xz")
 
 COTOR3 <- read.xlsx(strCOTOR3, sheetIndex = 1, startRow = 3, endRow = 72)
