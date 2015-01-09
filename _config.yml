@@ -7,11 +7,11 @@ permalink:        pretty
 relative_permalinks: true
 
 # Setup
-title:            Intro to R for Actuaries
-tagline:          'Intro to R for Actuaries'
+title:            R Actuarial Workshops
+tagline:          'R Actuarial Workshops'
 description:      'A page with basic information about workshops sponsored by the CAS'
-url:              http://PirateGrunt.Github.io/IntroToRforActuaries/
-baseurl:          /IntroToRforActuaries
+url:              http://pirategrunt.github.io/raw/
+baseurl:          /raw
 
 author:
   name:           'Brian A. Fannin'
@@ -23,4 +23,4 @@ paginate:         5
 version:          1.0.0
 
 github:
-  repo:           https://github.com/PirateGrunt/IntroToRforActuaries
+  repo:           https://github.com/PirateGrunt/raw
