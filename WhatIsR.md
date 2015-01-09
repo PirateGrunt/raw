@@ -1,5 +1,6 @@
 ---
 title: "What Is R?"
+layout: page
 ---
 
 R is a programming language, derived from S. Alright, so what's S then? S was developed as a way for analysts- primarily statisticians- to interact with FORTAN libraries. Way back when, if you wanted to construct a model, blah blah

@@ -1,8 +1,6 @@
 ---
 title: "IT"
-author: "Brian A. Fannin"
-date: "12/12/2014"
-output: html_document
+layout: page
 ---
 
 ## Dealing with IT
