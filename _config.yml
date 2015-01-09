@@ -12,6 +12,7 @@ tagline:          'R Actuarial Workshops'
 description:      'A page with basic information about workshops sponsored by the CAS'
 url:              http://pirategrunt.github.io/raw/
 baseurl:          /raw
+theme:            Superhero
 
 author:
   name:           'Brian A. Fannin'

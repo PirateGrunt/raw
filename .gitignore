@@ -10,6 +10,8 @@ Gemfile.lock
 *-Ex.R
 .Rproj.user
 
+_site
+
 # Tex files
 *.log
 *.nav
