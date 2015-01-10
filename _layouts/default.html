@@ -5,12 +5,43 @@
   
   <body>
     
-    {% include sidebar.html %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <h1><a href="{{ site.baseurl }}">{{ site.title }}</a></h1>
+          <p class="lead">{{ site.description }}</p>
+          <ul class="nav nav-sidebar">
+            <li><a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" 
+                href="{{ site.baseurl }}">Home</a></li>
+      
+            {% comment %}
+              The code below dynamically generates a sidebar nav of pages with `layout: page` in the 
+              front-matter. See readme for usage.
+            {% endcomment %}
+      
+            {% assign pages_list = site.pages %}
+            {% for node in pages_list %}
+              {% if node.title != null %}
+                {% if node.layout == "page" %}
+                  <li><a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" 
+                     href="{{ site.baseurl }}{{ node.url }}">{{ node.title }}</a></li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>  
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     
-    <div class="content container">
-      {{ content }}
+          <!--div class="content container"-->
+            {{ content }}
+          <!--/div-->
+        </div>
+      </div>
     </div>
   
   </body>
+  
+  {% include footer.html %}
+  
 </html>
   

@@ -3,8 +3,6 @@ title: "Useful Resources"
 layout: page
 ---
 
-## Useful resources
-
 Here they are. Loads of digital ink about R. The emphasis here is on R for beginners and/or actuaries. The amount of conversation about R on the internet is staggering and it's impossible to capture it all. Dive down one of these rabbit holes and start learning about R. You'll be pleased to see how many beginners there are out there.
 
 * Moving from spreadsheets to R

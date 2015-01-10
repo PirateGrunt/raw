@@ -3,8 +3,6 @@ title: "IT"
 layout: page
 ---
 
-## Dealing with IT
-
 I don't think I've ever met anyone who's made it through a white-collar existence without at least one or two frustrating exchanges with a corporate IT department. If you work for a large- or even small- company, you likely have a staff of folks who keep the network running and handle software requests from every user in the company. To ensure that your company's network is free from malicious attack or well-intentioned, but careless or imperfect users, most computers have sensitive areas restricted. This means that if you want to install software, you need an administrator to do it for you.
 
 The first thing to bear in mind is that, despite any appearance to the contrary, your IT staff is there to help you. Moreover, they're people. They have families who love them and lives outside of work. They have to deal with ridiculous hours to accommodate you and they get far more complaints than they do praise. Be nice to them and you may be surprised how supportive they can be.
