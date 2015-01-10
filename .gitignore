@@ -32,3 +32,5 @@ _site
 *.tex
 
 *.html
+!_includes/*.html
+!_layouts/*.html
