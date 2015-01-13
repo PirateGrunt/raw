@@ -11,9 +11,11 @@ Note that we strongly recommend installing RStudio as well as R. Install locatio
 
 The first place to look for installation is cran.r-project.org. From there, you will see links to downloads for Windows, Mac and Linux. Clicking on the appropriate link will take you to the page that's relevant for your operating system. You may see lots of bizarre, arcane language around binaries, source and tarballs. If those words (in this context) mean nothing to you, don't panic. Some folk like to build their own version of R directly from the source code. If you're reading these instructions, you're probably not one of those people
 
-At the time of writing, the current release version of R is version 3.0.3, codenamed "Warm Puppy". I recommend getting familiar with the CRAN website and reading the documentation there. If you get totally lost, try the links below which should take you directly to the download site for Windows and Mac. (If you're running Linux, I can't imagine you need my help.)
-Windows install
-Mac install
+At the time of writing, the current release version of R is version 3.1.2, codenamed "Pumpkin Helmet". I reccommend getting familiar with the CRAN website and reading the documentation there. If you get totally lost, try the links below which should take you directly to the download site for Windows and Mac. (If you're running Linux, I can't imagine you need my help.)
+
+* [Windows install](http://cran.revolutionanalytics.com/bin/windows/)
+* [Mac install](http://cran.revolutionanalytics.com/bin/macosx/)
+
 It's possible that you'll be asked to identify a "mirror". R is hosted on a number of servers throughout the world. It's all the same R, but distributing it in this way helps to minimized load on servers which host the files. 
 
 ## Installing R Studio
