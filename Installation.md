@@ -26,4 +26,4 @@ RStudio's main website may be found at [www.rstudio.com](www.rstudio.com). At th
 
 ## Stuck?
 
-It all sounds so easy, but in practice this is rarely the case. One of the difficulties lies in navigating the infrastructure developed by your company's IT department. I've written some suggestions on [how to deal with your IT department](./IT), which I hope are useful.
+It all sounds so easy, but in practice this is rarely the case. One of the difficulties lies in navigating the infrastructure developed by your company's IT department. I've written some suggestions on [how to deal with your IT department](../IT), which I hope are useful.
