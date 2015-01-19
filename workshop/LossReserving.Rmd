@@ -22,7 +22,7 @@ Implements many standard reserving techniques:
 * Dave Clark curve fitting    
 
 ## Basics
-```{r }
+```{r message=FALSE}
 library(ChainLadder, verbose=FALSE)
 data(RAA)
 
@@ -32,7 +32,7 @@ is.matrix(RAA)
 
 ## Have a look at the data
 ```{r }
-head(RAA)
+RAA
 ```
 
 
@@ -68,7 +68,7 @@ plot(results, lattice=TRUE)
 ```
 
 ## Munich chain ladder
-```{r }
+```{r warning=FALSE, message=FALSE}
 data(MCLpaid)
 data(MCLincurred)
 
@@ -82,7 +82,23 @@ MunichChainLadder(MCLpaid, MCLincurred,
 
 ##
 
-TODO: add a Dave Clark and a bootstrap
+```{r }
+data(PPA)
+View(PPA_LossDevelopment)
+library(reshape2)
+PPA_LossDev <- dcast(PPA_LossDevelopment, AccidentYear ~ Lag, sum)
+row.names(PPA_LossDev) <- PPA_LossDev$AccidentYear
+PPA_LossDev$AccidentYear <- NULL
+PPA_LossDev <- as.matrix(PPA_LossDev)
+PPA_LossDev[PPA_LossDev == 0] <- NA
+
+#PPA_LossDev <- PPA_LossDev[-(1:2), ]
+myFit <- ClarkLDF(PPA_LossDev, maxage=Inf)
+```
+
+## 
+
+TODO: add a bootstrap
 
 ## What is MRMR?
 
