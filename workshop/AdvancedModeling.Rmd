@@ -20,7 +20,7 @@ output: slidy_presentation
 
 ## Logistic Regression - an example
 ```{r }
-library(IntroToRforActuaries)
+library(raw)
 data(NFL)
 NFL = subset(NFL, Home==TRUE)
 ```

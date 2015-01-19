@@ -23,7 +23,7 @@ Requires 3 things:
 ## Data
 
 ```{r }
-library(IntroToRforActuaries)
+library(raw)
 data(RegionExperience)
 library(ggplot2)
 

@@ -104,12 +104,12 @@ lines(X1, yHat-1, lty="dotted", lwd=0.5)
 
 ## Exercise
 
-* Load the COTOR2 data from the IntroToRforActuaries package. r4a
+* Load the COTOR2 data from the raw package. r4a
 * Create a histogram, kernel density plot and box plot for the claims data
 
 ## Answer
 ```{r }
-library(IntroToRforActuaries)
+library(raw)
 data(COTOR2)
 hist(COTOR2)
 boxplot(COTOR2)

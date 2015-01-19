@@ -1,5 +1,5 @@
-Package: IntroToRforActuaries
-Title: Introduction to R for Actuaries
+Package: raw
+Title: R Actuarial Workshops
 Description: Data, slides and demos
 Version: 0.1.1
 Maintainer: Brian A. Fannin <BFannin@RedwoodsGroup.com>
