@@ -1,5 +1,4 @@
 ---
-title: "Untitled"
 author: "Brian A. Fannin"
 date: "11/28/2014"
 output: slidy_presentation

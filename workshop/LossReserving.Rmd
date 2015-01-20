@@ -80,25 +80,43 @@ MunichChainLadder(MCLpaid, MCLincurred,
  tailP=FALSE, tailI=FALSE) 
 ```
 
-##
+## Werner-Modlin data
+
+Data taken from Appendix A of Werner/Modlin.
+[http://www.casact.org/library/studynotes/werner_modlin_ratemaking.pdf].
 
 ```{r }
+library(raw)
 data(PPA)
-View(PPA_LossDevelopment)
-library(reshape2)
-PPA_LossDev <- dcast(PPA_LossDevelopment, AccidentYear ~ Lag, sum)
-row.names(PPA_LossDev) <- PPA_LossDev$AccidentYear
-PPA_LossDev$AccidentYear <- NULL
-PPA_LossDev <- as.matrix(PPA_LossDev)
-PPA_LossDev[PPA_LossDev == 0] <- NA
-
-#PPA_LossDev <- PPA_LossDev[-(1:2), ]
-myFit <- ClarkLDF(PPA_LossDev, maxage=Inf)
+head(PPA_LossDevelopment)
 ```
 
-## 
+## Convert to ChainLadder triangle
+```{r }
+triPPA <- ChainLadder::as.triangle(PPA_LossDevelopment
+                                   , origin="AccidentYear"
+                                   , dev="Lag"
+                                   , value="ReportedLossPaidALAE")
+head(triPPA)
+```
 
-TODO: add a bootstrap
+## Clark curve
+
+```{r }
+myClarkFit <- ClarkLDF(triPPA, maxage=Inf)
+```
+
+## Clark LDF
+
+```{r }
+plot(myClarkFit)
+```
+
+## Bootstrap
+
+```{r }
+#myBootFit <- BootChainLadder(triPPA)
+```
 
 ## What is MRMR?
 
@@ -287,16 +305,12 @@ plot(UpperTriangle(triWC)
      , Predictor="PriorCumulativePaid")
 ```
 
+## Triangle plot switch variables
+
 ```{r fig.height=6}
 plot(UpperTriangle(triWC)
      , Response="IncrementalPaid"
      , Predictor="NetEP")
-```
-
-## Triangle plot - 2
-
-```{r echo=FALSE, fig.height=6}
-plot(UpperTriangle(triWC), Predictor="NetEP", Response="IncrementalPaid")
 ```
 
 ## TriangleModel
