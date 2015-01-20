@@ -1,3 +1,14 @@
+
+CheckLibDir <- function(lib){
+  checkPath <- paste0(lib, "/raw")
+  workingPath <- checkPath[file.exists(checkPath)]
+  if(length(workingPath) == 0){
+    stop("The raw package was not found. Did you install it somewhere other than a 
+         folder listed in your .libPaths()? Have you moved your libraries?")  
+  }
+  
+  workingPath <- paste0(workingPath[1], "/slides/")
+}
 #' @name CopySlides
 #' 
 #' @title Copy Slides
@@ -13,31 +24,45 @@
 #' @param overwrite Boolean indicating whether to overwrite any existing files. The default for this 
 #' parameter is TRUE.
 #' 
-CopySlides <- function(SavePath, overwrite=TRUE){
+CopySlides <- function(SavePath, overwrite=TRUE, lib){
   
-  dir.create(file.path(SavePath))
-  
-  checkPath <- paste0(.libPaths(), "/IntroToRforActuaries")
-  workingPath <- checkPath[file.exists(checkPath)]
-  if(length(workingPath) == 0){
-    stop("The IntroToRforActuaries package was not found. Did you install it somewhere other than a 
-         folder listed in your .libPaths()? Have you moved your libraries?")  
+  if (missing(lib)){
+    strMessage <- paste0("No library specified. Using ", .libPaths()[1], " .")
+    message(strMessage)
+    lib <- .libPaths()[1]
   }
   
-  workingPath <- paste0(workingPath[1], "/slides/")
+  slidePath <- checkLibDir(lib)
   
-  pdfFiles <- list.files(workingPath, ".pdf", full.names=TRUE)
+  
+  rmdFiles <- list.files(slidePath, ".Rmd", full.names=TRUE)
 
-  #if (length(pdfFiles) == 0) stop("No pdf slides found. Please contact package maintainer.")
+  if (length(rmdFiles) == 0){
+    stop("No pdf slides found. Is it possible you deleted them after installing the package?")
+  } 
   
-  if (length(pdfFiles) != 0) file.copy(pdfFiles, SavePath, overwrite = overwrite)
+  if (length(SavePath) > 1){
+    message("More than one SavePath given. Only the first path will be used.")
+  }
   
-  htmlFiles <- list.files(workingPath, ".pdf", full.names=TRUE)
+  couldCreateDir <- dir.create(file.path(SavePath))
   
-  #if (length(htmlFiles) == 0) stop("No html slides found. Please contact package maintainer.")
+  if (!couldCreateDir){
+    stop ("Could not create the save path.")
+  }
   
-  if (length(htmlFiles) != 0) file.copy(htmlFiles, SavePath, overwrite = overwrite)
+  file.copy(rmdFiles, SavePath, overwrite = overwrite)
   
-  unzip(paste0(workingPath, "html.zip"), exdir=SavePath)
+  rmdFile <- list.files(SavePath, ".Rmd", full.names=TRUE)
+  
+  lapply(rmdFiles, render)
+  
+#   htmlFiles <- list.files(workingPath, ".pdf", full.names=TRUE)
+#   
+#   #if (length(htmlFiles) == 0) stop("No html slides found. Please contact package maintainer.")
+#   
+#   if (length(htmlFiles) != 0) file.copy(htmlFiles, SavePath, overwrite = overwrite)
+#   
+#   unzip(paste0(workingPath, "html.zip"), exdir=SavePath)
   
 }
