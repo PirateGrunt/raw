@@ -2,7 +2,7 @@
 title: "Vectors"
 output:
   slidy_presentation:
-    duration: 60
+    duration: 45
     fig_height: 3
     fig_width: 6
   beamer_presentation:
@@ -13,7 +13,7 @@ output:
 
 In R, every variable is a vector. Think of a set of cells in a spreadsheet. 
 
-Here, e is a vector with N values. X1 is the sequence of integers from 1 through 10 repeated 10 times. 
+Here, `e` is a vector with `N` values. `X1` is the sequence of integers from 1 through 10 repeated 10 times. 
 
 Vectors can grow and shrink automatically. No need to move cells around on a sheet. No need to copy formulas or change named ranges.
 
@@ -119,6 +119,7 @@ i[c(TRUE, FALSE, FALSE, FALSE, TRUE)]
 i[i > 7]
 b = i > 7
 i[b]
+b
 ```
 
 ## `which`
@@ -205,16 +206,6 @@ print(vector2 + scalar)
 print(vector1 + vector2)
 ```
 
-## Summarization - Part I
-
-```{r eval=FALSE}
-x = 1:50
-sum(x)
-mean(x)
-max(x)
-length(x)
-```
-
 ## Set theory - Part I
 
 The `%in%` operator will return a logical vector indicating whether or not an element of the first set is contained in the second set.
@@ -234,6 +225,16 @@ y <- 1905:1915
 intersect(x, y)
 setdiff(x, y)
 setequal(x, y)
+```
+
+## Summarization - Part I
+
+```{r eval=FALSE}
+x = 1:50
+sum(x)
+mean(x)
+max(x)
+length(x)
 ```
 
 ## Vectors 

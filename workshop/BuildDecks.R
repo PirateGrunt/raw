@@ -31,7 +31,8 @@ lapply(rmdSlides, render
        , output_dir="./html"
        , envir = new.env())
 if(file.exists("./inst/workshop/html.zip")) unlink("./inst/workshop/html.zip")
-zip("./inst/slides/html.zip", htmlSlides, flags = "-j9X")
+zip("./inst/slides/slides.zip", rmdSlides, flags = "-j9X")
+
 
 # lapply(rmdSlides, render, output_format=pdf_document(), output_dir="./pdf")
 # if(file.exists("./inst/workshop/pdf.zip")) unlink("./inst/workshop/pdf.zip")

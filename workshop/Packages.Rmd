@@ -72,13 +72,7 @@ require(MRMR)
 
 ## What packages are installed?
 
-`search` will show what packages are currently loaded in memory and also some other items. 
-
-```{r }
-search()
-```
-
-These other items include data frames loaded with `attach()` as well as any environments which exist. Both those items may be confusing for the novice. One may also use `.packages()`. Output is returned invisibly, so easiest to capture that in a variable.
+The `.packages` function will invisibly return a list loaded packages. Capture the output in a variable.
 
 ```{r }
 whatsLoaded <- .packages()
@@ -97,4 +91,6 @@ remove.packages("IdontWantThisAnymore")
 
 --- 
 
-Can everyone install a package?
+## Exercise
+
+Install the `actuar` package.

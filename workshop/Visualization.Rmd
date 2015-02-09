@@ -2,9 +2,9 @@
 title: "Visualization"
 output:
   slidy_presentation:
-    duration: 60
-    fig_height: 3
-    fig_width: 6
+    duration: 45
+    fig_height: 6
+    fig_width: 10
   beamer_presentation:
     fonttheme: professionalfonts
 ---
@@ -66,21 +66,14 @@ Can everyone generate a scatter plot?
 hist(e)
 ```
 
-## 
-```{r fig.height=4.5}
-set.seed(1234)
-e2 = rnorm(1000, mean=0, sd=1)
-hist(e2)
-```
-
 ## Density plot
 ```{r fig.height=4.5}
-plot(density(e2))
+plot(density(e))
 ```
 
 ## Boxplot
 ```{r fig.height=4.5}
-boxplot(e2, pch=19)
+boxplot(e, pch=19)
 ```
 
 ## Plotting a formula
@@ -104,7 +97,7 @@ lines(X1, yHat-1, lty="dotted", lwd=0.5)
 
 ## Exercise
 
-* Load the COTOR2 data from the raw package. r4a
+* Load the COTOR2 data from the raw package.
 * Create a histogram, kernel density plot and box plot for the claims data
 
 ## Answer

@@ -3,6 +3,8 @@ title: "Reserving in R"
 output:
   slidy_presentation:
     duration: 75
+    fig_height: 6
+    fig_width: 10
 ---
 
 ## Reserving in R
@@ -112,12 +114,6 @@ myClarkFit <- ClarkLDF(triPPA, maxage=Inf)
 plot(myClarkFit)
 ```
 
-## Bootstrap
-
-```{r }
-#myBootFit <- BootChainLadder(triPPA)
-```
-
 ## What is MRMR?
 
 - Flexible framework for reserving based on linear models
@@ -171,7 +167,7 @@ head(as.data.frame(op)[, 1:3])
 ```{r echo=FALSE, results='asis', size='huge', message=FALSE, tidy=FALSE, highlight=FALSE}
 library(pander)
 panderOptions("table.style", "rmarkdown")
-dfDisplay = as.data.frame(op)[, 1:3]
+dfDisplay = as.data.frame(op)
 pander(head(dfDisplay))
 ```
 
@@ -183,6 +179,11 @@ startDates = seq(as.Date("2001/01/01")
 endDates = startDates + as.period(6, "months") - days(1)
 op = OriginPeriod(startDates, endDates)
 ```
+```{r echo=FALSE, results='asis', size='huge', message=FALSE, tidy=FALSE, highlight=FALSE}
+panderOptions("table.style", "rmarkdown")
+dfDisplay = as.data.frame(op)
+pander(head(dfDisplay))
+```
 
 ## Member access
 ```{r echo=TRUE, results='hide'}
@@ -191,7 +192,7 @@ op$Moniker = paste0("AY ", year(op$StartDate))
 x = op[1]
 y = op[2:3]
 z = c(x, y)
-#y = op[c("AY 2004", "AY 2008")]
+y = op[c("AY 2004", "AY 2008")]
 y = op$StartDate
 y = op$Type
 y = op$Moniker[3]
@@ -227,8 +228,8 @@ op = OriginPeriod(StartDate = as.Date("1988-01-01")
 companies <- unique(dfWC$Company)
 smWC = StaticMeasure(OriginPeriod = op
                      , Level = list(Company=companies, Line="WC")
-                , Measure=c("DirectEP", "NetEP")
-                , Data=dfWC[dfWC$Lag == 1, ])
+                     , Measure=c("DirectEP", "NetEP")
+                     , Data=dfWC[dfWC$Lag == 1, ])
 ```
 
 ## StaticMeasure plot
@@ -286,20 +287,6 @@ Very simple object. Composed of a StaticMeasure and a StochasticMeasure
 ```{r fig.height=6}
 triWC = Triangle(smWC, scmWC, "Workers Comp Triangle")
 
-plot(UpperTriangle(triWC)
-     , Response="IncrementalPaid"
-     , Predictor="PriorCumulativePaid")
-```
-
-## Triangle plot output
-
-```{r echo=FALSE, fig.height=6}
-plot(UpperTriangle(triWC), Predictor="PriorCumulativePaid", Response="IncrementalPaid")
-```
-
-## Triangle plot switch variables
-
-```{r }
 plot(UpperTriangle(triWC)
      , Response="IncrementalPaid"
      , Predictor="PriorCumulativePaid")

@@ -138,7 +138,7 @@ hist(claims, breaks=seq(1, 500000, length.out=40))
 
 ## Direct optimization
 
-Use the `optim` function. `optim` takes a function as an argument.
+The `optim` function will optimize a function. Works very similar to the Solver algorithm in Excel. `optim` takes a function as an argument, so let's create a function.
 
 ```{r}
 quadraticFun <- function(a, b, c){
@@ -151,8 +151,11 @@ plot(myQuad, -10, 10)
 
 ## Direct optimization
 
+8 is our initial guess. A good initial guess will speed up conversion.
+
 ```{r }
 myResult <- optim(8, myQuad)
+myResult
 ```
 
 ## Direct optimization

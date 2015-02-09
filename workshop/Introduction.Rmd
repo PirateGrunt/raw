@@ -1,5 +1,5 @@
 ---
-title: 'Introduction to R: Part 1'
+title: 'Introduction'
 author: "Brian A. Fannin"
 output:
   slidy_presentation:
@@ -29,9 +29,9 @@ Let's get this done quick. If you don't have R and R Studio installed, today wil
 
 R is a programming framework designed by and for statisticians. R is ... 
 
-* Free It costs nothing to use.
-* Open source The source code is available to the public to view and modify (within restrictions).
-* Extendable Anyone may write extensions to the software. At present there are 4,000 user contributed packages and counting.
+* Free: It costs nothing to use.
+* Open source: The source code is available to the public to view and modify (within restrictions).
+* Extendable: Anyone may write extensions to the software. At present there are 4,000 user contributed packages and counting.
 * Advanced statistical techniques are available out of the box. 
 * Machine learning algorithms- cluster analysis, neural networks, etc. Any time someone invents a new way to analyze data, it is quickly available in R.
 * Visualize network graphs, construct word clouds, render maps. Visualization is tremendous. Bar charts and scatter plots are the tip of the iceberg. R can do it all and keeps getting better.

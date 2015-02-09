@@ -55,7 +55,7 @@ myTable = pandoc.table(df)
 
 ## Assignment
 
-Assignment will create a saved space which contains something. This something may be used later
+Assignment will create a variable which contains a value. This value may be used later.
 
 ```{r}
 r <- 4
@@ -75,6 +75,8 @@ sqrt(4)
 
 Functions may be composed by having the output of one serve as the input to another.
 
+$\sqrt{e^{sin{\pi}}}$
+
 ```{r }
 sqrt(exp(sin(pi)))
 ```
@@ -87,7 +89,7 @@ sqrt(exp(sin(pi)))
 
 * abs, sign
 * floor, ceiling, trunc, round, signif
-* sqrt, exp, log, expm1, log1p,
+* sqrt, exp, log
 * cos, sin, tan (and many others)
 * lgamma, gamma, digamma, trigamma
 
@@ -98,6 +100,8 @@ sqrt(exp(sin(pi)))
 
 ??cluster
 ```
+
+Within RStudio, the TAB key will autocomplete
 
 ## The working directory
 
@@ -166,6 +170,8 @@ Either:
 source("SomefileName.R")
 ```
 
+Within RStudio, you may also click the "Source" button in the upper right hand corner.
+
 ## Comments
 
 R uses the hash/pound character "#" to indicate comments.
@@ -175,6 +181,22 @@ SQL or C++ style multiline comments are not supported.
 Comment early and often!
 
 Comments should describe "why", not "what".
+
+#### Bad comment
+```{r eval=FALSE}
+# Take the ratio of loss to premium to determine the loss ratio
+
+lossRatio <- Losses / Premium
+```
+
+#### Good comment
+```{r eval=FALSE}
+# Because this is a retrospective view of 
+# profitability, these losses have been
+# developed, but not trended to a future
+# point in time
+lossRatio <- Losses / Premium
+```
 
 ## Quiz
 

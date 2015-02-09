@@ -1,10 +1,10 @@
 ---
-title: "Advanced Visualizatin"
+title: "Advanced Visualization"
 output: slidy_presentation
 ---
 
-## Part 5 - Advanced Visualizatin
-  
+## Topics
+
 * ggplot2
 * Maps
 

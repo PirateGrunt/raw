@@ -2,7 +2,7 @@
 title: "Simulation"
 output:
   slidy_presentation:
-    duration: 75
+    duration: 30
 ---
 
 ## Simulation

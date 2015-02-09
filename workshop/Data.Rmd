@@ -2,7 +2,7 @@
 title: "Data"
 output:
   slidy_presentation:
-    duration: 75
+    duration: 60
 ---
 
 ## Data
@@ -54,7 +54,7 @@ as.integer(z)
 
 ## Class
 
-A class is an extension of the basic data types. We'll see many examples of these. The class of a basic type will be equal to its type apart from 'double', whose class is 'numeric' for reasons I don't pretend to follow.
+A class is an extension of the basic data types. We'll see many examples of these. The class of a basic type will be equal to its type apart from 'double', whose class is 'numeric' for reasons I don't pretend to understand.
 
 ```{r }
 class(TRUE)
@@ -72,7 +72,7 @@ There is also a function called 'mode' which looks tempting. Ignore it.
 
 ## Dates and times
 
-Dates in R can be tricky. Two basic classes: "Date" and "POSIXt". The former doesn't handle time intervals.
+Dates in R can be tricky. Two basic classes: `Date` and `POSIXt`. The `Date` class does not get more granular than days. The `POSIXt` class can handle seconds, milliseconds, etc.
 
 My recommendation is to stick with the "Date" class. Introducing times means introducing time zones and possibility for confusion or error. Actuaries rarely need to measure things in minutes.
 
@@ -128,8 +128,12 @@ The `lubridate` package has some nice convenience functions for setting month an
 Another gotcha. Factors were necessary many years ago when data collection and storage were expensive. A factor is a mapping of a character string to an integer. Particularly when importing data, R often wants to convert character values into a factor. You will often want to convert a factor into a string.
 
 ```{r }
-myFactor <- factor(c("Red", "Blue", "Green", "Red", "Blue", "Red"))
+myColors <- c("Red", "Blue", "Green", "Red", "Blue", "Red")
+myFactor <- factor(myColors)
 typeof(myFactor)
+class(myFactor)
+is.character(myFactor)
+is.character(myColors)
 ```
 
 ## Altering factors
@@ -137,6 +141,7 @@ typeof(myFactor)
 ```{r }
 # This probably won't give you what you expect
 myOtherFactor <- c(myFactor, "Orange")
+myOtherFactor
 
 # And this will give you an error
 myFactor[length(myFactor)+1] <- "Orange"
@@ -244,6 +249,7 @@ Single index will return values by indexing along only one dimension.
 myMatrix[2]
 myMatrix[22]
 ```
+
 ## Matrix summary
 
 ```{r }
@@ -253,11 +259,13 @@ rowSums(myMatrix)
 colMeans(myMatrix)
 ```
 
+## More than two dimensions
+
 Like more than two dimensions? Shine on you crazy diamond.
 
 ## Lists
 
-Lists have data of arbitrary complexity. Any type, any length. Note the new "[[ ]]" double bracket operator.
+Lists have data of arbitrary complexity. Any type, any length. Note the new `[[ ]]` double bracket operator.
 
 ```{r }
 x <- list()
@@ -305,13 +313,13 @@ make_block(x)
 Again, typically names. However, these become very important for lists. Names are handled with the special `$` operator. `$` permits access to a single element. (A single element of a list can be a vector!)
 
 ```{r}
-names(y) <- c("Artist", "Age")
-y$Name
-
 y[[1]] <- c("Lou Reed", "Patti Smith")
 y[[2]] <- c(45, 63)
 
-y$Name
+names(y) <- c("Artist", "Age")
+
+y$Artist
+y$Age
 ```
 
 ## `lapply`
@@ -329,7 +337,7 @@ lapply(myList, sum)
 
 ## Summary functions
 
-Because lists are arbitrary, we can't expect functions like `sum` or `mean` to work. 
+Because lists are arbitrary, we can't expect functions like `sum` or `mean` to work. Use `lapply` to summarize particular list elements.
 
 ## Questions
 
@@ -507,10 +515,14 @@ dotchart(dfByState$EarnedPremium, dfByState$State, pch=19)
 
 ## Advanced data frame tools
   
-* plyr
+* dplyr
+* tidyr
 * reshape2
 * data.table
-* doBy
+
+## Final note on data frames
+
+Roughly 90% of your work in R will involve manipulation of data frames. There are truckloads of packages designed to make manipulation of data frames easier. Take your time getting to learn these tools. They're all powerful, but they're all a little different. I'd suggest learning the functions in `base` R first, then moving on to tools like `dplyr` and `data.table`. There's a lot to be gained from understanding the problems those packages were created to solve.
 
 ## Reading data
 
@@ -567,3 +579,8 @@ View(df)
 
 * Load the data from "StateData.csv" into a data frame.
 * Which state has the most premium?
+
+## Answer
+
+```{r }
+```

@@ -1,5 +1,5 @@
 ---
-date: "11/28/2014"
+title: "Close"
 output:
   slidy_presentation:
     duration: 15
@@ -17,10 +17,19 @@ output:
 ## Further resources
 
 * Books
+    * [Machine Learning for Hackers]
+    * [Reproducible Research with R and RStudio]
 * Boards
+    * [stackoverflow.com](stackoverflow.com)
 * Blogs
+    * [magesblog]
+    * [PirateGrunt.com](PirateGrunt.com)
 
 ## Social hacking!
 
 * Code with your friends.
 * Share code
+
+##
+
+Who wants a drink?
