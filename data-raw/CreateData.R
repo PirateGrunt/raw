@@ -1,9 +1,3 @@
-
-strHurricaneFile <- "data-raw/Hurricane.csv"
-strNFLfile <- "data-raw/NFL.csv"
-strStateDataFile <- "data-raw/StateData.csv"
-strRegionDataFile <- "./data-raw/RegionData.csv"
-
 FetchHurricaneData <- function(strHurricaneFile){
   url = "ftp://eclipse.ncdc.noaa.gov/pub/ibtracs/v03r04/wmo/csv/basin/Basin.NA.ibtracs_wmo.v03r04.csv"
   
@@ -72,6 +66,11 @@ save(Hurricane, file = "./data/Hurricane.rdata", compress = "xz")
 if (!file.exists(strStateDataFile) | !file.exists(strRegionDataFile)) 
   ConstructStateData(strStateDataFile, strRegionDataFile)
 
+strHurricaneFile <- "data-raw/Hurricane.csv"
+strNFLfile <- "data-raw/NFL.csv"
+strStateDataFile <- "data-raw/StateData.csv"
+strRegionDataFile <- "./data-raw/RegionData.csv"
+
 StateExperience <- read.csv(strStateDataFile)
 save(StateExperience, file = "./data/StateExperience.rdata", compress = "xz")
 
@@ -79,4 +78,5 @@ RegionExperience <- read.csv(strRegionDataFile)
 save(RegionExperience, file = "./data/RegionExperience.rdata", compress = "xz")
 
 NFL <- read.csv(strNFLfile)
+NFL = subset(NFL, Home==TRUE)
 save(NFL, file = "./data/NFL.rdata", compress = "xz")
