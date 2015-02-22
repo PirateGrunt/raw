@@ -15,8 +15,11 @@ When that's done, paste the script below into your R console, one line at a time
 
 ```
 tmp <- tempfile()
+
 download.file("https://raw.githubusercontent.com/PirateGrunt/raw/master/scripts/InstallPackage.R", tmp, method="wget")
+
 source(tmp)
+
 unlink(tmp)
 ```
 
