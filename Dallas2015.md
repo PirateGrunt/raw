@@ -14,11 +14,9 @@ Got java? Good. If you don't, it's not the end of the world. It means that writi
 When that's done, paste the script below into your R console, one line at a time and hit return after each line. You'll need to be connected to the interweb for this to work. If all goes well, after you execute the `source(tmp)` command, you should see lots of stuff happening. What's happening is that you're installing lots of really cool functionality that's useful for actuaries.
 
     tmp <- tempfile()
-
-    download.file("https://raw.githubusercontent.com/PirateGrunt/raw/master/scripts/InstallPackage.R", tmp, method="wget")
-
+    URL <- "https://raw.githubusercontent.com/PirateGrunt/raw/master/scripts/InstallPackage.R"
+    download.file(URL, tmp, method="wget")
     source(tmp)
-
     unlink(tmp)
 
 Again, if this doesnt work, don't panic. Give me a call and I'll try to sort things out before you get to Texas.
