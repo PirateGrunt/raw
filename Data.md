@@ -28,6 +28,6 @@ Data taken from the PPA example given in Appendix A of Werner-Modlin.
 * PPA_RateChange
 * PPA_ULAE
 
-### State/REgion
+### State/Region
 * RegionExperience - Sample premium and loss experience by region
 * StateExperienceState - Sample premium and loss experience by state
