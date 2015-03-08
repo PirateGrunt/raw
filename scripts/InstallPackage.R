@@ -6,7 +6,7 @@ if (length(whichMirror) == 0){
   options(repos=whichMirror)
 }
 
-actuarialPackages <- c("mondate", "XLConnect", "ggplot2", "ChainLadder", "actuar")
+actuarialPackages <- c("lubridate", "mondate", "XLConnect", "ggplot2", "ChainLadder", "actuar")
 
 install.packages(actuarialPackages, dependencies=TRUE)
 rm(whichMiror, actuarialPackages)
