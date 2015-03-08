@@ -8,7 +8,6 @@ output:
 ## Loss Distributions
   
 * actuar
-* MASS - 'Modern Applied Statistics in S'
 * Direct optimization
 
 ## Fitting distributions
@@ -133,8 +132,6 @@ set.seed(1234)
 claims = rlnorm(100, meanlog=log(30000), sdlog=1)
 hist(claims, breaks=seq(1, 500000, length.out=40))
 ```
-
-## MASS
 
 ## Direct optimization
 

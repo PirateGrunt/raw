@@ -174,10 +174,10 @@ pander(head(dfDisplay))
 ## Non-standard OriginPeriods
 
 ```{r echo=TRUE, results='hide'}
+library(lubridate)
 startDates = seq(as.Date("2001/01/01")
                  , as.Date("2005/12/31"), by="6 months")
-endDates = startDates + as.period(6, "months") - days(1)
-op = OriginPeriod(startDates, endDates)
+op = OriginPeriod(StartDate=startDates, Period=as.period(6, "months"))
 ```
 ```{r echo=FALSE, results='asis', size='huge', message=FALSE, tidy=FALSE, highlight=FALSE}
 panderOptions("table.style", "rmarkdown")
@@ -192,7 +192,6 @@ op$Moniker = paste0("AY ", year(op$StartDate))
 x = op[1]
 y = op[2:3]
 z = c(x, y)
-y = op[c("AY 2004", "AY 2008")]
 y = op$StartDate
 y = op$Type
 y = op$Moniker[3]
@@ -369,9 +368,7 @@ projPaidCLPooled =
                      , MaxLag=10)
 ```
 
-## Projected results
-
-```{r echo=FALSE, results='asis'}
+```{r echo=FALSE, results='asis', eval=FALSE}
 projPaidCLIndividual = TriangleProjection(PaidCLIndividual
                                       , AsOfDate=as.Date("2006-12-31")
                                       , MaxLag=10)
@@ -399,8 +396,8 @@ dfCompare = cbind(df.actual, df.proj1, df.proj2, df.proj3)
 names(dfCompare)[2:5] = c("Actual", "Pooled", "Individual", "Blended")
 dfCompare = subset(dfCompare, EvaluationDate > as.Date("1997-12-31"))
 
-# panderOptions("table.style", "rmarkdown")
-# pander(dfCompare[1:10, ])
+panderOptions("table.style", "rmarkdown")
+pander(dfCompare[1:10, ])
 ```
 
 ## Which package?
