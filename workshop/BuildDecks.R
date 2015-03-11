@@ -25,6 +25,7 @@ pdfSlides <- gsub(".Rmd", ".pdf", rmdSlides)
 htmlSlides <- gsub(".Rmd", ".html", rmdSlides)
 htmlSlides <- paste0("./workshop/html/", slides, ".html")
 wordSlides <- gsub(".Rmd", ".docx", rmdSlides)
+wordSlides <- gsub(".Rmd", ".R", rSlides)
 
 lapply(rmdSlides, render
        , output_format=slidy_presentation()
@@ -32,6 +33,8 @@ lapply(rmdSlides, render
        , envir = new.env())
 if(file.exists("./inst/workshop/html.zip")) unlink("./inst/workshop/html.zip")
 zip("./inst/slides/slides.zip", rmdSlides, flags = "-j9X")
+
+lapply(rmdSlides, purl)
 
 
 # lapply(rmdSlides, render, output_format=pdf_document(), output_dir="./pdf")
