@@ -20,11 +20,7 @@
 
 *.tex
 *.RData
-*.RData
-*.RData
 *.tex
-
-*.html
 
 workshop/*.pdf
 workshop/*.zip
