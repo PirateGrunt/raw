@@ -30,13 +30,13 @@ Several ways:
 
 You're installing some compressed source code, some compressed data and anything else the package creator thinks you ought to have.
 
-<img src="../figure/MRMRpackage.png" alt="Drawing" style="width: 800px;"/>
+<img src="images/MRMRpackage.png" alt="Drawing" style="width: 800px;"/>
 
 ## The R library
 
 All of this gets stored in a library.
 
-<img src="../figure/libPath.png" alt="Drawing" style="width: 1000px;"/>
+<img src="images/libPath.png" alt="Drawing" style="width: 1000px;"/>
 
 ## `.libPaths()`
 
@@ -55,7 +55,7 @@ head(myPackages)
 install.packages("ggplot2")
 ```
 
-<img src="../figure/CRANmirror.png" alt="Drawing" style="width: 800px;"/>
+<img src="images/CRANmirror.png" alt="Drawing" style="width: 800px;"/>
 
 ## Loading an installed package
 
