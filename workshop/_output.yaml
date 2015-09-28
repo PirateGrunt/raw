@@ -1,7 +1,0 @@
-slidy_presentation: 
-  widescreen: false 
-  css: custom.css
-  duration: 45
-  footer: Copyright (c) 2014-2015 Brian A. Fannin
-beamer_presentation:
-    colortheme: dolphin

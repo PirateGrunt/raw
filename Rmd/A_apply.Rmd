@@ -1,0 +1,21 @@
+---
+title: "The apply functions"
+author: "Brian A. Fannin"
+output: pdf_document
+---
+
+For the novice who is accustomed to iterative processing of vectors (i.e. for loops), R's use of `apply` functions can seem odd at first. This set of functions is another aspect of the way in which R embraces thinking in vectors. An `apply` function will apply a function to each element of a vector.
+
+## `lapply`
+
+## `sapply`
+
+## `tapply`
+
+## `apply`
+
+## `plyr`
+
+## `dplyr`
+
+## How do I apply a function to each row of a data frame?

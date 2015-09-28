@@ -1,0 +1,172 @@
+---
+title: "Loss Distributions"
+output:
+  slidy_presentation:
+    duration: 75
+---
+
+## Loss Distributions
+  
+* actuar
+* Direct optimization
+
+## Fitting distributions
+  
+* Maximum likelihood
+* Minimum (squared) distance
+* optim
+* q-q plots
+* chi2 test
+
+## actuar
+
+```{r message=FALSE}
+library(actuar)
+data(dental)
+```
+
+* Contains the dental claims data from "Loss Models"
+* `emm` calculates empirical moments
+* `lev` limited expected value
+* `coverage` modifies a loss distribution for coverage elements
+* `fitdistr` will fit a distribution to a loss distribution function
+
+## `fitdistr`
+
+```{r }
+library(MASS)
+y <- fitdistr(dental, "gamma")
+class(y)
+```
+
+## More loss data
+
+```{r }
+set.seed(8910)
+years <- 2001:2010
+frequency <- 1000
+
+N <- rpois(length(years), frequency)
+
+sevShape <- 2
+sevScale <- 1000
+severity <- rgamma(sum(N), sevShape, scale = sevScale)
+
+fitGamma <- fitdistr(severity, "gamma")
+fitLognormal <- fitdistr(severity, "lognormal")
+```
+
+## Compare fit to histogram
+
+```{r }
+sampleLogMean <- fitLognormal$estimate[1]
+sampleLogSd <- fitLognormal$estimate[2]
+
+sampleShape <- fitGamma$estimate[1]
+sampleRate <- fitGamma$estimate[2]
+
+x <- seq(0, max(severity), length.out=500)
+yLN <- dlnorm(x, sampleLogMean, sampleLogSd)
+yGamma <- dgamma(x, sampleShape, sampleRate)
+
+hist(severity, freq=FALSE, ylim=range(yLN, yGamma))
+
+lines(x, yLN, col="blue")
+
+lines(x, yGamma, col="red")
+```
+
+## q-q plot
+
+```{r }
+probabilities = (1:(sum(N)))/(sum(N)+1)
+
+gammaQ <- qgamma(probabilities, sampleShape, sampleRate)
+plot(sort(gammaQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
+abline(0,1)
+```
+
+## q-q plot
+
+```{r }
+lnQ <- qlnorm(probabilities, sampleLogMean, sampleLogSd)
+plot(sort(lnQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
+abline(0,1)
+```
+
+## Kolmogorov-Smirnov
+
+```{r }
+testGamma <- ks.test(severity, "pgamma", sampleShape, sampleRate)
+testLN <- ks.test(severity, "plnorm", sampleLogMean, sampleLogSd)
+testGamma2 <- ks.test(severity, "pgamma", sampleShape, 1)
+```
+
+## Useful resources
+
+[http://cran.r-project.org/doc/contrib/Ricci-distributions-en.pdf](http://cran.r-project.org/doc/contrib/Ricci-distributions-en.pdf)
+
+## Questions
+
+* Draw a lognormal distribution with a mean of $10,000 and a CV of 30%.
+* For that distribution, what is the probability of seeing a claim greater than $100,000?
+* Generate 100 and 1,000 observations from that distribution.
+* Draw a histogram for each sample.
+* What are the mean, standard deviation and CV of each sample?
+* Convince yourself that the sample data were not produced by a Weibull distribution.
+
+## Answers
+
+```{r }
+severity <- 10000
+CV <- .3
+sigma <- sqrt(log(1 + CV^2))
+mu <- log(severity) - sigma^2/2
+plot(function(x) dlnorm(x), mu, sigma, ylab="LN f(x)")
+```
+
+##
+
+```{r }
+set.seed(1234)
+claims = rlnorm(100, meanlog=log(30000), sdlog=1)
+hist(claims, breaks=seq(1, 500000, length.out=40))
+```
+
+## Direct optimization
+
+The `optim` function will optimize a function. Works very similar to the Solver algorithm in Excel. `optim` takes a function as an argument, so let's create a function.
+
+```{r}
+quadraticFun <- function(a, b, c){
+  function(x) a*x^2 + b*x + c
+}
+
+myQuad <- quadraticFun(a=4, b=-3, c=3)
+plot(myQuad, -10, 10)
+```
+
+## Direct optimization
+
+8 is our initial guess. A good initial guess will speed up conversion.
+
+```{r }
+myResult <- optim(8, myQuad)
+myResult
+```
+
+## Direct optimization
+Default is to minimize. Set the parameter `fnscale` to something negative to convert to a maximization problem.
+
+```{r }
+myOtherQuad <- quadraticFun(-6, 20, -5)
+plot(myOtherQuad, -10, 10)
+myResult <- optim(8, myOtherQuad)
+myResult <- optim(8, myOtherQuad, control = list(fnscale=-1))
+```
+
+## Direct optimization
+
+Direct optimization allows us to create another objective function to maximize, or work with loss distributions for which there isn't yet support in a package like `actuar`. May be used for general purpose optimization problems, e.g. maximize rate of return for various capital allocation methods.
+
+Note that optimization is a general, solved problem. Things like the simplex method already have package solutions in R. You don't need to reinvent the wheel!

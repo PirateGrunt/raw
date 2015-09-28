@@ -1,0 +1,277 @@
+---
+title: "Vectors"
+output:
+  slidy_presentation:
+    duration: 45
+    fig_height: 3
+    fig_width: 6
+  beamer_presentation:
+    fonttheme: professionalfonts
+---
+
+## Introducing vectors
+
+In R, every variable is a vector. Think of a set of cells in a spreadsheet. 
+
+Here, `e` is a vector with `N` values. `X1` is the sequence of integers from 1 through 10 repeated 10 times. 
+
+Vectors can grow and shrink automatically. No need to move cells around on a sheet. No need to copy formulas or change named ranges.
+
+```{r eval=TRUE}
+source("../inst/scripts/BasicScript.R")
+e  <- rnorm(N, mean = 0, sd = 1)
+X1 <- rep(seq(1,10), 10)
+Y  <- B0 + B1 * X1 + e
+```
+
+## Vector properties
+
+* Vectors have one dimension
+* Higher dimensions are possible via matrices and arrays
+* Every element in a vector must be the same type
+* Different types are possible by using a list or a data frame
+* Possible to add metadata via attributes
+
+## Vector construction
+
+Vectors are constructed in one of several ways:
+
+* Return from a function or operation
+    * `seq`, `rep`, `sample`
+* Concatenation
+* Growth by assignment
+
+## `seq`
+
+`seq` is used often to generate a sequence of values. The colon operator `:` is a shortcut for a sequence of integers.
+
+```{r }
+pies = seq(from = 0, by = pi, length.out = 5)
+i <- 1:5
+year = 2000:2004
+```
+
+```{r echo=FALSE}
+library(rblocks)
+i <- 1:5
+block = make_block(i, type = 'vector')
+block
+```
+
+## `rep`
+
+The `rep` function will replicate its input 
+```{r }
+i = rep(pi, 100)
+head(i)
+```
+
+## Concatenation
+
+```{r results='hide'}
+i <- c(1, 2, 3, 4, 5)
+j <- c(6, 7, 8, 9, 10)
+k <- c(i, j)
+l <- c(1:5, 6:10)
+```
+
+```{r echo=FALSE}
+i = c(1, 2, 3, 4, 5)
+j = c(6, 7, 8, 9, 10)
+k = c(i, j)
+block_i = make_block(i, type = 'vector')
+block_j = make_block(j, type = 'vector')
+block_i[1:5] = "red"
+block_j[1:5] = "blue"
+block_k = make_block(c(block_i,block_j), type='vector')
+block_k[1:5] = "red"
+block_k[6:10] <- "blue"
+
+block_i
+block_j
+block_k
+```
+
+## Growth by assignment
+```{r }
+i <- 1:10
+i[30] = pi
+i
+```
+
+## Vector access - by index
+
+Vectors may be accessed by their numeric indices. Remember, ':' is shorthand to generate a sequence.
+
+```{r }
+e[1]
+e[1:4]
+e[c(1,3)]
+```
+
+## Vector access - logical access
+
+Vectors may be accessed logically. This may be done by passing in a logical vector, or a logical expression.
+
+```{r }
+i = 5:9
+i[c(TRUE, FALSE, FALSE, FALSE, TRUE)]
+i[i > 7]
+b = i > 7
+i[b]
+b
+```
+
+## `which`
+
+The `which` function returns indices that match a logical expression.
+
+```{r }
+i <- 10:20
+which(i > 12)
+i[which(i > 12)]
+```
+
+## `sample`
+
+The `sample` function will generate a random sample. Great to use for randomizing a vector.
+
+```{r }
+months <- c("January", "February", "March", "April"
+            , "May", "June", "July", "August"
+            , "September", "October", "November", "December")
+
+set.seed(1234)
+mixedMonths <- sample(months)
+head(mixedMonths)
+```
+
+Get lots of months with the `size` parameter:
+```{r }
+set.seed(1234)
+lotsOfMonths <- sample(months, size = 100, replace = TRUE)
+head(lotsOfMonths)
+```
+
+## `sample` II
+
+Sample may also be used within the indexing of the vector itself:
+
+```{r }
+set.seed(1234)
+moreMonths <- months[sample(1:12, replace=TRUE, size=100)]
+head(moreMonths)
+
+# Cleaner with sample.int
+set.seed(1234)
+evenMoreMonths <- months[sample.int(length(months), size=100, replace=TRUE)]
+head(evenMoreMonths)
+```
+
+## `order`
+
+The function `order` will return the indices of the vector in order.
+
+```{r }
+set.seed(1234)
+x <- c(sample(90:100))
+x
+order(x)
+x[order(x)]
+```
+
+
+## Vector arithmetic
+
+Vectors may be used in arithmetic operations. Y is now a vector with length equal to the longest vector used in the calculation.
+  
+```{r eval=FALSE}
+Y = B0 + B1 * X1 + e
+```
+  
+Question: B0 and B1 are vectors of length 1. X1 and e are vectors of length 100. How are they combined?
+
+
+## Recycling
+
+R will "recycle" vectors until there are enough elements to perform an operation. Everything gets as "long" as the longest vector in the operation. For scalar operations on a vector this doesn't involve any drama. Try the following code:
+
+```{r size='tiny'}
+vector1 = 1:10
+vector2 = 1:5
+scalar = 3
+
+print(vector1 + scalar)
+print(vector2 + scalar)
+print(vector1 + vector2)
+```
+
+## Set theory - Part I
+
+The `%in%` operator will return a logical vector indicating whether or not an element of the first set is contained in the second set.
+
+```{r }
+x <- 1:10
+y <- 5:15
+x %in% y
+```
+
+## Set theory - Part II
+
+```{r }
+?union
+x <- 1900:1910
+y <- 1905:1915
+intersect(x, y)
+setdiff(x, y)
+setequal(x, y)
+```
+
+## Summarization - Part I
+
+```{r eval=FALSE}
+x = 1:50
+sum(x)
+mean(x)
+max(x)
+length(x)
+```
+
+## Vectors 
+
+If you understand vectors- how to create them, how to manipulate them, how to access the elements, you're well on your way to grasping how to handle other objects in R. 
+
+Fundamentally, _everything_ in R is a vector sooner or later.
+
+## Exercise - Vectors
+
+Create a vector of length 10, with years starting from 1980.
+
+Create a vector with values from 1972 to 2012 in increments of four (1972, 1976, 1980, etc.)
+
+Construct the following vectors:
+```{r }
+FirstName <- c("Richard", "James", "Ronald", "Ronald"
+              , "George", "William", "William", "George"
+              , "George", "Barack", "Barack")
+LastName <- c("Nixon", "Carter", "Reagan", "Reagan"
+              , "Bush", "Clinton", "Clinton", "Bush"
+              , "Bush", "Obama", "Obama")
+ElectionYear <- seq(1972, 2012, 4)
+```
+
+* List the last names in alphabetical order
+* List the years in order by first name.
+* Create a vector of years when someone named "George" was elected.
+* How many Georges were elected before 1996?
+* Generate a random sample of 100 presidents.
+
+## Answer
+```{r }
+LastName[order(LastName)]
+ElectionYear[order(FirstName)]
+ElectionYear[FirstName == 'George']
+myLogical <- (FirstName == 'George') & (ElectionYear < 1996)
+length(which(myLogical))
+sum(myLogical)
+```

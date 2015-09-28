@@ -1,0 +1,15 @@
+---
+title: "Vectors & Lists"
+author: "Brian A. Fannin"
+output: pdf_document
+---
+
+length()
+dim()
+nrow()
+ncol()
+names()
+colnames()
+row.names()
+
+This document took inspiration from "Advanced R" by Hadley Wickham.

@@ -1,0 +1,137 @@
+---
+author: "Brian A. Fannin"
+output: slidy_presentation
+duration: 30
+fig_height: 4
+fig_width: 10
+title: "Advanced Modeling"
+---
+
+## Topics
+
+* Logistic regression
+* Clustering
+
+## Logistic regression
+
+* Maps the real numbers to the space between 0 and 1.
+
+$$\frac{e^x}{1 + e^x}$$
+
+Note that x may be (and often will be) a function.
+
+```{r }
+logistic <- function(x){
+  exp(x) / (1 + exp(x))
+}
+```
+
+## What does it look like?
+```{r }
+x <- seq(-10, 10, length.out=500)
+y <- logistic(x)
+plot(x, y, pch=19)
+```
+
+## A few more
+
+```{r }
+y2 <- logistic(-x)
+y3 <- logistic(2*x + 5)
+
+oldPars <- par(mfrow=c(3,1))
+plot(x, y, pch=19)
+plot(x, y2, pch=19)
+plot(x, y3, pch=19)
+par(oldPars)
+```
+
+## Why is this useful?
+
+Allows us to consider binomial cases where the parameter `p` is a function.
+
+* Will a claim close?
+* Will a claimant use an attorney?
+* Will a policyholder renew at a particular premium?
+
+## NFL data set
+
+```{r }
+library(raw)
+data(NFL)
+```
+
+The variable `TODiff` is equal to the visitor's turnovers minus the home team's turnovers. A positive number means the visiting team has more turnovers.
+
+We'll also look at the variable `Opponent1D` which measures the opponent's first downs.
+
+## Logistic Regression
+
+```{r }
+plot(jitter(NFL$TODiff)
+     , jitter(NFL$Win, factor=0.5)
+     , xlab="Turnover difference"
+     , ylab = "Wins")
+```
+
+## Logistic Regression
+
+```{r }
+fit.TODiff = glm(Win ~ TODiff, family=binomial(link="logit"), data=NFL)
+summary(fit.TODiff)
+```
+
+
+## Logistic Regression
+```{r }
+library(boot)
+plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
+curve(inv.logit(coef(fit.TODiff)[1] + coef(fit.TODiff)[2]*x), add=TRUE)
+abline(h=0.5)
+```
+
+## Add more variables
+
+```{r }
+fit.1D <- glm(Win ~ Opponent1D, family=binomial(link="logit"), data=NFL)
+coef(fit.1D)
+deviance(fit.1D)
+
+fit.both <- glm(Win ~ Opponent1D + TODiff, family=binomial(link="logit"), data=NFL)
+coef(fit.both)
+deviance(fit.both)
+
+```
+
+## 
+
+```{r }
+plot(jitter(NFL$Opponent1D), jitter(NFL$Win, factor=0.5), xlab="Opponent first downs", ylab = "Wins")
+curve(inv.logit(coef(fit.1D)[1] + coef(fit.1D)[2]*x), add=TRUE)
+abline(h=0.5)
+```
+
+## Assess your models
+
+* Compare residual deviance to null deviance for competing models. 
+* RMSE, SSE may be used to assess how well a model works. 
+* Akaike Information Criteria (AIC) is proportional to the likelihood function. Also popular.
+* Compare results for test and training data sets.
+
+```{r eval=FALSE}
+fit.TODiff$null.deviance
+fit.TODiff$deviance
+fit.1D$deviance
+fit.both$deviance
+```
+
+```{r echo=FALSE}
+fit.TODiff$null.deviance
+fit.TODiff$deviance
+fit.1D$deviance
+fit.both$deviance
+```
+
+## Clustering
+
+Observe positions of data elements in n-dimensional space. Do observations tend to cluster in groups?

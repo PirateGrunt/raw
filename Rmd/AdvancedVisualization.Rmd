@@ -1,0 +1,135 @@
+---
+title: "Advanced Visualization"
+output: slidy_presentation
+---
+
+## Topics
+
+* ggplot2
+* Maps
+
+## ggplot2
+
+ggplot2 developed by Hadley Wickham, based on the "grammar of graphics"
+  
+Particularly well suited for multi-dimensional, multivariate analysis.
+
+Requires 3 things:
+
+1. Data
+2. Aesthetics
+3. Layers
+
+## Data
+
+```{r }
+library(raw)
+data(RegionExperience)
+library(ggplot2)
+
+basePlot <- ggplot(RegionExperience)
+class(basePlot)
+```
+
+## Aesthetics
+
+Aesthetics are anything visible on the plot. Added with the `aes` function. Data will be mapped to visual elements.
+
+```{r }
+basePlot <- basePlot + aes(x = PolicyYear, y = NumClaims, group=Region, color=Region, fill=Region)
+```
+
+## Adding layers
+
+The `geom_*` functions add geometric shapes. 
+
+```{r }
+p <- basePlot + geom_line()
+p
+```
+
+## Adding layers
+
+```{r }
+p <- basePlot + geom_point()
+p
+```
+
+## Nothing wrong with adding two layers
+
+```{r }
+p <- basePlot + geom_point() + geom_line()
+p
+```
+
+## Adding layers
+
+```{r }
+p <- basePlot + geom_bar(stat="identity")
+p
+```
+
+Here `stat` is a statistical transformation.
+
+## One step
+
+Typically we don't do this in steps.
+
+```{r }
+p <- ggplot(RegionExperience, aes(x = PolicyYear, y = NumClaims, group=Region, color=Region)) + geom_line()
+p
+```
+
+## Facets
+```{r }
+p <- basePlot + geom_line() + facet_wrap(~ Region)
+p
+```
+
+## Facets
+
+That plot was a bit boring.
+
+```{r }
+data(StateExperience)
+p = ggplot(StateExperience, aes(x = PolicyYear, y = NumClaims, color=Fullname)) + geom_point() + facet_wrap(~ Region)
+p
+```
+
+## 
+```{r eval=FALSE}
+p <- ggplot(subset(StateExperience, Region == "South"), aes(x = PolicyYear, y = NumClaims, label=Postal))
+p <- p + geom_point() + facet_wrap(~ Postal)
+p
+```
+
+## Maps!
+```{r }
+library(maps)
+map('state')
+```
+
+## Hurricanes
+```{r }
+data(Hurricane)
+ 
+dfKatrina = subset(Hurricane, Name == 'KATRINA')
+dfKatrina = dfKatrina[dfKatrina$Year == max(dfKatrina$Year), ]
+
+ 
+dfHugo = subset(Hurricane, Name == 'HUGO')
+dfHugo = dfHugo[dfHugo$Year == max(dfHugo$Year), ]
+ 
+dfDonna = Hurricane[Hurricane$Name == 'DONNA', ]
+dfDonna = dfDonna[dfDonna$Year == max(dfDonna$Year), ]
+```
+
+## Hurricanes
+```{r }
+map('state')
+points(dfKatrina$Longitude, dfKatrina$Latitude, pch=19, col = 'red')
+points(dfHugo$Longitude, dfHugo$Latitude, pch = 19, col = 'blue')
+points(dfDonna$Longitude, dfDonna$Latitude, pch = 19, col = 'green')
+```
+
+## Choropleths
