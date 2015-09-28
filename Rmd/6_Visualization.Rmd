@@ -47,7 +47,7 @@ Open your first script.
 
 ## A basic scatter plot
 ```{r }
-source("../inst/scripts/BasicScript.R")
+source("../scripts/BasicScript.R")
 plot(X1, Y, pch=19)
 ```
 

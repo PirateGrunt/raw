@@ -47,28 +47,28 @@ R is a programming framework designed by and for statisticians. R is ...
 ## First, there was S
 
 ```{r eval=FALSE, echo=FALSE}
-![I hope theres an image here](../figure/R.jpg)
+![I hope theres an image here](images/R.jpg)
 ```
-<img src="../figure/R.jpg" alt="Drawing" style="width: 400px;"/>
+<img src="images/R.jpg" alt="Drawing" style="width: 400px;"/>
 
 In the alphabet, R comes before S. In software, S comes before R. S was developed at Bell Labs by Paul Chambers and some others back in the late '70s. Sweeping changes by 1988. Further changes in 1992.
 
 ## And then there was R
 
-![RossAndRobert](../figure/RossAndRobert.png)
+![RossAndRobert](images/RossAndRobert.png)
 
 R was created by Ross Ihaka and Robert Gentleman as an open source alternative to S. First release in 1993.
 
 
 ## Nearly 40 years of development
 
-![width=0.27](../figure/NewSlanguage.jpg)
-![width=0.27](../figure/StatisticalModelsinS.jpg)
-![width=0.27](../figure/Soda.jpg)
+![width=0.27](images/NewSlanguage.jpg)
+![width=0.27](images/StatisticalModelsinS.jpg)
+![width=0.27](images/Soda.jpg)
 
 ## R package growth
 
-![mojo](../figure/rPackages.jpg)
+![mojo](images/rPackages.jpg)
 
 
 ## Actuarial R packages
@@ -85,9 +85,9 @@ Many articles in Variance and other publications include R code.
 
 ## Books about R for actuaries!
 
-![some text](../figure/PredictiveModeling.jpg)
-![some text](../figure/ComputationalActuarialScience.jpg)
-![some text](../figure/RegressionModeling.jpg)
+![some text](images/PredictiveModeling.jpg)
+![some text](images/ComputationalActuarialScience.jpg)
+![some text](images/RegressionModeling.jpg)
 
 
 ## What's RStudio?

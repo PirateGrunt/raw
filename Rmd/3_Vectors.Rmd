@@ -18,7 +18,7 @@ Here, `e` is a vector with `N` values. `X1` is the sequence of integers from 1 t
 Vectors can grow and shrink automatically. No need to move cells around on a sheet. No need to copy formulas or change named ranges.
 
 ```{r eval=TRUE}
-source("../inst/scripts/BasicScript.R")
+source("../scripts/BasicScript.R")
 e  <- rnorm(N, mean = 0, sd = 1)
 X1 <- rep(seq(1,10), 10)
 Y  <- B0 + B1 * X1 + e

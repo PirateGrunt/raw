@@ -568,7 +568,7 @@ df = sqlQuery(myChannel, "SELECT stuff FROM myTable")
 
 ## Read some data
 ```{r eval=TRUE}
-df = read.csv("../data-raw/StateData.csv")
+df = read.csv("../data/StateData.csv")
 ```
 
 ```{r eval=FALSE}
