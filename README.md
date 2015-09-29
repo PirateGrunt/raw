@@ -23,10 +23,13 @@ Item | Time          | Topic                  |	Instructor
      | 4:15 - 5:00   | Day one recap          | All
 
 ## Tuesday		
-10  8:00 - 8:45	Linear models	Adam
-11  8:45 - 9:30	Intro to GLMs	Adam
-12  9:30 - 10:15	Advanced Modeling	Brian
-   10:15 - 10:30	Break	
-13 10:30 - 11:15	Advanced topics	Kevin
-14 11:15 - 11:30	The R community	All
-15 11:30 - 12:00	Outstanding questions	All
+
+Item | Time          | Topic                  |	Instructor  
+---- | ------------- | ---------------------- | ----------  
+10   |  8:00 - 8:45  |	Linear models         |	Adam
+11   | 8:45 - 9:30   |	Intro to GLMs         |	Adam
+12   |  9:30 - 10:15 |	Advanced Modeling     |	Brian
+     | 10:15 - 10:30 |	Break 	              | 
+13   | 10:30 - 11:15 |	Advanced topics       |	Kevin
+14   | 11:15 - 11:30 |	The R community       |	All
+15   | 11:30 - 12:00 |	Outstanding questions |	All
