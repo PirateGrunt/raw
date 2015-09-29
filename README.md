@@ -3,14 +3,14 @@ raw - R Actuarial Workshops
 
 Instruction materials, data and source code for CAS R workshops. 
 
-Day/Time	Topic	Instructor
-
-Monday		
- 1  8:00 - 8:15	Introductions	All
- 2  8:15 - 9:00	Getting started	Adam
- 3  9:00 - 9:45	Vectors	Brian
- 4  9:45 - 10:30	Data	Kevin
-   10:30 - 10:45	Break	
+## Monday		
+Item | Time | Topic |	Instructor  
+--- | ---- | ----- |  
+ 1 | 8:00 - 8:15	| Introductions	| All
+ 2 |  8:15 - 9:00 | Getting started |	Adam
+ 3 | 9:00 - 9:45 |	Vectors	| Brian
+ 4 | 9:45 - 10:30 |	Data |	Kevin
+   | 10:30 - 10:45 |	Break	|
  5 10:45 - 11:30	Loss Distributions	Adam
  6 11:30 - 12:15	Visualization	Adam
    12:15 - 1:15	Lunch	
