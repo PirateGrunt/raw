@@ -1,1 +1,29 @@
+ALR Prep Notes
+This is not necessarily what I am going to share . . . just studying up
+
+
+Different types of regression
+linear
+polynomial
+piecewise
+robust
+multiple
+non-linear
+non-parametric
+
+Linear regression follows the form y = a + bx
+
+Maximum likelihood estimation: "given the data. and having selected a linear model, we want to find the values of the slope and intercept that make the data most likely" (Crawley 389).
+
+residual: d = y less y hat
+
+Important assumptions in linear modeling
+variance of y is constant
+x is measured correctly
+residuals are normally distributed
+
+TODO Prove that "the sum of the residuals will always be zero"
+TODO Prove that the best fit line always passes through x bar, y bar
+
+degrees of freedom is assigned as n - k where n is number of observations and k is number of estimated parameters
 
