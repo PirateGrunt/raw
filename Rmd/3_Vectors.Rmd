@@ -11,33 +11,33 @@ output:
 
 ## Introducing vectors
 
-In R, every variable is a vector. Think of a set of cells in a spreadsheet. 
+In R, every variable is a vector. Think of a set of contiguous cells in a spreadsheet. 
 
-Here, `e` is a vector with `N` values. `X1` is the sequence of integers from 1 through 10 repeated 10 times. 
+```{r eval=TRUE}
+set.seed(1234)
+e  <- rnorm(100)
+X1 <- 1:10
+```
+
+Here, `e` is a vector with `N` values. `X1` is the sequence of integers from 1 through 10. 
 
 Vectors can grow and shrink automatically. No need to move cells around on a sheet. No need to copy formulas or change named ranges.
 
-```{r eval=TRUE}
-source("../scripts/BasicScript.R")
-e  <- rnorm(N, mean = 0, sd = 1)
-X1 <- rep(seq(1,10), 10)
-Y  <- B0 + B1 * X1 + e
-```
-
 ## Vector properties
 
+* Every element in a vector must be the same type. 
+    * R will change data types if they are not!
+    * Different types are possible by using a list or a data frame (later)
 * Vectors have one dimension
-* Higher dimensions are possible via matrices and arrays
-* Every element in a vector must be the same type
-* Different types are possible by using a list or a data frame
-* Possible to add metadata via attributes
+    * Higher dimensions are possible via matrices and arrays
+* Possible to add metadata (like names) via attributes
 
 ## Vector construction
 
 Vectors are constructed in one of several ways:
 
 * Return from a function or operation
-    * `seq`, `rep`, `sample`
+    * `seq`, `rep`, `sample`, `rnorm`,  etc.
 * Concatenation
 * Growth by assignment
 
@@ -68,6 +68,8 @@ head(i)
 
 ## Concatenation
 
+The `c()` function will concatenate values.
+
 ```{r results='hide'}
 i <- c(1, 2, 3, 4, 5)
 j <- c(6, 7, 8, 9, 10)
@@ -89,10 +91,15 @@ block_k[6:10] <- "blue"
 
 block_i
 block_j
+
+
 block_k
 ```
 
 ## Growth by assignment
+
+Assigning a value beyond a vectors limits will automatically grow the vector. Interim values are assigned `NA`.
+
 ```{r }
 i <- 1:10
 i[30] = pi
@@ -104,6 +111,8 @@ i
 Vectors may be accessed by their numeric indices. Remember, ':' is shorthand to generate a sequence.
 
 ```{r }
+set.seed(1234)
+e <- rnorm(100)
 e[1]
 e[1:4]
 e[c(1,3)]
@@ -118,8 +127,8 @@ i = 5:9
 i[c(TRUE, FALSE, FALSE, FALSE, TRUE)]
 i[i > 7]
 b = i > 7
-i[b]
 b
+i[b]
 ```
 
 ## `which`
@@ -127,7 +136,7 @@ b
 The `which` function returns indices that match a logical expression.
 
 ```{r }
-i <- 10:20
+i <- 11:20
 which(i > 12)
 i[which(i > 12)]
 ```
@@ -174,7 +183,7 @@ The function `order` will return the indices of the vector in order.
 
 ```{r }
 set.seed(1234)
-x <- c(sample(90:100))
+x <- sample(1:10)
 x
 order(x)
 x[order(x)]
@@ -183,13 +192,27 @@ x[order(x)]
 
 ## Vector arithmetic
 
-Vectors may be used in arithmetic operations. Y is now a vector with length equal to the longest vector used in the calculation.
+Vectors may be used in arithmetic operations. 
   
 ```{r eval=FALSE}
-Y = B0 + B1 * X1 + e
+B0 <- 5
+B1 <- 1.5
+
+set.seed(1234)
+
+e <- rnorm(N, mean = 0, sd = 1)
+X1 <- rep(seq(1,10),10)
+
+Y <- B0 + B1 * X1 + e
 ```
-  
-Question: B0 and B1 are vectors of length 1. X1 and e are vectors of length 100. How are they combined?
+
+Y is now a vector with length equal to the longest vector used in the calculation.
+
+Question: B0 and B1 are vectors of length 1. 
+
+X1 and e are vectors of length 100. 
+
+How are they combined?
 
 
 ## Recycling
@@ -218,16 +241,28 @@ x %in% y
 
 ## Set theory - Part II
 
-```{r }
+* `union`
+* `intersect`
+* `setdiff`
+* `setequal`
+* `is.element`
+
+```{r eval = FALSE}
 ?union
+```
+
+```{r }
 x <- 1900:1910
 y <- 1905:1915
 intersect(x, y)
 setdiff(x, y)
 setequal(x, y)
+is.element(1941, y)
 ```
 
-## Summarization - Part I
+## Summarization
+
+Loads of functions take vector input and return scalar output. Translation of a large sest of numbers into a few, informative values is one of the cornerstones of statistics.
 
 ```{r eval=FALSE}
 x = 1:50
@@ -235,13 +270,14 @@ sum(x)
 mean(x)
 max(x)
 length(x)
+var(x)
 ```
 
 ## Vectors 
 
-If you understand vectors- how to create them, how to manipulate them, how to access the elements, you're well on your way to grasping how to handle other objects in R. 
+Vectors are like atoms. If you understand vectors- how to create them, how to manipulate them, how to access the elements, you're well on your way to grasping how to handle other objects in R. 
 
-Fundamentally, _everything_ in R is a vector sooner or later.
+Vectors may combine to form molecules, but fundamentally, _everything_ in R is a vector.
 
 ## Exercise - Vectors
 
@@ -249,7 +285,7 @@ Create a vector of length 10, with years starting from 1980.
 
 Create a vector with values from 1972 to 2012 in increments of four (1972, 1976, 1980, etc.)
 
-Construct the following vectors:
+Construct the following vectors (feel free to use the `VectorQuestion.R` script):
 ```{r }
 FirstName <- c("Richard", "James", "Ronald", "Ronald"
               , "George", "William", "William", "George"
@@ -274,4 +310,6 @@ ElectionYear[FirstName == 'George']
 myLogical <- (FirstName == 'George') & (ElectionYear < 1996)
 length(which(myLogical))
 sum(myLogical)
+
+sample(LastName, 100, replace = TRUE)
 ```
