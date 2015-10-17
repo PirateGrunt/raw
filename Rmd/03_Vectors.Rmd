@@ -310,6 +310,9 @@ ElectionYear[FirstName == 'George']
 myLogical <- (FirstName == 'George') & (ElectionYear < 1996)
 length(which(myLogical))
 sum(myLogical)
+<<<<<<< HEAD:Rmd/3_Vectors.Rmd
 
 sample(LastName, 100, replace = TRUE)
+```
+=======
 ```
