@@ -1,11 +1,11 @@
 ---
-title: "Close"
+title: "Outstanding Questions"
 output:
   slidy_presentation:
     duration: 15
 ---
 
-## Stuff I did't talk about
+## Stuff we did't talk about
 
 * Environments
 * Construction of S3, S4 and R5 objects

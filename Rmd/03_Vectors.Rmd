@@ -1,5 +1,5 @@
 ---
-title: "Vectors"
+title: "Vectors and Lists"
 output:
   slidy_presentation:
     duration: 45
@@ -310,9 +310,104 @@ ElectionYear[FirstName == 'George']
 myLogical <- (FirstName == 'George') & (ElectionYear < 1996)
 length(which(myLogical))
 sum(myLogical)
-<<<<<<< HEAD:Rmd/3_Vectors.Rmd
 
 sample(LastName, 100, replace = TRUE)
 ```
-=======
+
+## Lists
+
+Lists have data of arbitrary complexity. Any type, any length. Note the new `[[ ]]` double bracket operator.
+
+```{r }
+x <- list()
+typeof(x)
+x[[1]] <- c("Hello", "there", "this", "is", "a", "list")
+x[[2]] <- c(pi, exp(1))
+summary(x)
+str(x)
 ```
+
+## Lists
+
+```{r echo=FALSE}
+make_block(x)
+```
+
+## [ vs. [[
+
+`[` is (almost always) used to set and return an element of the same type as the _containing_ object.
+
+`[[` is used to set and return an element of the same type as the _contained_ object.
+
+This is why we use `[[` to set an item in a list. 
+
+Don't worry if this doesn't make sense yet. It's difficult for most R programmers.
+
+## Recursive storage
+
+Lists can contain other lists as elements.
+
+```{r }
+y <- list()
+y[[1]] <- "Lou Reed"
+y[[2]] <- 45
+
+x[[3]] <- y
+```
+
+```{r echo=FALSE}
+make_block(x)
+```
+
+## List metadata
+
+Again, typically names. However, these become very important for lists. Names are handled with the special `$` operator. `$` permits access to a single element. (A single element of a list can be a vector!)
+
+```{r}
+y[[1]] <- c("Lou Reed", "Patti Smith")
+y[[2]] <- c(45, 63)
+
+names(y) <- c("Artist", "Age")
+
+y$Artist
+y$Age
+```
+
+## `lapply`
+
+`lapply` is one of many functions which may be applied to lists. Can be difficult at first, but very powerful. Applies the same function to each element of a list.
+
+```{r }
+myList <- list(firstVector = c(1:10)
+               , secondVector = c(89, 56, 84, 298, 56)
+               , thirdVector = c(7,3,5,6,2,4,2))
+lapply(myList, mean)
+lapply(myList, median)
+lapply(myList, sum)
+```
+
+## Why `lapply`? 
+
+Two reasons:
+
+1. It's expressive. A loop is a lot of code which does little to clarify intent. `lapply` indicates that we want to apply the same function to each element of a list. Think of a formula that exists as a column in a spreadsheet.
+2. It's easier to type at an interactive console. In its very early days, `S` was fully interactive. Typing a `for` loop at the console is a tedius and unnecessary task.
+
+## Summary functions
+
+Because lists are arbitrary, we can't expect functions like `sum` or `mean` to work. Use `lapply` to summarize particular list elements.
+
+## List Questions
+
+* Create a list with two elements. Have the first element be a vector with 100 numbers. Have the second element be a vector with 100 dates. Give your list the names: "Claim" and "AccidentDate".
+* What is the average value of a claim?
+
+## Answers
+
+```{r }
+myList <- list()
+myList$Claims <- rlnorm(100, log(10000))
+myList$AccidentDate <- sample(seq.Date(as.Date('2000-01-01'), as.Date('2009-12-31'), length.out = 1000), 100)
+mean(myList$Claims)
+```
+

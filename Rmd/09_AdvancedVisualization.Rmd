@@ -17,106 +17,150 @@ Particularly well suited for multi-dimensional, multivariate analysis.
 Requires 3 things:
 
 1. Data
-2. Aesthetics
-3. Layers
+2. Mapping
+2. Layers
 
 ## Data
 
 ```{r }
-library(raw)
-data(RegionExperience)
+set.seed(1234)
+N <- 30
+df <- data.frame(Cohort = c(rep("F", N), rep("M", N))
+                 , weight = c(rnorm(N, 150, 10), rnorm(N, 172, 10))
+                 , height = c(rnorm(N, 64, 10), rnorm(N, 70, 10))
+)
+
 library(ggplot2)
-
-basePlot <- ggplot(RegionExperience)
-class(basePlot)
+basePlot <- ggplot(df)
 ```
 
-## Aesthetics
+<div class="notes">
+Notice that we assigned the result of the function call to an object called `basePlot`. This means we don't automatically get output. Take a bit of time to have a look at what's contained in the `basePlot` object. 
+</div>
 
-Aesthetics are anything visible on the plot. Added with the `aes` function. Data will be mapped to visual elements.
+## Mapping
+
+Mappings bind data to visual elements. These are added with the `ggplot2::aes` function. We add the mapping to the plot object with the addition operator.
 
 ```{r }
-basePlot <- basePlot + aes(x = PolicyYear, y = NumClaims, group=Region, color=Region, fill=Region)
+basePlot <- basePlot + aes(x = height, y = weight)
+```
+
+We can map other aesthetic elements, as well. We'll also map the color of the graphic elements to the `Cohort` data element.
+
+```{r}
+basePlot <- basePlot + aes(color = Cohort)
 ```
 
 ## Adding layers
 
-The `geom_*` functions add geometric shapes. 
+We're almost there. Although we have data and we've mapped to elements of a coordinate system, we haven't specified what the visual elements should be. The `geom_*` family of functions add geometric shapes. 
 
 ```{r }
-p <- basePlot + geom_line()
-p
+basePlot <- basePlot + geom_point()
+basePlot
 ```
 
-## Adding layers
+## Typical geoms
 
-```{r }
-p <- basePlot + geom_point()
-p
-```
+* geom_line
+* geom_point
+* geom_bar
+* geom_histogram
+* geom_density
+* geom_boxplot
 
-## Nothing wrong with adding two layers
-
-```{r }
-p <- basePlot + geom_point() + geom_line()
-p
-```
-
-## Adding layers
-
-```{r }
-p <- basePlot + geom_bar(stat="identity")
-p
-```
-
-Here `stat` is a statistical transformation.
+Lots of others for things like area plots, step functions, dotplots, violin plots, errorbars, etc.
 
 ## One step
 
 Typically we don't do this in steps.
 
 ```{r }
-p <- ggplot(RegionExperience, aes(x = PolicyYear, y = NumClaims, group=Region, color=Region)) + geom_line()
-p
+plt <- ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point()
+plt
+```
+
+## Nothing wrong with adding two layers
+
+```{r }
+ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point() + geom_rug()
+ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point() + geom_density2d()
 ```
 
 ## Facets
-```{r }
-p <- basePlot + geom_line() + facet_wrap(~ Region)
-p
+
+Facets split the data into groups and draws a different plot for each group.
+
+```{r}
+plt <- ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point() + facet_wrap(~ Cohort)
+plt
 ```
 
-## Facets
+## Statistical transformations
 
-That plot was a bit boring.
+We can also add all manner of statistical smoothers.
 
-```{r }
-data(StateExperience)
-p = ggplot(StateExperience, aes(x = PolicyYear, y = NumClaims, color=Fullname)) + geom_point() + facet_wrap(~ Region)
-p
+```{r}
+plt <- ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point() + geom_smooth(method = "lm")
+plt
 ```
 
-## 
-```{r eval=FALSE}
-p <- ggplot(subset(StateExperience, Region == "South"), aes(x = PolicyYear, y = NumClaims, label=Postal))
-p <- p + geom_point() + facet_wrap(~ Postal)
-p
+See `? stat_smooth` for more on smoothers.
+
+## Your turn
+
+1. Create a scatter plot for policy year and number of claims
+2. Color each point based on region
+2. Add a linear smoother. Which region is showing the greatest increase in claims?
+4. Form the policy frequency by taking the ratio of claims to policies. Plot this.
+
+Extra credit:
+
+1. Use the state data to create a time series number of claims. Facet by region.
+
+## Answers
+
+```{r}
+library(raw)
+data("RegionExperience")
+plt1 <- ggplot(RegionExperience, aes(x = PolicyYear, y = NumClaims)) + geom_point()
+plt1
+
+plt2 <- plt1 + aes(color = Region)
+plt2
+
+plt3 <- plt2 + stat_smooth(method = "lm")
+plt3
+
+RegionExperience$Frequency <- with(RegionExperience, NumClaims / NumPolicies)
+
+plt4 <- ggplot(RegionExperience, aes(x = PolicyYear, y = Frequency, color = Region)) + geom_point() + geom_line() + stat_smooth(method = lm)
+plt4
+```
+
+```{r}
+data("StateExperience")
+pltExtra <- ggplot(StateExperience, aes(x = PolicyYear, y = NumClaims, color = Postal)) + geom_point() + geom_line()
+pltExtra + facet_wrap(~ Region)
 ```
 
 ## Maps!
+
 ```{r }
-library(maps)
+library(maps, quietly = TRUE, verbose = FALSE, warn.conflicts = FALSE)
 map('state')
 ```
 
 ## Hurricanes
+
 ```{r }
+library(raw)
 data(Hurricane)
  
 dfKatrina = subset(Hurricane, Name == 'KATRINA')
 dfKatrina = dfKatrina[dfKatrina$Year == max(dfKatrina$Year), ]
 
- 
 dfHugo = subset(Hurricane, Name == 'HUGO')
 dfHugo = dfHugo[dfHugo$Year == max(dfHugo$Year), ]
  
@@ -125,6 +169,7 @@ dfDonna = dfDonna[dfDonna$Year == max(dfDonna$Year), ]
 ```
 
 ## Hurricanes
+
 ```{r }
 map('state')
 points(dfKatrina$Longitude, dfKatrina$Latitude, pch=19, col = 'red')
@@ -132,4 +177,52 @@ points(dfHugo$Longitude, dfHugo$Latitude, pch = 19, col = 'blue')
 points(dfDonna$Longitude, dfDonna$Latitude, pch = 19, col = 'green')
 ```
 
-## Choropleths
+## Choropleths the easy way
+
+```{r warning=FALSE}
+library(choroplethr)
+library(choroplethrMaps)
+
+mapData <- subset(StateExperience, PolicyYear == 2010)
+mapData$value <- mapData$NumClaims
+mapData$region <- mapData$Fullname
+state_choropleth(mapData)
+```
+
+## Choropleths the harder way
+
+```{r}
+states_map <- map_data("state")
+
+plt <- ggplot(subset(StateExperience, PolicyYear == 2010), aes(map_id = Fullname))
+plt <- plt + geom_map(aes(fill = NumClaims), color = "black", map = states_map)
+plt <- plt + expand_limits(x = states_map$long, y = states_map$lat)
+plt <- plt + coord_map()
+plt
+```
+
+## Choropleths the really hard way
+
+```{r }
+plt <- ggplot(StateExperience, aes(map_id = Fullname))
+plt <- plt + geom_map(aes(fill = NumClaims), color = "black", map = states_map)
+plt <- plt + expand_limits(x = states_map$long, y = states_map$lat)
+plt <- plt + facet_wrap( ~ PolicyYear)
+plt <- plt + coord_map()
+plt
+
+```
+
+
+## Summary
+
+* `ggplot2` is difficult at first, but will repay your investment.
+* Works very well with grouped data to color/facet points.
+* Fine-tuning things like axis labels can be a headache, but will get easier.
+* Maps tend to be a killer viz. They use the same point and area logic as any other graphic.
+
+## Reference
+
+* http://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+* R Graphics Cookbook by Winston Chang
+* http://vita.had.co.nz/papers/layered-grammar.html

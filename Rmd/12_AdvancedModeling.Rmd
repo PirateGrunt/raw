@@ -7,131 +7,84 @@ fig_width: 10
 title: "Advanced Modeling"
 ---
 
-## Topics
+---
 
-* Logistic regression
-* Clustering
+Continuous, or nearly continuous*  data models very well. However, actuaries often work with "grouped" data. We can map these to integers, but the numbers convey no meaning.
 
-## Logistic regression
+* State
+* Agency
+* Line of business
 
-* Maps the real numbers to the space between 0 and 1.
+(integer, but can take many values, e.g. Poisson)
 
-$$\frac{e^x}{1 + e^x}$$
-
-Note that x may be (and often will be) a function.
-
-```{r }
-logistic <- function(x){
-  exp(x) / (1 + exp(x))
-}
-```
-
-## What does it look like?
-```{r }
-x <- seq(-10, 10, length.out=500)
-y <- logistic(x)
-plot(x, y, pch=19)
-```
-
-## A few more
+# Quick model
 
 ```{r }
-y2 <- logistic(-x)
-y3 <- logistic(2*x + 5)
+set.seed(1234)
+N <- 100
+x <- exp(rnorm(N, log(1000)))
+x <- rnorm(N, 1000, 300)
+link <- 1.5
 
-oldPars <- par(mfrow=c(3,1))
-plot(x, y, pch=19)
-plot(x, y2, pch=19)
-plot(x, y3, pch=19)
-par(oldPars)
+# scale and center around 1.0. Use an inverse logit function to scale from 
+# random normal -> [0,1]
+groupVals <- rnorm(5)
+groupVals <- exp(groupVals) / (exp(groupVals) + 1)
+groupVals <- groupVals - 0.5
+
+names(groupVals) <- c("red", "blue", "green", "yellow", "orange")
+e <- rnorm(length(x), sqrt(mean(x)), 2 * sqrt(mean(x)))
+b2 <- sample(groupVals, length(x), replace=TRUE)
+
+y <- b1 * x + b2 * x + e
+df <- data.frame(y = y
+                 , x = x
+                 , b1 = b1
+                 , group = names(b2)
+                 , groupVal = b2
+                 , e = e 
+                 , Link = y / x
+                 , stringsAsFactors = FALSE)
+
+plot(y ~ x, data=df, col=df$group, pch=20)
+
+fit1 <- lm(y ~ x + group, data = df)
+summary(fit1)
+
+fit2 <- lm(y ~ 0 + x + group, data = df)
+summary(fit2)
+
+fit3 <- lm(y ~ 0 + x:group, data = df)
+summary(fit3)
+
+# Plotting the fit lines is an exercise for the student.
 ```
 
-## Why is this useful?
+# One group at a time
 
-Allows us to consider binomial cases where the parameter `p` is a function.
-
-* Will a claim close?
-* Will a claimant use an attorney?
-* Will a policyholder renew at a particular premium?
-
-## NFL data set
 
 ```{r }
-library(raw)
-data(NFL)
+lstSplit <- split(df, df$group)
+fits <- lapply(lstSplit, function(z){
+  fit <- lm(y ~ 0 + x, data = z)
+  fit
+})
+
+summary(fits[[1]])
+summary(fits[[2]])
+summary(fits[[3]])
 ```
 
-The variable `TODiff` is equal to the visitor's turnovers minus the home team's turnovers. A positive number means the visiting team has more turnovers.
+##
 
-We'll also look at the variable `Opponent1D` which measures the opponent's first downs.
+Grouped data is separated data.
 
-## Logistic Regression
+Using grouped information is like playing a piano. There are no notes between the keys.
 
-```{r }
-plot(jitter(NFL$TODiff)
-     , jitter(NFL$Win, factor=0.5)
-     , xlab="Turnover difference"
-     , ylab = "Wins")
-```
-
-## Logistic Regression
-
-```{r }
-fit.TODiff = glm(Win ~ TODiff, family=binomial(link="logit"), data=NFL)
-summary(fit.TODiff)
-```
+Using a hierarchical model is like slide guitar.
 
 
-## Logistic Regression
-```{r }
-library(boot)
-plot(jitter(NFL$TODiff), jitter(NFL$Win, factor=0.5), xlab="Turnover difference", ylab = "Wins")
-curve(inv.logit(coef(fit.TODiff)[1] + coef(fit.TODiff)[2]*x), add=TRUE)
-abline(h=0.5)
-```
 
-## Add more variables
+## See also:
 
-```{r }
-fit.1D <- glm(Win ~ Opponent1D, family=binomial(link="logit"), data=NFL)
-coef(fit.1D)
-deviance(fit.1D)
-
-fit.both <- glm(Win ~ Opponent1D + TODiff, family=binomial(link="logit"), data=NFL)
-coef(fit.both)
-deviance(fit.both)
-
-```
-
-## 
-
-```{r }
-plot(jitter(NFL$Opponent1D), jitter(NFL$Win, factor=0.5), xlab="Opponent first downs", ylab = "Wins")
-curve(inv.logit(coef(fit.1D)[1] + coef(fit.1D)[2]*x), add=TRUE)
-abline(h=0.5)
-```
-
-## Assess your models
-
-* Compare residual deviance to null deviance for competing models. 
-* RMSE, SSE may be used to assess how well a model works. 
-* Akaike Information Criteria (AIC) is proportional to the likelihood function. Also popular.
-* Compare results for test and training data sets.
-
-```{r eval=FALSE}
-fit.TODiff$null.deviance
-fit.TODiff$deviance
-fit.1D$deviance
-fit.both$deviance
-```
-
-```{r echo=FALSE}
-fit.TODiff$null.deviance
-fit.TODiff$deviance
-fit.1D$deviance
-fit.both$deviance
-```
-
-## Clustering
-
-Observe positions of data elements in n-dimensional space. Do observations tend to cluster in groups?
+* Guszcza's hierarchical growth model paper

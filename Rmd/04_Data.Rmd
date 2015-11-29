@@ -567,7 +567,7 @@ df = sqlQuery(myChannel, "SELECT stuff FROM myTable")
 ```
 
 ## Read some data
-```{r eval=TRUE}
+```{r eval=FALSE}
 df = read.csv("../data/StateData.csv")
 ```
 
