@@ -277,8 +277,8 @@ dotchart(dfByState$EarnedPremium, dfByState$State, pch=19)
 ## myChannel = odbcConnect(dsn = "MyDSN_Name")
 ## df = sqlQuery(myChannel, "SELECT stuff FROM myTable")
 
-## ----eval=TRUE-----------------------------------------------------------
-df = read.csv("../data/StateData.csv")
+## ----eval=FALSE----------------------------------------------------------
+## df = read.csv("../data/StateData.csv")
 
 ## ----eval=FALSE----------------------------------------------------------
 ## View(df)
