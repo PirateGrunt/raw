@@ -15,6 +15,7 @@ SCRIPT_OUT = $(patsubst $(RMD_DIR)/%.Rmd,$(SCRIPT_DIR)/%.R,$(RMD_SOURCE))
 
 KNIT_SLIDE = Rscript -e "rmarkdown::render('$<', output_dir = '$(HTML_DIR)')"
 KNIT_HANDOUT = Rscript -e "rmarkdown::render('$<', output_format = 'word_document')"
+KNIT_BEAMER = Rscript -e "rmarkdown::render('$<', output_dir = '$(HTML_DIR)')"
 
 all: slides handouts scripts
 
