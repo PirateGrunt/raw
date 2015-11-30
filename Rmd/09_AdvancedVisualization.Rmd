@@ -1,6 +1,8 @@
 ---
 title: "Advanced Visualization"
-output: slidy_presentation
+output: 
+  slidy_presentation:
+    duration: 45
 ---
 
 ## Topics
@@ -18,7 +20,7 @@ Requires 3 things:
 
 1. Data
 2. Mapping
-2. Layers
+2. Geometric layers
 
 ## Data
 
@@ -108,6 +110,30 @@ plt
 
 See `? stat_smooth` for more on smoothers.
 
+## Scales
+
+Scales control how things render on the plot. We must scale our numbers to the plotting device (typically a section of a computer screen.) We can also map things like color and axes to data values and control formatting.
+
+```{r}
+plt + scale_x_continuous(labels = scales::format_format(nsmall = 2))
+plt + scale_x_continuous(labels = scales::unit_format(unit = "in", nsmall = 2))
+```
+
+_Very_ detailed topic, particularly when we start talking about color. Your specific problem will likely require a bit of research and experimentation. StackOverflow.com is your friend.
+
+## Other visual elements
+
+Non-data elements are things like labels. Here's a sample of a few:
+
+* `xlab()`, `ylab()` -> `plt + ylab("This is my y label") + xlab("Here is an x label")`
+* `ggtitle()` ->  `plt + ggtitle("Title of my plot")`
+* `labs()` -> `plt + labs(x = "x-axis title", title = "My title")`
+* `theme_bw()`, `theme_minimal()` -> `plt + theme_bw()`
+* The `theme()` function gives complete control over all non-data related visual elements
+* Check out the `ggthemes` package
+
+We won't cover this here. 
+
 ## Your turn
 
 1. Create a scatter plot for policy year and number of claims
@@ -147,8 +173,8 @@ pltExtra + facet_wrap(~ Region)
 
 ## Maps!
 
-```{r }
-library(maps, quietly = TRUE, verbose = FALSE, warn.conflicts = FALSE)
+```{r message = FALSE, warning = FALSE}
+library(maps)
 map('state')
 ```
 
@@ -218,7 +244,7 @@ plt
 
 * `ggplot2` is difficult at first, but will repay your investment.
 * Works very well with grouped data to color/facet points.
-* Fine-tuning things like axis labels can be a headache, but will get easier.
+* Fine-tuning things like axis labels can be a headache, but will get easier. Yes, Excel makes it easier to add data labels and change colors. `ggplot2` makes it easier to work with data.
 * Maps tend to be a killer viz. They use the same point and area logic as any other graphic.
 
 ## Reference
