@@ -1,0 +1,128 @@
+---
+title: "A Short Guide Through the Hadleyverse"
+author: "Brian A. Fannin"
+output: word_document
+---
+
+# Introduction
+
+Although R is maintained by a core development team, there is one individual- not a member of that team- who has had a tremendous influence on the use of the language. Hadley Wickham is a highly prolific developer of R packages that have received an enthusiastic following in the R community. This is likely due to the fact that his packages are general, easy to use and span a wide range of common data manipulation problems, from working with dates and character, to easily summarizing large data sets and visualization of information. The suite of tools that he has developed has lead to the term "Hadleyverse" to describe 
+
+# ggplot2
+
+We'll start with a look at `ggplot2`, a visualization package. ggplot2 is based on the idea of a "grammar of graphics" (hence the 'gg' in ggplot2) developed by Leland Wilkinson. This attempts to formalize the rules inherent in translating data to visual form.
+
+
+
+Underneath the hood, a plot exists as a list. 
+
+* Data (of course)
+* Mapping (huh?)
+* Layers
+* Scales
+
+## Data
+
+
+```{r }
+set.seed(1234)
+df <- data.frame(Cohort = rep(c("A","B"), 10)
+                 , weight = rnorm(20, 170, 20)
+                 , height = rnorm(20, 160, 10))
+
+library(ggplot2)
+plt <- ggplot(df)
+str(plt)
+names(plt)
+class(plt)
+```
+
+Let's try to plot this.
+
+```{r error=TRUE}
+plt
+```
+
+We are told that there are no layers to plot and indeed, if we query that element of the list, we'll see that it's empty.
+
+```{r }
+plt$layers
+length(plt$layers)
+```
+
+Ok, so let's add some layers. It will quickly be evident
+
+```{r error=TRUE}
+plt <- plt + geom_point()
+plt
+```
+
+This error is a bit tougher to diagnose, so I'll cheat and tell you what's going on. We haven't said anything about what our data is _doing_. We know that we want to display points and we've fed in some data, but beyond that we don't know anything. So, given that we've got some numbers and we've got a visual element (points), but we haven't _mapped_ those two concepts to one another. In this trivial case, it's fairly easy to imagine how we might do that. ggplot2 defaults to the Cartesian view of x and y axes. If we identify those, we should be in business.
+
+```{r }
+length(plt$mapping)
+```
+
+In ggplot2, the mapping is controlled by _aesthetics_. Aesthetics arer anything visual in your plot that relates to data.
+
+```{r }
+plt <- plt + ggplot2::aes(x = height, y = weight)
+plt
+```
+
+We can change things by giving our plot a different aesthtic.
+
+```{r}
+plt <- plt + aes(x = weight, y = height)
+plt
+```
+
+
+What if we had a mapping, but no layer? We'll get the same "no layers in plot" error that we got earlier. Don't believe me? Have a look:
+
+```{r error=TRUE}
+plt$layers <- list()
+plt
+```
+
+We'll get things back to normal by adding back our geom.
+
+```{r}
+plt <- plt + geom_point()
+```
+
+Pause for a minute and think about the differences between this and base graphics. For one, rather than calling plot and then making subsequent function calls, we have an _object_. We can add to this, change it, remove things and it will just happily exist. It isn't visual at all until we tell it to print itself. Two, we need three basic pieces of information: data, mapping and layers. Data is easy to understand. Layers are some form of geometric shapes and the mapping is what glues those two things together.
+
+You're probably chomping at the bit to figure out how to add bells and whistles like axis titles, data labels and the other bits and pieces that play a prominent role in Excel. Set that aside for now and let's focus on the most important element of visualization: learning more about your data by _looking_ at it. We'll start with just a single variable.
+
+## Single variable
+
+## Multi variable
+
+## Grouped data
+
+## Date and time information
+
+## Color
+
+## Geographic data
+
+Where can I find ggplot2 on CRAN? Right here[^cran_ggplot]
+
+# dplyr
+
+Use dplyr with ggplot
+
+# tidyr
+
+By now, I hope you're beginning to understand how the interplay of these distinct tools adds up to something amazing.
+
+# Others 
+
+## lubridate
+
+## stringr
+
+[^hadley_thesis]: http://had.co.nz/thesis/practical-tools-hadley-wickham.pdf
+[^cran_ggplot]: https://cran.r-project.org/web/packages/ggplot2/index.html
+[^ggplot2_cheatsheet]: https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
