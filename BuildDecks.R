@@ -1,61 +1,59 @@
-library(rmarkdown)
+require(rmarkdown)
+require(knitr)
 
-outDirs <- c("handouts", "word", "html", "beamer", "pdf")
+
+
+# [ALR Nov 30, 2015]
+# Only use scripts and slides
+outDirs <- c("scripts", "slides")
 lapply(outDirs, function(x) {
-  dirName <- paste0("./workshop/", x, "/")
-  if(!file.exists(dirName)) dir.create(dirName)
+  dirName <- file.path(getwd(), x)
+  if(!dir.exists(dirName)) dir.create(dirName, recursive = TRUE)
+  dirName
 })
 
-slides <- c("Introduction"
-            , "Basics"
-            , "Visualization"
-            , "Vectors"
-            , "Packages"
-            , "BasicProgramming"
-            , "Data"
-            , "LossReserving"
-            , "Simulation"
-            , "LossDistributions"
-            , "AdvancedVisualization"
-            , "AdvancedModeling"
-            , "Close")
-
-rmdSlides <- paste0("./workshop/", slides, ".Rmd")
-pdfSlides <- gsub(".Rmd", ".pdf", rmdSlides)
-htmlSlides <- gsub(".Rmd", ".html", rmdSlides)
-htmlSlides <- paste0("./workshop/html/", slides, ".html")
-wordSlides <- gsub(".Rmd", ".docx", rmdSlides)
-wordSlides <- gsub(".Rmd", ".R", rSlides)
-
-lapply(rmdSlides, render
-       , output_format=slidy_presentation()
-       , output_dir="./html"
-       , envir = new.env())
-if(file.exists("./inst/workshop/html.zip")) unlink("./inst/workshop/html.zip")
-zip("./inst/slides/slides.zip", rmdSlides, flags = "-j9X")
-
-lapply(rmdSlides, purl)
 
 
-# lapply(rmdSlides, render, output_format=pdf_document(), output_dir="./pdf")
-# if(file.exists("./inst/workshop/pdf.zip")) unlink("./inst/workshop/pdf.zip")
-# zip("./inst/workshop/pdf.zip", htmlSlides, flags = "-j9X")
-# unlink(pdfSlides)
+# [ALR Nov 30, 2015]
+# Build `slides` by inspecting Rmd directory
+Rmd <- dir('./Rmd', pattern = '.Rmd')
+topics <- sub(pattern = '\\.Rmd$', replacement = '', x = Rmd)
+
+
+
+# [ALR Nov 30, 2015]
+#   html files go to ./slides
+#   R files go to ./scripts
+slides.Rmd <- file.path(getwd(), 'Rmd', paste0(topics, '.Rmd'))
+slides.html <- file.path(getwd(), 'slides', paste0(topics, '.html'))
+slides.R <- file.path(getwd(), 'scripts', paste0(topics, '.R'))
+
+
+
+# [ALR Nov 30, 2015]
+# OK to use for loop here
+for (x in 1:length(topics)) {
+  render(
+    input = slides.Rmd[x],
+    output_format = slidy_presentation(),
+    output_file = slides.html[x],
+    envir = new.env()
+  )
+  
+  (function(){
+    orig_wd <- getwd()
+    on.exit(setwd(orig_wd))
+    setwd('./scripts/')
+    purl(slides.Rmd[x], documentation = 2L)
+  })()
+}
+
+
+
 # 
-# lapply(rmdSlides, render, output_format=word_document())
-# file.copy(wordSlides, "./workshop/word/")
-# #zip("./inst/workshop/word.zip", wordSlides, flags = "-9X")
-# #file.copy("./inst/workshop/word.zip", "./inst/workshop/")
-# unlink(wordSlides)
+# if(file.exists("./inst/workshop/html.zip")) unlink("./inst/workshop/html.zip")
+# zip("./inst/slides/slides.zip", rmdSlides, flags = "-j9X")
 # 
-# handouts <- c("A1_FileCommands"
-#               , "A2_VectorsAndLists")
+# lapply(rmdSlides, purl)
 # 
-# handouts <- paste0("./workshop/", handouts, ".Rmd")
-# lapply(handouts, render, output_format=pdf_document())
-# handouts <- gsub(".Rmd", ".pdf", handouts)
-# file.copy(handouts, "./workshop/handouts/")
-# oldwd <- setwd("./workshop/handouts/")
-# handouts <- gsub("./workshop/", "", handouts)
-# zip("handouts.zip", handouts)
-# setwd(oldwd)
+# 
