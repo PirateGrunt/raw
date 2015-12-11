@@ -7,84 +7,172 @@ fig_width: 10
 title: "Advanced Modeling"
 ---
 
----
+# Continuous vs. Grouped data
 
-Continuous, or nearly continuous*  data models very well. However, actuaries often work with "grouped" data. We can map these to integers, but the numbers convey no meaning.
+Continuous data is fairly easy to model. Integral data which can take many values, e.g. Poisson, may also model well. However, actuaries often work with grouped or categorical data. We can map these to integers, but the numbers convey no meaning.
 
 * State
 * Agency
 * Line of business
 
-(integer, but can take many values, e.g. Poisson)
-
 # Quick model
 
 ```{r }
+library(ggplot2)
 set.seed(1234)
-N <- 100
-x <- exp(rnorm(N, log(1000)))
+numGroups <- 5
+numClaims <- 10
+N <- numClaims * numGroups
 x <- rnorm(N, 1000, 300)
 link <- 1.5
 
-# scale and center around 1.0. Use an inverse logit function to scale from 
-# random normal -> [0,1]
-groupVals <- rnorm(5)
-groupVals <- exp(groupVals) / (exp(groupVals) + 1)
-groupVals <- groupVals - 0.5
+groupVals <- rnorm(numGroups, mean = link, sd = .05 * link)
+names(groupVals) <- head(letters, numGroups)
+links <- sapply(groupVals, function(x){
+  rnorm(numClaims, x, sd = .3 * x)
+})
 
-names(groupVals) <- c("red", "blue", "green", "yellow", "orange")
-e <- rnorm(length(x), sqrt(mean(x)), 2 * sqrt(mean(x)))
-b2 <- sample(groupVals, length(x), replace=TRUE)
+group <- replicate(numClaims, names(groupVals))
+group <- as.vector(t(group))
 
-y <- b1 * x + b2 * x + e
-df <- data.frame(y = y
+links <- as.vector(links)
+df <- data.frame(Group = group
+                 , Link = link
+                 , SampleLink = links
                  , x = x
-                 , b1 = b1
-                 , group = names(b2)
-                 , groupVal = b2
-                 , e = e 
-                 , Link = y / x
                  , stringsAsFactors = FALSE)
 
-plot(y ~ x, data=df, col=df$group, pch=20)
+df$y <- df$x * df$SampleLink
+```
 
+
+# Look at our data
+
+```{r }
+plt <- ggplot(df, aes(x, y, color = Group)) + geom_point() 
+plt + stat_smooth(method = "lm", fullrange = TRUE, se = FALSE)
+```
+
+# Fit our data using `lm`
+
+```{r }
 fit1 <- lm(y ~ x + group, data = df)
 summary(fit1)
+```
 
+Hang on, we don't want an intercept.
+
+# Remove intercept
+
+```{r }
 fit2 <- lm(y ~ 0 + x + group, data = df)
 summary(fit2)
-
-fit3 <- lm(y ~ 0 + x:group, data = df)
-summary(fit3)
-
-# Plotting the fit lines is an exercise for the student.
 ```
+
+So, my residuals didn't change, x didn't change and those group parameters look an awful lot like intercepts.
+
+# Group data without intercept
+
+```{r }
+fitIndividual <- lm(y ~ 0 + x:group, data = df)
+summary(fitIndividual)
+```
+
+Now, you're talking!
+
+But wait, I have `r N` data points. Am I using all of them for each group?
 
 # One group at a time
 
-
 ```{r }
-lstSplit <- split(df, df$group)
+lstSplit <- split(df, df$Group)
 fits <- lapply(lstSplit, function(z){
   fit <- lm(y ~ 0 + x, data = z)
   fit
 })
 
-summary(fits[[1]])
-summary(fits[[2]])
-summary(fits[[3]])
+sapply(fits, coef)
+coef(fitIndividual)
 ```
 
-##
+Each group is modelled separately!
 
-Grouped data is separated data.
+# Grouped data is looped data
 
 Using grouped information is like playing a piano. There are no notes between the keys.
 
 Using a hierarchical model is like slide guitar.
 
+# `nlme`
+
+```{r}
+library(nlme)
+fitBlended <- lme(data = df, fixed = y ~ 0 + x, random = ~ 0 + x | group)
+summary(fitBlended)
+unlist(coef(fitBlended))
+coef(fitIndividual)
+```
+
+```{r }
+sum(df$y - predict(fitBlended))
+sum(df$y - predict(fitIndividual))
+```
+
+Apparent inferior fit is _by design_. It indicates less than full credibility.
+
+```{r}
+sum(df$y - link * df$x)
+```
+
+Our **best** predictor would be the global parameter, if we knew what it was. Notice that all of the link ratios in the hierarchical model are closer to 1.5. They will deal better with out of sample data.
+
+# Hierarchical modelling = credibility
+
+Hierarchical modeling allows us to hedge our bets. If the group parameters are close together, we'll blend all of our experience. If they're far apart, each group stands on its own. 
+
+In the simulation the variance of hypothetical means - the variability between the groups- was less than the expected value of process variance - the variability of the simulated link ratios.
+
+Anyone remember this?
+
+Z = P / (P + K)
+K = EVPV / VHM
+
+# Both models with our data
+
+```{r }
+df$IndividualPrediction <- predict(fitIndividual)
+df$BlendedPrediction <- predict(fitBlended)
+
+plt <- ggplot(df, aes(x, IndividualPrediction, color = group)) + geom_line() + geom_point(aes(y = y))
+plt + geom_line(aes(y = BlendedPrediction), linetype = "dotted")
+```
+
+# Pooled data
+
+```{r}
+fitPooled <- lm(y ~ 0 + x, data = df)
+summary(fitPooled)
+```
+
+# 
+
+```{r}
+df$PooledPrediction <- predict(fitPooled)
+plt <- ggplot(df, aes(x, IndividualPrediction, color = group)) + geom_line() + geom_point(aes(y = y))
+plt <- plt + geom_line(aes(y = BlendedPrediction), linetype = "dotted")
+plt <- plt + geom_line(aes(y = PooledPrediction), color = "Black")
+plt
+```
+
+# Real data
+
+```{r }
+library(raw)
+data("ppauto")
+```
 
 
-## See also:
+# Fun stuff to read:
 
+* Gelman and Hill
 * Guszcza's hierarchical growth model paper
