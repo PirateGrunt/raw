@@ -1,87 +1,230 @@
-## ----message=FALSE-------------------------------------------------------
-library(actuar)
-data(dental)
+#' ---
+#' title: "Visualization"
+#' output:
+#'   slidy_presentation:
+#'     duration: 45
+#'     fig_height: 6
+#'     fig_width: 10
+#'   beamer_presentation:
+#'     fonttheme: professionalfonts
+#' ---
+#' 
+#' 
+#' ## Base Graphics
+#' There are a lot of packages in R that do graphics.  But, a lot of people don't realize that R was famous for graphics *before* ggplot or other packages were created.  Base graphics are quick and easy, once you get the hang of them.  Plus, they crop up all over the place so it's good to know how to use them.
+#' 
+#' 
+#' 
+#' ## `plot`
+#' Your basic function is `plot`.  It's really smart.  Just pass it something and it probably knows what to do with it.
+## ---- eval=FALSE---------------------------------------------------------
+## op <- par(no.readonly = TRUE)
+## 
+## plot(cars)
+## plot(iris)
+## 
+## par(mfrow = c(2, 2))
+## plot(lm(Sepal.Width ~ Petal.Width + Species, data = iris))
 
+#' 
+#' 
+#' 
+#' ## `plot(x, y)`
 ## ------------------------------------------------------------------------
-library(MASS)
-y <- fitdistr(dental, "gamma")
-class(y)
+par(op)
+x <- -5:5
+y <- x^2
+plot(x, y)
 
+#' 
+#' 
+#' 
+#' ## Plot functions
 ## ------------------------------------------------------------------------
-set.seed(8910)
-years <- 2001:2010
-frequency <- 1000
+par(mfrow = c(1,2))
+plot(function(x){x^2}, from = -5, to = 5)
+plot(sin, from = -2*pi, to = 2*pi)
 
-N <- rpois(length(years), frequency)
-
-sevShape <- 2
-sevScale <- 1000
-severity <- rgamma(sum(N), sevShape, scale = sevScale)
-
-fitGamma <- fitdistr(severity, "gamma")
-fitLognormal <- fitdistr(severity, "lognormal")
-
+#' 
+#' 
+#' 
+#' ## Adding points and lines
 ## ------------------------------------------------------------------------
-sampleLogMean <- fitLognormal$estimate[1]
-sampleLogSd <- fitLognormal$estimate[2]
+par(mfrow = c(1, 2))
 
-sampleShape <- fitGamma$estimate[1]
-sampleRate <- fitGamma$estimate[2]
+plot(cars)
+points(5, 120, pch = 15, col = 'steelblue')
 
-x <- seq(0, max(severity), length.out=500)
-yLN <- dlnorm(x, sampleLogMean, sampleLogSd)
-yGamma <- dgamma(x, sampleShape, sampleRate)
+plot(cars)
+abline(lm(cars$dist ~ cars$speed), lwd = 5, col = 'tomato')
 
-hist(severity, freq=FALSE, ylim=range(yLN, yGamma))
+#' 
+#' 
+#' 
+#' ## Aside: what options are available?
+#' Read the help! 
+## ---- eval=FALSE---------------------------------------------------------
+## ?plot
+## ?par
+## ?title
+## colors()
 
-lines(x, yLN, col="blue")
-
-lines(x, yGamma, col="red")
-
+#' 
+#' 
+#' 
+#' ## Adding Titles!
 ## ------------------------------------------------------------------------
-probabilities = (1:(sum(N)))/(sum(N)+1)
+par(op)
+plot(cars)
+points(5, 120, pch = 15, col = 'steelblue')
+title('Slow Stopping Cars')
 
-gammaQ <- qgamma(probabilities, sampleShape, sampleRate)
-plot(sort(gammaQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
-abline(0,1)
-
+#' 
+#' 
+#' 
+#' ## Adding Titles! (cont'd)
 ## ------------------------------------------------------------------------
-lnQ <- qlnorm(probabilities, sampleLogMean, sampleLogSd)
-plot(sort(lnQ), sort(severity), xlab = 'Theoretical Quantiles', ylab = 'Sample Quantiles', pch=19)
-abline(0,1)
+par(op)
+plot(
+  cars, 
+  main = 'Slow Stopping Cars', 
+  xlab = 'Speed (m.p.h.)',  
+  ylab = 'Distance to stop (ft.)'
+)
+points(5, 120, pch = 15, col = 'steelblue')
+text(5, 120, 'A VW with no brakes', pos = 4, cex = 0.75)
 
+#' 
+#' 
+#' 
+#' 
+#' ## `hist(x)`
 ## ------------------------------------------------------------------------
-testGamma <- ks.test(severity, "pgamma", sampleShape, sampleRate)
-testLN <- ks.test(severity, "plnorm", sampleLogMean, sampleLogSd)
-testGamma2 <- ks.test(severity, "pgamma", sampleShape, 1)
+par(mfrow = c(1, 2))
+x <- rnorm(10000)
 
+hist(x)
+hist(rnorm(1000, mean = 10000, sd = 20000))
+
+#' 
+#' 
+#' 
+#' ## `hist(x, breaks = ?)`
 ## ------------------------------------------------------------------------
-severity <- 10000
-CV <- .3
-sigma <- sqrt(log(1 + CV^2))
-mu <- log(severity) - sigma^2/2
-plot(function(x) dlnorm(x), mu, sigma, ylab="LN f(x)")
+par(mfrow = c(1, 2))
+x <- rnorm(10000)
 
+hist(x, breaks = 4)
+hist(x, breaks = 100)
+
+#' 
+#' 
+#' 
+#' ## `hist(x, freq = ?)`
 ## ------------------------------------------------------------------------
-set.seed(1234)
-claims = rlnorm(100, meanlog=log(30000), sdlog=1)
-hist(claims, breaks=seq(1, 500000, length.out=40))
+par(mfrow = c(1, 2))
+x <- rnorm(10000)
 
+hist(x, freq = TRUE)
+hist(x, freq = FALSE)
+
+#' 
+#' 
+#' 
+#' ## `hist(x, density = ?)`
 ## ------------------------------------------------------------------------
-quadraticFun <- function(a, b, c){
-  function(x) a*x^2 + b*x + c
-}
+par(mfrow = c(1, 2))
+x <- rnorm(10000)
 
-myQuad <- quadraticFun(a=4, b=-3, c=3)
-plot(myQuad, -10, 10)
+hist(x)
+hist(x, density = 20)
 
+#' 
+#' 
+#' 
+#' ## `barplot(x)`
 ## ------------------------------------------------------------------------
-myResult <- optim(8, myQuad)
-myResult
+par(mfrow = c(1, 2))
+barplot(1:10)
+barplot(1:10, horiz = TRUE)
 
+#' 
+#' 
+#' 
+#' ## `pie()`!
 ## ------------------------------------------------------------------------
-myOtherQuad <- quadraticFun(-6, 20, -5)
-plot(myOtherQuad, -10, 10)
-myResult <- optim(8, myOtherQuad)
-myResult <- optim(8, myOtherQuad, control = list(fnscale=-1))
+require(nycflights13)
+par(op)
+pie(table(flights$carrier))
 
+#' 
+#' 
+#' 
+#' ## But...
+#' From `?pie`
+#' 
+#' > Pie charts are a very bad way of displaying information. The eye is good at judging linear measures and bad at judging relative areas. A bar chart or dot chart is a preferable way of displaying this type of data.
+#' > Cleveland (1985), page 264: "Data that can be shown by pie charts always can be shown by a dot chart. This means that judgements of position along a common scale can be made instead of the less accurate angle judgements." This statement is based on the empirical investigations of Cleveland and McGill as well as investigations by perceptual psychologists.
+#' 
+#' 
+#' 
+#' 
+#' ## No `pie()` for you...
+## ------------------------------------------------------------------------
+require(nycflights13)
+par(op)
+barplot(table(flights$carrier))
+
+#' 
+#' 
+#' 
+#' ## `boxplot()`
+## ------------------------------------------------------------------------
+boxplot(Sepal.Length ~ Species, data = iris)
+
+#' 
+#' 
+#' 
+#' ## `plot(x, y)`
+## ------------------------------------------------------------------------
+par(mfrow = c(1, 2))
+plot(iris[, 3:4])
+sunflowerplot(iris[, 3:4])
+
+#' 
+#' 
+#' 
+#' 
+#' ## `pairs()`
+## ------------------------------------------------------------------------
+par(op)
+pairs(iris[, 1:4])
+
+#' 
+#' 
+#' 
+#' ## `qqnorm(x)`
+## ------------------------------------------------------------------------
+par(mfrow = c(1, 2))
+qqnorm(rnorm(50))
+qqnorm(rnorm(1000))
+
+#' 
+#' 
+#' 
+#' ## Things to remember
+#' * Use `par()` before calling a high-level function to set options.
+#' * Use a high-level function like `plot()`.
+#' * Then, use a low-level function like `points()` or `lines()` to change the plot.
+#' 
+#' 
+#' 
+#' ## Exercises
+#' * Pick one of the plots from above and change the following
+#'   - Line color
+#'   - Point color
+#'   - Background
+#'   - Title
+#'   - x-label
+#'   - y-label
+#' 
