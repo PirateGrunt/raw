@@ -1,0 +1,324 @@
+---
+title: "Advanced Topics"
+author: "R LAS"
+date: "December 15"
+output: ioslides_presentation
+---
+
+# Miscellaneous stuff
+
+## `assign`, `eval`, and `parse`
+
+`assign` allows you to assign a value to a character string.
+
+```{r}
+assign("x",1)
+x
+```
+
+This was used in the programming section. It's helpful when you don't want to make the code clearer.
+
+```{r}
+x<--3
+x
+```
+***
+
+`eval` evaluates an expression. Use `parse` with `eval` to evaluate a character string.
+
+```{r}
+x<-1
+eval(x)
+eval("x")
+
+eval(parse(text="x"))
+```
+
+## Reading data off the internet
+
+```{r}
+library(XML)
+nflStandings<-"http://sports.yahoo.com/nfl/standings/"
+nflTables <- readHTMLTable(nflStandings)
+
+class(nflTables)
+```
+
+***
+```{r}
+length(nflTables)
+sapply(nflTables,class)
+```
+
+***
+```{r}
+head(lapply(nflTables,dim))
+```
+
+***
+It looks like the first one is different, let's check.
+
+```{r}
+str(nflTables[[1]])
+str(nflTables[[2]])
+```
+
+***
+Look at the first one with data.
+```{r}
+nflTables[[2]][,1:7]
+```
+
+***
+Lets add the conference and division names to the list and turn it into a data frame.
+
+```{r}
+division<-names(nflTables)[2:9]
+conference<-c(rep("AFC",4),rep("NFC",5))
+
+nflTables<-lapply(2:9,function(i) 
+  cbind(conference[i],division[i],nflTables[[i]][,1:7]))
+
+length(nflTables)
+```
+
+***
+```{r}
+nflTables[[1]]
+```
+
+***
+Use `do.call` to bind an unknown number of data frames.
+```{r}
+nflStandings<-do.call(rbind,nflTables)
+names(nflStandings)[1:2]<-c("Conference","Division")
+dim(nflStandings)
+head(nflStandings)
+```
+
+## Colors
+
+R has `r length(colors())` different colors. Additional information is [here.](http://research.stowers-institute.org/efg/R/Color/Chart/) 
+
+```{r}
+palette()
+head(colors())
+```
+
+## Ten Random Colors
+```{r}
+set.seed(6345789)
+numColors<-10
+n1<-sample(1:length(colors()),replace=FALSE,
+           size=numColors)
+pie(rep(1,numColors),col=colors()[n1],
+    labels=colors()[n1])
+title(main="A Color Wheel")
+```
+
+## The default palette
+```{r}
+pie(rep(1,length(palette())),col=palette(),
+    labels=palette())
+title(main="Default")
+```
+
+
+## The rainbow pallette
+
+```{r,fig.width=3,fig.height=3}
+numColors<-8
+pie(rep(1,numColors),col=rainbow(numColors),
+    labels=rainbow(numColors))
+title(main=paste("rainbow(",numColors,")",sep=""))
+title(sub="Note that the names are in RGB")
+```
+
+##R Color Brewer
+
+An overview of color schemes is at [colorbrewer2.org](colorbrewer2.org). They're implemented in the RColorBrewer package.
+
+```{r,fig.width=4,fig.height=3}
+library(RColorBrewer)
+display.brewer.pal(6,"RdBu")
+```
+
+# Dplyr
+
+## Overview
+
+[Dplyr](http://blog.rstudio.org/2015/09/04/dplyr-0-4-3/) is another RStudio package that is designed specifically to handle the tasks covered in the data frames presentation.
+
+* select - pick columns by name
+* filter - keep rows matching criteria
+* mutate - add new variables
+* arrange - reorder rows
+* summarize - reduce variables to values
+
+A major advantage of `dplyr` is the speed at which it handles large data sets.An alternative to `dplyr` is the `data.table` package.
+
+There's also a `dplyr` [cheat sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) 
+
+***
+
+We'll only cover the basics as there are a number of additional resources available.
+
+### Hadley Wickham Presentations
+* [RStudio Webinar: The Grammar and Graphics of Data Science](https://pages.rstudio.net/Webinar-Series-Recording-Essential-Tools-for-R.html)
+* [Hadley Wickham's Dplyr Tutorial](https://www.dropbox.com/sh/i8qnluwmuieicxc/AAAgt9tIKoIm7WZKIyK25lh6a) 
+* [UseR! 2014 Presentation Part 1](https://www.youtube.com/watch?v=8SGif63VW6E)
+* [UseR! 2014 Presentation Part 2](https://www.youtube.com/watch?v=Ue08LVuk790)
+
+### Others
+
+* [Data School's Tutorial](https://www.youtube.com/watch?v=jWjqLW-u3hc&feature=youtu.be)
+
+
+
+## NYC Flight Data
+
+The above referenced tutorials and presntations use data from the `nycflights13` package. On-time data for all flights that departed NYC (JFK, LGA, or EWR) in 2013.
+
+```{r,message=FALSE}
+library(dplyr)
+library(nycflights13)
+data(flights)
+```
+
+***
+```{r}
+class(flights)
+dim(flights)
+```
+
+Note that flights is of class `tbl_df`. The main advantage of this class is it only prints what can fit on the screen and `[` doesn't need `drop=FALSE`.
+
+***
+```{r}
+flights
+```
+
+## Lahman Database 
+Since the flights data is used in the other resources, we'll continue using the Lahman baseball database that we used earlier.
+
+```{r}
+library(Lahman)
+class(Master)
+```
+
+
+## Filter
+
+Find Babe Ruth in the Master player table. It'll be a subset of a data frame so it's a data frame. We need to convert `Master` to a `tbl_df` (this isn't necessary if you've used `read_csv` in the `readr` package.)
+```{r}
+names(Master)
+Master<-tbl_df(Master)
+ruthTable<-filter(Master,nameLast=="Ruth")
+```
+
+***
+```{r}
+class(ruthTable)
+ruthTable
+```
+
+***
+
+Observations:
+
+* The first argument in `filter` is the data name.
+* We used the column name within the function without referring to the data.
+* A `tbl_df` object was returned.
+
+***
+
+Suppose we did the same thing with Ted Williams. There are more than one player with a last name of Williams.
+
+```{r}
+williamsTable<-filter(Master,nameLast=="Williams")
+nrow(williamsTable)
+```
+
+```{r}
+tedWilliams<-filter(williamsTable,nameFirst=="Ted")
+tedWilliams
+```
+
+***
+Of course, we could have created the table with one command.
+```{r}
+tw<-filter(Master,nameFirst=="Ted" & nameLast=="Williams")
+tw
+```
+
+## Select
+Now lets select the `playerID`, `nameLast`, `nameFirst`,`bats`, and `throws`.
+```{r}
+select(Master,playerID,nameLast,nameFirst,bats,throws)
+```
+
+## Combine `select` and `filter`
+
+The pipe operator `%>%` allows for a syntax that mirrors your thought process.
+
+* Start with the data frame then (`%>%`)
+* Convert it to an object of class `tbl_df` then (`%>%`)
+* `select` the columns you want then (`%>%`)
+* `filter` by the desired criteria.
+
+***
+
+```{r} 
+Master %>% tbl_df() %>%
+      select(playerID,nameLast,nameFirst,bats,throws) %>%
+      filter(nameLast=="Williams" & nameFirst=="Ted")
+```
+
+## Mutate
+
+Use the batting table to calculate a batting average (H/AB). Use only players with at least 600 AB from 2000-2014. (Note that you'll only know the player's ID and not his name.)
+
+```{r}
+tempBatting <- Batting %>% tbl_df %>% filter(yearID > 1999 & AB >599) %>%
+  select(playerID,yearID,AB,H) %>% mutate(AVG=round(H/AB,3))
+tempBatting
+```
+
+## Arrange
+
+Add the Player Info and sort in descending order.
+
+```{r}
+
+inner_join(tempBatting,Master,by="playerID") %>%
+  select(nameLast,nameFirst,yearID,AB,H,AVG) %>%
+  arrange(desc(AVG))
+```
+
+## Summarize
+
+* Pitchers with no games started in the 1960's
+* Left-handed.
+* Played at least 5 seasons
+* Compute strikeouts per 27 outs
+
+```{r}
+Master<-Master %>% tbl_df()
+Pitching<-Pitching %>% tbl_df()
+temp<-inner_join(Pitching,Master,by="playerID") %>%
+ filter(yearID >1959 & yearID <=1969) %>%
+  filter(throws=="L" & GS==0) %>%
+  select(playerID,nameLast,nameFirst,G,IPouts,SO) %>%
+  group_by(playerID,nameLast,nameFirst) %>% summarize(Seasons=n(),Games=sum(G),Outs=sum(IPouts),SO=sum(SO)) %>%
+  mutate(SO_27=round((SO/Outs)*27,1)) %>%
+  filter(Seasons>=5) %>% 
+  select(nameLast,nameFirst,Seasons,Games,Outs,SO,SO_27)
+```
+
+***
+```{r}
+temp
+```
+
+
+  
