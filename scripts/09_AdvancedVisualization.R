@@ -36,6 +36,10 @@ plt <- ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point() + 
 plt
 
 ## ------------------------------------------------------------------------
+plt + scale_x_continuous(labels = scales::format_format(nsmall = 2))
+plt + scale_x_continuous(labels = scales::unit_format(unit = "in", nsmall = 2))
+
+## ------------------------------------------------------------------------
 library(raw)
 data("RegionExperience")
 plt1 <- ggplot(RegionExperience, aes(x = PolicyYear, y = NumClaims)) + geom_point()
@@ -57,8 +61,8 @@ data("StateExperience")
 pltExtra <- ggplot(StateExperience, aes(x = PolicyYear, y = NumClaims, color = Postal)) + geom_point() + geom_line()
 pltExtra + facet_wrap(~ Region)
 
-## ------------------------------------------------------------------------
-library(maps, quietly = TRUE, verbose = FALSE, warn.conflicts = FALSE)
+## ----message = FALSE, warning = FALSE------------------------------------
+library(maps)
 map('state')
 
 ## ------------------------------------------------------------------------
