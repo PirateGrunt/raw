@@ -168,119 +168,37 @@ plt <- plt + geom_line(aes(y = PooledPrediction), color = "Black")
 plt
 ```
 
-# How about Poisson?
-
-$$\frac{\theta^ke^{-\theta}}{k!}$$
-
-We can get away with this if $\theta$ is actually equal to a parameter, $\lambda$ times some exposure amount. This will automatically scale to all of our loss amounts. Here's the probability distribution for our first observation 
+<!-- 
+# Not-so-quick model
 
 ```{r }
-sampleX <- df[1, "x"]
-sampleY <- df[1, "y"]
-xLims <- sampleX + c(-100, 100)
-xLims <- as.integer(1.5 * xLims)
-pltPoisson <- ggplot(data.frame(x = xLims), aes(x)) 
-pltPoisson <- pltPoisson + stat_function(fun = dpois, args = list(lambda = sampleX * 1.5))
-pltPoisson <- pltPoisson + geom_vline(xintercept = sampleY, color = "red")
-pltPoisson
-```
+set.seed(1234)
+AY <- 2001:2010
+lags <- 1:10
+CY <- x
+numGroups <- 5
+CY_Trend <- 
 
-This doesn't look too bad for one single point. Maybe our lambda just needs a bit of adjustment. So how do we estimate lambda?
+x <- rnorm(N, 1000, 300)
+links <- c(1.5)
 
-# Enter Bayesian estimation
-
-$$f(\theta|data)=\frac{f(data|\theta)f(\theta)}{f(data)}$$
-
-We'll use data to estimate our parameter and then we'll use our parameter to estimate our data, which will produce another parameter and so on until we open a hole in the space-time continuum. 
-
-The following example has been modified by a similar example from "Bayesian Computation with R" by Jim Albert.
-
-# Assume that lambda has a gamma distribution
-
-The fun thing about Bayesian analysis is that we don't worry so much abouut the math.
-
-$$f(\lambda)=\frac{1}{\Gamma(\alpha)\beta^{-k}}$$
-
-```{r }
-xLims <- c(0, 2)
-pltPrior <- ggplot(data.frame(x = xLims), aes(x)) 
-pltPrior <- pltPrior + stat_function(fun = function(x) {1/x})
-pltPrior
-```
-
-
-# Mama we're all Bayesy now!
-
-# Uninformed prior
-
-We'll use a gamma for the lambda parameter of our Poisson. An uninfomred prior 
-
-```{r}
-xLims <- c(0, 3)
-pltPrior <- ggplot(data.frame(x = xLims), aes(x)) 
-pltPrior <- pltPrior + stat_function(fun = dgamma, args = list(shape = 1, rate = 1))
-pltPrior
-```
-
-# Posterior lambda
-
-```{r }
-pooledLambda <- sum(df$y) / sum(df$x)
-
-pooledAlpha <- sum(df$y)
-pooledBeta <- sum(df$x) 
-
-xLims <- c(1.4, 1.6)
-pltPooled <- ggplot(data.frame(x = xLims), aes(x)) 
-pltPooled <- pltPooled + stat_function(fun = dgamma, args = list(shape = pooledAlpha, rate = pooledBeta), n = 500)
-pltPooled
-
-xLims <- c(1.4, 1.6)
-pltPooled <- ggplot(data.frame(x = xLims), aes(x)) 
-pltPooled <- pltPooled + stat_function(fun = dgamma, args = list(shape = pooledAlpha, rate = pooledBeta), n = 500)
-pltPooled
-```
-
-# Single group lambda
-
-```{r }
-alphaA <- sum(df$y[df$Group == "a"])
-betaA <- sum(df$x[df$Group == "a"])
-lambdaA <- alphaA / betaA
-
-pltGroupA <- ggplot(data.frame(x = xLims), aes(x)) 
-pltGroupA <- pltGroupA + stat_function(fun = dgamma
-                                       , n = 500
-                                       , colour = "red"
-                                       , args = list(shape = pooledAlpha + alphaA, rate = pooledBeta + betaA))
-pltGroupA
-
-pltGroupA <- pltGroupA + stat_function(fun = dgamma
-                                       , n = 500
-                                       , colour = "black"
-                                       , args = list(shape = pooledAlpha, rate = pooledBeta))
-pltGroupA
-```
-
-# Posterior prediction
-
-```{r }
-sampleLambda <- rgamma(1000, alphaA, betaA)
-sampleX <- sample(df$x[df$Group == "a"], 1000, replace = TRUE)
-sampleY <- rpois(1000, sampleLambda * sampleX)
-hist(sampleY)
-hist(df$y[df$Group == "a"])
-```
-
-
-# All groups
-
-```{r }
-lstSplit <- split(df, df$Group)
-groupedLambda <- sapply(lstSplit, function(z){
-  lambda <- sum(z$y) / sum(z$x)
+groupVals <- rnorm(numGroups, mean = link, sd = .05 * link)
+names(groupVals) <- head(letters, numGroups)
+links <- sapply(groupVals, function(x){
+  rnorm(numClaims, x, sd = .3 * x)
 })
 
+group <- replicate(numClaims, names(groupVals))
+group <- as.vector(t(group))
+
+links <- as.vector(links)
+df <- data.frame(Group = group
+                 , Link = link
+                 , SampleLink = links
+                 , x = x
+                 , stringsAsFactors = FALSE)
+
+df$y <- df$x * df$SampleLink
 ```
 
 # Real data
@@ -294,3 +212,4 @@ data("ppauto")
 
 * Gelman and Hill
 * Guszcza's hierarchical growth model paper
+-->

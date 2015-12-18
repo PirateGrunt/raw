@@ -96,6 +96,8 @@ Facets split the data into groups and draws a different plot for each group.
 
 ```{r}
 plt <- ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point() + facet_wrap(~ Cohort)
+
+plt <- ggplot(df, aes(x = height, y = weight, color = Cohort)) + geom_point() + facet_wrap(~ weight)
 plt
 ```
 
@@ -115,7 +117,7 @@ See `? stat_smooth` for more on smoothers.
 Scales control how things render on the plot. We must scale our numbers to the plotting device (typically a section of a computer screen.) We can also map things like color and axes to data values and control formatting.
 
 ```{r}
-plt + scale_x_continuous(labels = scales::format_format(nsmall = 2))
+plt + scale_x_continuous(labels = scales::comma)
 plt + scale_x_continuous(labels = scales::unit_format(unit = "in", nsmall = 2))
 ```
 
