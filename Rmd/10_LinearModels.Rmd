@@ -1,29 +1,120 @@
-ALR Prep Notes
-This is not necessarily what I am going to share . . . just studying up
+---
+title: "Part 10: Linear Modeling"
+output:
+  slidy_presentation:
+    duration: 45
+    fig_height: 3
+    fig_width: 6
+  pdf_document:
+    documentclass: scrartcl
+---
 
 
-Different types of regression
-linear
-polynomial
-piecewise
-robust
-multiple
-non-linear
-non-parametric
 
-Linear regression follows the form y = a + bx
 
-Maximum likelihood estimation: "given the data. and having selected a linear model, we want to find the values of the slope and intercept that make the data most likely" (Crawley 389).
+```{r echo=FALSE, results='hide'}
+library(ggplot2)
+op <- par(no.readonly = TRUE)
+```
 
-residual: d = y less y hat
 
-Important assumptions in linear modeling
-variance of y is constant
-x is measured correctly
-residuals are normally distributed
 
-TODO Prove that "the sum of the residuals will always be zero"
-TODO Prove that the best fit line always passes through x bar, y bar
 
-degrees of freedom is assigned as n - k where n is number of observations and k is number of estimated parameters
+## Load Data
+```{r}
+prem <- read.csv('c:/home/git/las2015/Data/prem.csv')
+prem
+```
+
+
+
+
+## Visualize
+```{r}
+plot(x = prem$Revenue, y = prem$Premium)
+```
+
+
+
+
+## First Model
+```{r}
+lm1 <- lm(Premium ~ Revenue, data = prem)
+summary(lm1)
+```
+
+
+
+
+## Plot the Model
+```{r}
+plot(x = prem$Revenue, y = prem$Premium)
+abline(lm1, lwd = 3, col = 'red', lty = 2)
+```
+
+
+
+
+## Formulas
+```{r, results='hide'}
+Premium ~ Revenue
+Premium ~ Revenue + 0
+Premium ~ Revenue - 1
+Premium ~ log(Revenue)
+Premium ~ log(Revenue) + 0
+log(Premium) ~ log(Revenue)
+Premium ~ log(Revenue) + Territory
+```
+Can also use `offset` and `I`, ':' and '*'.
+
+
+
+
+## New Model
+```{r}
+lm2 <- lm(Premium ~ log(Revenue), data = prem)
+summary(lm2)
+```
+
+
+
+
+## So what does this mean?
+```{r}
+subs <- data.frame(Revenue = c(250e3, 300e3, 350e3))
+predict(lm2, newdata = subs)
+coef(lm2)
+log(300e3) * 126.96 - 61.14
+```
+
+
+
+
+## Plot the fit
+```{r}
+plot(x = log(prem$Revenue), y = prem$Premium)
+abline(lm2, lwd = 3, col = 'red', lty = 2)
+```
+
+
+
+
+## Plot the fit (cont'd)
+```{r}
+plot(x = prem$Revenue, y = prem$Premium)
+abline(lm1, lwd = 3, col = 'red', lty = 2)
+xfit <- seq(from = min(prem$Revenue), to = max(prem$Revenue), length.out = 100)
+yfit <- predict(lm2, newdata = data.frame(Revenue = xfit))
+points(xfit, yfit, type = 'l', lwd = 3, col = 'blue', lty = 4)
+```
+
+
+
+
+## Exercises
+* Pick a dataset you have already seen, e.g. cars, iris, etc.
+* Visually inspect for relationships.
+* Can you define a linear model?
+
+
 
