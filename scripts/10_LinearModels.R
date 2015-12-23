@@ -1,1 +1,120 @@
+#' ---
+#' title: "Part 10: Linear Modeling"
+#' output:
+#'   slidy_presentation:
+#'     duration: 45
+#'     fig_height: 3
+#'     fig_width: 6
+#'   pdf_document:
+#'     documentclass: scrartcl
+#' ---
+#' 
+#' 
+#' 
+#' 
+## ----echo=FALSE, results='hide'------------------------------------------
+library(ggplot2)
+op <- par(no.readonly = TRUE)
 
+#' 
+#' 
+#' 
+#' 
+#' ## Load Data
+## ------------------------------------------------------------------------
+prem <- read.csv('c:/home/git/las2015/Data/prem.csv')
+prem
+
+#' 
+#' 
+#' 
+#' 
+#' ## Visualize
+## ------------------------------------------------------------------------
+plot(x = prem$Revenue, y = prem$Premium)
+
+#' 
+#' 
+#' 
+#' 
+#' ## First Model
+## ------------------------------------------------------------------------
+lm1 <- lm(Premium ~ Revenue, data = prem)
+summary(lm1)
+
+#' 
+#' 
+#' 
+#' 
+#' ## Plot the Model
+## ------------------------------------------------------------------------
+plot(x = prem$Revenue, y = prem$Premium)
+abline(lm1, lwd = 3, col = 'red', lty = 2)
+
+#' 
+#' 
+#' 
+#' 
+#' ## Formulas
+## ---- results='hide'-----------------------------------------------------
+Premium ~ Revenue
+Premium ~ Revenue + 0
+Premium ~ Revenue - 1
+Premium ~ log(Revenue)
+Premium ~ log(Revenue) + 0
+log(Premium) ~ log(Revenue)
+Premium ~ log(Revenue) + Territory
+
+#' Can also use `offset` and `I`, ':' and '*'.
+#' 
+#' 
+#' 
+#' 
+#' ## New Model
+## ------------------------------------------------------------------------
+lm2 <- lm(Premium ~ log(Revenue), data = prem)
+summary(lm2)
+
+#' 
+#' 
+#' 
+#' 
+#' ## So what does this mean?
+## ------------------------------------------------------------------------
+subs <- data.frame(Revenue = c(250e3, 300e3, 350e3))
+predict(lm2, newdata = subs)
+coef(lm2)
+log(300e3) * 126.96 - 61.14
+
+#' 
+#' 
+#' 
+#' 
+#' ## Plot the fit
+## ------------------------------------------------------------------------
+plot(x = log(prem$Revenue), y = prem$Premium)
+abline(lm2, lwd = 3, col = 'red', lty = 2)
+
+#' 
+#' 
+#' 
+#' 
+#' ## Plot the fit (cont'd)
+## ------------------------------------------------------------------------
+plot(x = prem$Revenue, y = prem$Premium)
+abline(lm1, lwd = 3, col = 'red', lty = 2)
+xfit <- seq(from = min(prem$Revenue), to = max(prem$Revenue), length.out = 100)
+yfit <- predict(lm2, newdata = data.frame(Revenue = xfit))
+points(xfit, yfit, type = 'l', lwd = 3, col = 'blue', lty = 4)
+
+#' 
+#' 
+#' 
+#' 
+#' ## Exercises
+#' * Pick a dataset you have already seen, e.g. cars, iris, etc.
+#' * Visually inspect for relationships.
+#' * Can you define a linear model?
+#' 
+#' 
+#' 
