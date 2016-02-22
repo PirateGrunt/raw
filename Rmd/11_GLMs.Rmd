@@ -1,0 +1,192 @@
+---
+author: "Emma Li"
+output: slidy_presentation
+duration: 30
+fig_height: 4
+fig_width: 10
+title: "Generalized Linear Model"
+---
+
+
+# LM
+Linear Model makes several key assumptions:
+
+* Linear relationship between X and E(Y) = miu = X*Beta
+* Multivariate normality
+* No or little multicollinearity
+* No auto-correlation
+* Error terms exhibit similar amounts of variance 
+
+
+
+
+# GLM
+Generalized Linear Model is the general case of ordinary linear regression. It allows the response variable to have error distribution model other than normal distribution. 
+
+Key Assumptions:
+
+* Linear relationship between X and g(E(Y)) = g(miu) = X*Beta
+
+Depending on the distribution, we haev a link function g(). 
+
+* No or little multicollinearity.
+* No auto-correlation.
+* Error terms exhibit similar amounts of variance 
+
+## g(E(Y)) = g(miu) = X*Beta
+
+# Distirbutions in Exponential Family 
+
+Y can follow Normal Distribution, Bernoulli distribution, binomial distribution, Poisson distribution, negative binomial distribution,  Gamma distribution, Tweedie Distribution, Exponential Distirbution, etc. 
+
+For example, 
+
+1. Poisson distribution when the dependent variable is count in nature (e.g. claim counts). 
+
+2. Binomial distribution when the dependent variable is binary (e.g., yes or no).
+
+## g(E(Y)) = g(miu) = X*Beta
+
+# Link Functions
+
+* The domain of the link function is matched to the range of the distribution function's mean.
+* The range of the link function is X*Beta
+
+For example, 
+
+1. Poisson distribution when the dependent variable is count in nature (e.g. claim counts).
+
+g() is log function: g(E(Y)) = ln(E(Y)) = X*Beta
+
+# Link Functions
+
+2. Binomial distribution when the dependent variable is binary (e.g., yes or no).
+
+g() is logit function: g(E(Y)) = ln(E(Y)/(1-E(Y))) = X*Beta
+
+or
+
+g() is Inverse CDF: g(E(Y)) = Inverse of Normal CDF(E(Y)) = X*Beta
+
+or
+
+g() is Complementary log-log function: g(E(Y)) = log(-log(1-E(Y))) = X*Beta
+
+## g(E(Y)) = g(miu) = X*Beta
+
+# R Function in stats package
+
+"R functino glm() is used to fit generalized linear models, specified by giving a symbolic description of the linear predictor and a description of the error distribution."
+
+Inputs: glm(formula, family = gaussian, data, ...)
+
+Outputs:  summary, coefficents, p values, residuals, fitted values, ...
+
+## g(E(Y)) = g(miu) = X*Beta
+
+
+# Simulated Data
+This data set records the numbers of personal auto claims incurred in 2015. The numbers of insured auto, the policyholders' ages, and their family sizes are also recorded by policy level.  
+
+Variables     | Descriptions
+------------- | -------------
+clm		        | Claim Counts
+num_car		    | Number of Insured Personal Auto
+age		        | Age of Policyholders
+familiy_size  | Family Size of Policyholders
+
+```{r }
+rootDir<-"../data-raw/"
+clm_cnt <- read.csv(file=paste0(rootDir,"11_GLMs.csv"))
+```
+
+# Summary and Graphs
+
+```{r }
+dim(clm_cnt)
+colnames(clm_cnt)
+summary(clm_cnt)
+
+apply(clm_cnt,2,table)
+
+avg<-function(x) {
+  data<-aggregate(clm_cnt[,"clm"],by=list(clm_cnt[,x]),FUN=mean)
+  barplot(data[,2],main=x,xlab=x,ylab="Claim Count Averages")
+}
+avg(x="age")
+avg(x="num_car")
+avg(x="family_size")
+
+cor(clm_cnt[,-1])
+```
+
+
+# Choose distribution and link function
+1. Poisson distribution when the dependent variable is count in nature. 
+
+log: g(E(Y)) = log(E(Y)) = X*Beta
+
+```{r }
+poisson_reg <- glm(clm~ age+num_car+family_size,   data = clm_cnt,   family = poisson)
+summary(poisson_reg)
+coef(poisson_reg)
+str(poisson_reg)
+head(poisson_reg$residuals)
+head(poisson_reg$fitted.values)
+head(poisson_reg$data)
+
+poisson_reg2 <- glm(clm~ age+num_car,   data = clm_cnt,   family = poisson)
+summary(poisson_reg2)
+```
+
+# Alternative distribution and link function
+```{r }
+summary(clm_cnt$clm)
+table(clm_cnt$clm)
+```
+
+2. Binomial distribution when the dependent variable is binary (e.g., yes or no).
+
+logit: g(E(Y)) = ln(E(Y)/(1-E(Y))) = X*Beta
+
+```{r }
+clm_cnt$clm_cap <- ifelse(clm_cnt$clm==0,0,1)
+logistic_reg <- glm(clm_cap~ age+num_car+family_size,   data= clm_cnt,   family = binomial)
+summary(logistic_reg)
+```
+
+# Model Selection
+AIC=2*k-2*ln(L)
+
+k = the number of parameter
+
+L = the maximized value of the likelihood function of the model M, p(x|X, Beta) 
+
+```{r }
+AIC(poisson_reg)
+AIC(poisson_reg2)
+AIC(logistic_reg)
+```
+
+BIC=k*ln(n)-2*ln(L)
+
+k = the number of parameter
+
+L = the maximized value of the likelihood function of the model M, p(x|X, Beta) 
+
+n = the number of observations
+
+```{r cars}
+BIC(poisson_reg)
+BIC(poisson_reg2)
+
+BIC(logistic_reg)
+```
+
+The BIC generally penalizes the number of parameters more strongly than the AIC, because k is multiplied by a larger number, ln(n), in BIC than by 2 in AIC
+
+# Reference
+https://en.wikipedia.org/wiki/Generalized_linear_model#Link_function
+https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html
+
+# Q&A
