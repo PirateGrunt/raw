@@ -4,9 +4,6 @@
 
 <ul class="nav">
   
-  <li><a href="{{ site.url }}{{ site.baseurl }}/index.html">Home</a></li>
-
-  
   {% assign sorted_pages = site.pages | sort:"order" %}
   
   {% for node in sorted_pages %}
