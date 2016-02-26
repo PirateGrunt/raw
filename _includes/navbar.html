@@ -1,15 +1,10 @@
-<div class="sidebar">
-  <div class="container sidebar-sticky">
-  <div class="sidebar-about">
-    <h1>
-      <a href="{{ site.baseurl }}">
-        {{ site.title }}
-      </a>
-    </h1>
-    <p class="lead">{{ site.description }}</p>
-  </div>
-  
-  <nav class="sidebar-nav">
+<div class="col-sm-3 col-md-2 sidebar">
+<h1><a href="{{ site.baseurl }}">{{ site.title }}</a></h1>
+<p class="lead">{{ site.description }}</p>
+<ul class="nav nav-sidebar">
+<li>
+  <a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" href="{{ site.baseurl }}">Home</a>
+  </li>
   
   {% comment %}
     The code below dynamically generates a sidebar nav of pages with `layout: page` in the 
@@ -25,22 +20,28 @@
       {% endif %}
     {% endif %}
   {% endfor %}
-
   
-  </nav>
+</ul>
+</div>  
+
+<!-- 
+
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+  <div class="sidebar-about">
+    <h1>
+      <a href="{{ site.baseurl }}">
+        {{ site.title }}
+      </a>
+    </h1>
+    <p class="lead">{{ site.description }}</p>
+  </div>
+  
+  <nav class="sidebar-nav">
+  
+</nav>
   
   <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
   </div>
 </div>
-  
-<!-- 
-<div class="col-sm-3 col-md-2 sidebar">
-          <h1><a href="{{ site.baseurl }}">{{ site.title }}</a></h1>
-          <p class="lead">{{ site.description }}</p>
-          <ul class="nav nav-sidebar">
-            <li><a class="sidebar-nav-item{% if page.url == site.baseurl %} active{% endif %}" 
-                href="{{ site.baseurl }}">Home</a></li>
-      
-          </ul>
-        </div>  
 -->
