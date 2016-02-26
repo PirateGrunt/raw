@@ -1,6 +1,7 @@
 ---
 title: "Orlando"
 layout: page
+order: 5
 ---
 
 ## Getting ready for the seminar

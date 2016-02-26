@@ -1,6 +1,7 @@
 ---
 title: "Installation"
 layout: page
+order: 20
 ---
 
 R may be used on any of the popular operating systems available today. I've used R on a Windows system, a Mac and in a Linux environment. The experience is pretty much the same everywhere, which is one of the fantastic features of the software. In each case, what you'll do is download a file from the internet and then follow the standard process you go through to install software on whichever system you're using. For the most part, installation is quick and painless, but there may be limitations placed on you by your IT department. I have a few suggestions which I hope can help overcome any difficulties you might experience.

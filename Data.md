@@ -1,6 +1,7 @@
 ---
 title: Data
 layout: page
+order: 40
 ---
 
 The `raw` package includes several other packages which are of general interest to actuaries. These packages each come with various data sets.

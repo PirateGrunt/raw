@@ -1,6 +1,7 @@
 ---
 title: "The raw Package"
 layout: page
+order: 30
 ---
 
 I've created a package called `raw` for use with this workshop. The package contains data sets which should be of general interest to actuaries and make good illustrations. In addition, the package will enable you to view the slides shared in this workshop.
