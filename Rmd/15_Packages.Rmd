@@ -77,6 +77,8 @@ The `.packages` function will invisibly return a list loaded packages. Capture t
 ```{r }
 whatsLoaded <- .packages()
 whatsLoaded
+
+print(.packages())
 ```
 
 ## Unloading and/or removing installed package

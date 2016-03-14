@@ -1,0 +1,96 @@
+---
+title: "Jimmies"
+output:
+  slidy_presentation:
+    duration: 30
+---
+
+```{r setup, echo=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath('../'))
+knitr::opts_chunk$set(fig.width=10, fig.height=5, cache=FALSE, echo=TRUE, warning=FALSE, message=FALSE, error=FALSE)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(raw)
+```
+
+# Jimmies
+
+* Sonic data
+* Logistic regression
+* Tube 1
+* Tube 2
+* Choropleths
+
+# Logistic regression
+
+```{r}
+data(NFL)
+NFL <- NFL %>% 
+  mutate(Win = ifelse(Outcome == "W", 1, 0))
+
+plt <- ggplot(NFL, aes(ThisTeamPassYards, Win)) + geom_point(alpha = 0.6) + geom_jitter(width = 0, height = .3)
+plt + geom_hline(yintercept = 0.5)
+```
+
+#   
+```{r }
+plt <- plt + geom_smooth(method = "glm", method.args = list(family = "binomial"))
+plt + geom_hline(yintercept = 0.5)
+```
+
+#
+```{r }
+NFL <- NFL %>% 
+  mutate(ThisTeamPassPct = ThisTeamPassYards / ThisTeamTotalYards)
+
+plt <- ggplot(NFL, aes(ThisTeamPassPct, Win)) + geom_point() + geom_jitter(width = 0, height = .2)
+plt + geom_hline(yintercept = 0.5)
+```
+
+#
+
+```{r }
+plt <- plt + geom_smooth(method = "glm", method.args = list(family = "binomial"))
+plt + geom_hline(yintercept = 0.5)
+```
+
+# 
+
+![tube](../figure/Tube.png)
+
+# Tube 1
+
+```{r}
+dfStations <- read.csv("./data/stations.csv")
+dfEdges <- read.csv("./data/edges.csv")
+dfRoutes <- read.csv("./data/Routes.csv")
+```
+
+```{r }
+dfStations <- dfStations %>% 
+  mutate(zoneFactor = as.factor(zone))
+```
+
+# 
+```{r}
+plot(dfStations$longitude, dfStations$latitude, pch = 20)
+```
+
+#
+```{r }
+plt <- ggplot(dfStations, aes(longitude, latitude, col = zoneFactor)) + geom_point()
+plt
+```
+
+
+```{r }
+dfNamedEdges <- merge(dfStations, dfEdges)
+```
+
+# References
+
+* [Wikicommons London Underground data](https://commons.wikimedia.org/wiki/London_Underground_geographic_maps/CSV)
+* [London Tube Map and Graph Visualizations](https://visualign.wordpress.com/2012/07/11/london-tube-map-and-graph-visualizations/)

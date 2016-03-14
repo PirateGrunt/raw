@@ -32,3 +32,5 @@ data-raw/Werner_Modlin_Ratemaking.pdf
 # *.csv
 
 Rmd/*.html
+
+*.wav
